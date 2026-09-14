@@ -59,6 +59,7 @@ public class BlockLootTables extends FabricBlockLootTableProvider {
         dropSelf(ModBlocks.COOK_STOOL_JUNGLE);
         dropSelf(ModBlocks.COOK_STOOL_MANGROVE);
         dropSelf(ModBlocks.COOK_STOOL_WARPED);
+        dropSelf(ModBlocks.BAMBOO_TRAY);
 
         dropSelf(ModBlocks.CHAIR_OAK);
         dropSelf(ModBlocks.CHAIR_SPRUCE);

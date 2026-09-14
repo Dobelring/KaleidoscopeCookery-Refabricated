@@ -27,6 +27,15 @@ public class ShapedRecipeProvider extends ModRecipeProvider {
                 .unlockedBy("has_campfire", has(Items.CAMPFIRE))
                 .save(consumer, "kaleidoscope_cookery:stove_campfire");
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.BAMBOO_TRAY)
+                .pattern(" S ")
+                .pattern("STS")
+                .pattern(" S ")
+                .define('S', Items.STRING)
+                .define('T', Items.BAMBOO_TRAPDOOR)
+                .unlockedBy("has_bamboo_trapdoor", has(Items.BAMBOO_TRAPDOOR))
+                .save(consumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModItems.STOVE)
                 .pattern("###")
                 .pattern("#F#")

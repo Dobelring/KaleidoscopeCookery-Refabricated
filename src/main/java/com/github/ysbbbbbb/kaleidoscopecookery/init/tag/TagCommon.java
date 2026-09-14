@@ -55,6 +55,9 @@ public interface TagCommon {
 
     TagKey<Item> DOUGH = itemTag("dough");
 
+    TagKey<Block> COLORLESS_GLASS = blockTag("glass/colorless");
+    TagKey<Block> COLORLESS_GLASS_PANES = blockTag("glass_panes/colorless");
+
     // 均衡饮食模组
     TagKey<Item> FRUITS = dietTag("fruits");
     TagKey<Item> GRAINS = dietTag("grains");
