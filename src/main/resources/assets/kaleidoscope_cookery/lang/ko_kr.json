@@ -33,6 +33,13 @@
   "config.jade.plugin_kaleidoscope_cookery.teapot": "티팟",
 
 
+  "jei.kaleidoscope_cookery.bamboo_tray.drying": "건조한 (맑아): %ss",
+  "jei.kaleidoscope_cookery.bamboo_tray.wetting": "젖은 (비 오는): %ss",
+  "emi.category.kaleidoscope_cookery.bamboo_tray": "대나무 쟁반",
+  "block.kaleidoscope_cookery.tea_banner": "차 배너",
+  "tooltip.kaleidoscope_cookery.tea_banner.color": "색: %s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern": "패턴: %s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "차",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "만화경 요리: 주방",

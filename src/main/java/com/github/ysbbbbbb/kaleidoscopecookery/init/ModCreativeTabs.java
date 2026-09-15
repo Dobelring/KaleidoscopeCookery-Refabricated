@@ -51,6 +51,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.OIL);
                     output.accept(ModItems.RECIPE_ITEM);
                     output.accept(ModItems.TRANSMUTATION_LUNCH_BAG);
+                    output.accept(ModItems.TEA_BANNER);
                 // 原材料
                     output.accept(ModItems.FLOUR);
                     output.accept(ModItems.RAW_DOUGH);

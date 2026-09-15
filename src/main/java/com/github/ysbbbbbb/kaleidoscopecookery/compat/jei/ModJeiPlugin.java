@@ -27,6 +27,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new MillstoneRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new SteamerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new TeapotRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new BambooTrayRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -40,6 +41,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(SteamerRecipeCategory.TYPE, SteamerRecipeCategory.getRecipes());
         registration.addRecipes(TeapotRecipeCategory.TYPE, TeapotRecipeCategory.getRecipes());
         registration.addRecipes(RecipeTypes.CRAFTING, RiceBowlRecipeMaker.createRecipes());
+        registration.addRecipes(BambooTrayRecipeCategory.TYPE, BambooTrayRecipeCategory.getRecipes());
     }
 
     @Override
@@ -52,7 +54,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(ModItems.MILLSTONE, MillstoneRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModItems.STEAMER, SteamerRecipeCategory.TYPE);
         registration.addRecipeCatalyst(ModItems.TEAPOT, TeapotRecipeCategory.TYPE);
-
+        registration.addRecipeCatalyst(ModItems.BAMBOO_TRAY, BambooTrayRecipeCategory.TYPE);
     }
 
     @Override

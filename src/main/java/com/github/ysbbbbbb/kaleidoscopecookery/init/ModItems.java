@@ -42,7 +42,7 @@ public final class ModItems {
     public static final Item TEA_EGG = new FoodWithEffectsItem(ModFoods.TEA_EGG);
     public static final Item BAMBOO_EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE, new Item.Properties());
     public static final Item STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE, new Item.Properties());
-
+    public static final Item TEA_BANNER =  new TeaBannerItem();
     public static Item EMPTY_CUP = new EmptyCupItem();
 
     // 垃圾桶
@@ -427,7 +427,7 @@ public final class ModItems {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_egg"), TEA_EGG);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_eight_immortals_table"), BAMBOO_EIGHT_IMMORTALS_TABLE);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stripped_bamboo_eight_immortals_table"), STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
-
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
 
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "cold_cut_ham_slices"), COLD_CUT_HAM_SLICES);

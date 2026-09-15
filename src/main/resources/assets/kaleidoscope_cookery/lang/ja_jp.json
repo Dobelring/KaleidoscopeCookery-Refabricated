@@ -33,6 +33,14 @@
   "config.jade.plugin_kaleidoscope_cookery.teapot": "ティーポット",
 
 
+  "jei.kaleidoscope_cookery.bamboo_tray.drying": "乾いた （晴れ）: %ss",
+  "jei.kaleidoscope_cookery.bamboo_tray.wetting": "濡れている （雨の）: %ss",
+  "emi.category.kaleidoscope_cookery.bamboo_tray": "竹の札",
+  "block.kaleidoscope_cookery.tea_banner": "お茶バナー",
+  "tooltip.kaleidoscope_cookery.tea_banner.color": "色：%s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern": "パターン：%s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "お茶",
+
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "森羅物語：キッチン",
   "item_group.kaleidoscope_cookery.cookery_food.name": "森羅物語：料理",

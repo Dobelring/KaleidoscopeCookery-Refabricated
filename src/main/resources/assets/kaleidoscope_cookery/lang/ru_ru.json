@@ -31,6 +31,17 @@
   "jade.kaleidoscope_cookery.teapot.ingredient": "Ингредиент: %s",
   "jade.kaleidoscope_cookery.teapot.result": "Результат: %s",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "Чайник",
+
+
+  "jei.kaleidoscope_cookery.bamboo_tray.drying": "Сухой (солнечный день): %ss",
+  "jei.kaleidoscope_cookery.bamboo_tray.wetting": "Мокрый (дождливо): %ss",
+  "emi.category.kaleidoscope_cookery.bamboo_tray": "Бамбуковый поднос",
+  "block.kaleidoscope_cookery.tea_banner": "Чайный баннер",
+  "tooltip.kaleidoscope_cookery.tea_banner.color": "Цвет: %s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern": "Шаблон: %s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Чай",
+
+
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Кулинария",
   "item_group.kaleidoscope_cookery.cookery_food.name": "Kaleidoscope: Еда",
   "pack.kaleidoscope_cookery.legacy_resources_pack.title": "Пакет устаревших ресурсов Kaleidoscope Cookery",

@@ -18,17 +18,22 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class ClayPotMilkTeaBlock extends HorizontalDirectionalBlock {
+public class ClayPotMilkTeaBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     private static final VoxelShape AABB = Block.box(3, 0, 3, 13, 10, 13);
-
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public ClayPotMilkTeaBlock() {
         super(BlockBehaviour.Properties.of()
                 .forceSolidOn()
@@ -37,11 +42,12 @@ public class ClayPotMilkTeaBlock extends HorizontalDirectionalBlock {
                 .sound(SoundType.DECORATED_POT)
                 .pushReaction(PushReaction.DESTROY)
                 .noOcclusion());
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.SOUTH));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.SOUTH).setValue(WATERLOGGED, false));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
@@ -54,33 +60,41 @@ public class ClayPotMilkTeaBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         FoodBiteAnimateTicks.POT_SOUP_ANIMATE_TICK.animateTick(state, level, pos, random);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER)
+                .setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
+    public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
+    public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public @NotNull FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return AABB;
     }
 }

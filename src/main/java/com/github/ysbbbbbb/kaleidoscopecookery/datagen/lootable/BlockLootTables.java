@@ -123,6 +123,8 @@ public class BlockLootTables extends FabricBlockLootTableProvider {
 
         FoodBiteRegistry.FOOD_DATA_MAP.forEach(this::dropFoodBite);
 
+        this.add(ModBlocks.TEA_BANNER, noDrop());
+
         this.add(ModBlocks.ENAMEL_BASIN, createEnamelBasinLootTable());
         this.add(ModBlocks.CHILI_RISTRA, createChiliRistraLootTable());
     }

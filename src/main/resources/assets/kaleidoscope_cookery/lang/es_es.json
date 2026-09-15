@@ -31,6 +31,17 @@
   "jade.kaleidoscope_cookery.teapot.ingredient": "Ingrediente: %s",
   "jade.kaleidoscope_cookery.teapot.result": "Resultado: %s",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "Tetera",
+
+
+  "jei.kaleidoscope_cookery.bamboo_tray.drying": "Seco (cielo despejado): %ss",
+  "jei.kaleidoscope_cookery.bamboo_tray.wetting": "Mojado (lluvia): %ss",
+  "emi.category.kaleidoscope_cookery.bamboo_tray": "Bandeja de bambú",
+  "block.kaleidoscope_cookery.tea_banner": "Bandera de Té",
+  "tooltip.kaleidoscope_cookery.tea_banner.color": "Color: %s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern": "Patrón: %s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Té",
+
+
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Cocina",
   "item_group.kaleidoscope_cookery.cookery_food.name": "Kaleidoscope: Comida",
   "pack.kaleidoscope_cookery.legacy_resources_pack.title": "Paquete de recursos heredados de Kaleidoscope Cookery",

@@ -10,6 +10,9 @@ import com.github.ysbbbbbb.kaleidoscopecookery.client.model.ColdCutHamSlicesMode
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.MillstoneModel;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.TeapotModel;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.TrashCanModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.model.banner.LeftBannerModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.model.banner.NormalBannerModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.model.banner.PatternModel;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.render.block.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.render.item.StrawHatArmorRenderer;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.resources.ItemRenderReplacerReloadListener;
@@ -75,11 +78,15 @@ public final class ClientRegistry {
         BlockEntityRenderers.register(ModBlocks.TEAPOT_BE, TeapotBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlocks.TRASH_CAN_BE, TrashCanBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlocks.BAMBOO_TRAY_BE, BambooTrayBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlocks.TEA_BANNER_BE, TeaBannerBlockEntityRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(MillstoneModel.LAYER_LOCATION, MillstoneModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(ColdCutHamSlicesModel.LAYER_LOCATION, ColdCutHamSlicesModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(TeapotModel.LAYER_LOCATION, TeapotModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(TrashCanModel.LAYER_LOCATION, TrashCanModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(NormalBannerModel.LAYER_LOCATION, NormalBannerModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(LeftBannerModel.LAYER_LOCATION, LeftBannerModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(PatternModel.LAYER_LOCATION, PatternModel::createBodyLayer);
     }
 
     public static void modCompatClient() {

@@ -40,6 +40,7 @@ public final class ModBlocks {
     // Tea
     public static final Block TEA_TREE = new TeaTreeBlock();
     public static final Block TEAPOT = new TeapotBlock();
+    public static final Block TEA_BANNER = new TeaBannerBlock();
     public static final Block CLAY_POT_MILK_TEA = new ClayPotMilkTeaBlock();
     public static final Block BAMBOO_EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
     public static final Block STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
@@ -128,6 +129,7 @@ public final class ModBlocks {
     public static final BlockEntityType<FoodBiteThreeByThreeBlockEntity> FOOD_BITE_THREE_BY_THREE_BE = BlockEntityType.Builder.of(FoodBiteThreeByThreeBlockEntity::new, COLD_CUT_HAM_SLICES).build(null);
     public static final BlockEntityType<TeapotBlockEntity> TEAPOT_BE = BlockEntityType.Builder.of(TeapotBlockEntity::new, TEAPOT).build(null);
     public static final BlockEntityType<BambooTrayBlockEntity> BAMBOO_TRAY_BE = BlockEntityType.Builder.of(BambooTrayBlockEntity::new, BAMBOO_TRAY).build(null);
+    public static final BlockEntityType<TeaBannerBlockEntity> TEA_BANNER_BE = BlockEntityType.Builder.of(TeaBannerBlockEntity::new, TEA_BANNER).build(null);
 
     public static final BlockEntityType<ChairBlockEntity> CHAIR_BE = BlockEntityType.Builder.of(ChairBlockEntity::new,
             CHAIR_OAK, CHAIR_SPRUCE, CHAIR_ACACIA, CHAIR_BAMBOO,
@@ -176,7 +178,7 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_eight_immortals_table"), BAMBOO_EIGHT_IMMORTALS_TABLE);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stripped_bamboo_eight_immortals_table"), STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
-
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
 
 
@@ -246,5 +248,6 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "food_bite_three_by_three"), FOOD_BITE_THREE_BY_THREE_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "trash_can"), TRASH_CAN_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_BE);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER_BE);
     }
 }

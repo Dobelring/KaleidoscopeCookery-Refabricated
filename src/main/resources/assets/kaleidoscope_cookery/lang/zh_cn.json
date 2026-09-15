@@ -33,6 +33,14 @@
   "config.jade.plugin_kaleidoscope_cookery.teapot": "茶壶",
 
 
+  "jei.kaleidoscope_cookery.bamboo_tray.drying": "晒干（晴天露天）：%s 秒",
+  "jei.kaleidoscope_cookery.bamboo_tray.wetting": "打湿（雨天）：%s 秒",
+  "emi.category.kaleidoscope_cookery.bamboo_tray": "竹匾",
+  "block.kaleidoscope_cookery.tea_banner": "茶旗",
+  "tooltip.kaleidoscope_cookery.tea_banner.color": "颜色：%s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern": "纹样：%s",
+  "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "茶纹",
+
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "森罗物语：厨房",
   "item_group.kaleidoscope_cookery.cookery_food.name": "森罗物语：美食",
