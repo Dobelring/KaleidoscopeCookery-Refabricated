@@ -244,3 +244,28 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+// Tests live in separate source sets and are excluded from the released mod.
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.3'
+}
+
+test {
+    useJUnitPlatform()
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+}
+
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = 'kaleidoscope_cookery_test'
+        enableGameTests = true
+        enableClientGameTests = false
+    }
+}
+
+tasks.named('runGameTest', JavaExec) {
+    systemProperty 'fabric-api.gametest.report-file', layout.buildDirectory.file('reports/gametest/results.xml').get().asFile.absolutePath
+    doFirst { layout.buildDirectory.dir('reports/gametest').get().asFile.mkdirs() }
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+}

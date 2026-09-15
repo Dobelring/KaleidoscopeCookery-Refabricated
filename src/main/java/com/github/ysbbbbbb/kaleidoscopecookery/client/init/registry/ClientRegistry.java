@@ -54,6 +54,7 @@ public final class ClientRegistry {
         PotOverlayEvent.register();
         TrashcanOverlayEvent.register();
         TipOverlayEvent.register();
+        com.github.ysbbbbbb.kaleidoscopecookery.client.gui.overlay.TeapotOverlay.register();
         RenderPlayerEvent.register();
         ViewportEvent.register();
     }

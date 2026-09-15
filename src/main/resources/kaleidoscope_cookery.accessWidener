@@ -16,3 +16,5 @@ accessible field net/minecraft/world/entity/animal/horse/AbstractHorse inventory
 accessible field net/minecraft/world/effect/MobEffectInstance duration I
 accessible field net/minecraft/client/Camera yRot F
 accessible field net/minecraft/client/Camera xRot F
+accessible method net/minecraft/world/level/block/PointedDripstoneBlock findStalactiteTipAboveCauldron (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/BlockPos;
+accessible method net/minecraft/world/level/block/PointedDripstoneBlock getCauldronFillFluidType (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/Fluid;

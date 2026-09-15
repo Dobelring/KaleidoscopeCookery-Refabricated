@@ -92,6 +92,9 @@ public class BlockLootTables extends FabricBlockLootTableProvider {
         dropSelf(ModBlocks.SHAWARMA_SPIT);
         dropSelf(ModBlocks.OIL_BLOCK);
 
+        dropSelf(ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE);
+        dropSelf(ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+
         this.add(ModBlocks.TOMATO_CROP, createCropDrops(ModBlocks.TOMATO_CROP, ModItems.TOMATO,
                 ModItems.TOMATO_SEED, createCropBuilder(ModBlocks.TOMATO_CROP)));
 

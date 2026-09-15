@@ -4,6 +4,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.EmptyCupBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.ClayPotMilkTeaBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteThreeByThreeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.misc.*;
@@ -39,6 +40,10 @@ public final class ModBlocks {
     // Tea
     public static final Block TEA_TREE = new TeaTreeBlock();
     public static final Block TEAPOT = new TeapotBlock();
+    public static final Block CLAY_POT_MILK_TEA = new ClayPotMilkTeaBlock();
+    public static final Block BAMBOO_EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
+    public static final Block STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
+
     public static final Block EMPTY_CUP = new EmptyCupBlock();
 
     // Crop blocks
@@ -168,6 +173,10 @@ public final class ModBlocks {
         // Tea
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_tree"), TEA_TREE);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_eight_immortals_table"), BAMBOO_EIGHT_IMMORTALS_TABLE);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stripped_bamboo_eight_immortals_table"), STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
 
 

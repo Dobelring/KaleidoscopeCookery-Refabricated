@@ -115,6 +115,8 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.TABLE_JUNGLE);
                     output.accept(ModItems.TABLE_MANGROVE);
                     output.accept(ModItems.TABLE_WARPED);
+                    output.accept(ModItems.BAMBOO_EIGHT_IMMORTALS_TABLE);
+                    output.accept(ModItems.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
                 }).build());
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, COOKERY_FOOD_TAB, FabricItemGroup.builder()
@@ -153,6 +155,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.MEAT_PIE);
                     output.accept(ModItems.DUMPLING);
                     output.accept(ModItems.FRIED_EGG);
+                    output.accept(ModItems.TEA_EGG);
                     output.accept(ModItems.STICKY_CANDY);
                     output.accept(ModItems.STICKY_RICE_CAKE);
                     output.accept(ModItems.BAMBOO_TUBE_RICE);
@@ -214,6 +217,13 @@ public final class ModCreativeTabs {
                     });
 
                     // 茶水
+                    output.accept(ModItems.TIEGUANYIN_TEA_BAG);
+                    output.accept(ModItems.BILUOCHUN_TEA_BAG);
+                    output.accept(ModItems.OOLONG_TEA_BAG);
+                    output.accept(ModItems.SAKURA_FUBUKI_TEA_BAG);
+                    output.accept(ModItems.BARLEY_TEA_BAG);
+                    output.accept(ModItems.BUTTER_TEA_BAG);
+                    output.accept(ModItems.CLAY_POT_MILK_TEA);
                     output.accept(ModItems.EMPTY_CUP);
                     TeacupRegistry.TEACUP_DATA_MAP.keySet().forEach(teacupName -> {
                         var teacupItem = BuiltInRegistries.ITEM.get(teacupName);

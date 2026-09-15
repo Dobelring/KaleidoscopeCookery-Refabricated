@@ -32,6 +32,17 @@ public final class ModItems {
 
     // 茶
     public static final Item TEAPOT = new TeapotItem();
+    public static final Item TIEGUANYIN_TEA_BAG = new Item(new Item.Properties());
+    public static final Item BILUOCHUN_TEA_BAG = new Item(new Item.Properties());
+    public static final Item OOLONG_TEA_BAG = new Item(new Item.Properties());
+    public static final Item SAKURA_FUBUKI_TEA_BAG = new Item(new Item.Properties());
+    public static final Item BARLEY_TEA_BAG = new Item(new Item.Properties());
+    public static final Item BUTTER_TEA_BAG = new Item(new Item.Properties());
+    public static final Item CLAY_POT_MILK_TEA = new ClayPotMilkTeaItem(ModBlocks.CLAY_POT_MILK_TEA);
+    public static final Item TEA_EGG = new FoodWithEffectsItem(ModFoods.TEA_EGG);
+    public static final Item BAMBOO_EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE, new Item.Properties());
+    public static final Item STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE, new Item.Properties());
+
     public static Item EMPTY_CUP = new EmptyCupItem();
 
     // 垃圾桶
@@ -406,6 +417,17 @@ public final class ModItems {
 
         // 茶
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tieguanyin_tea_bag"), TIEGUANYIN_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "biluochun_tea_bag"), BILUOCHUN_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "oolong_tea_bag"), OOLONG_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "sakura_fubuki_tea_bag"), SAKURA_FUBUKI_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "barley_tea_bag"), BARLEY_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "butter_tea_bag"), BUTTER_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_egg"), TEA_EGG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_eight_immortals_table"), BAMBOO_EIGHT_IMMORTALS_TABLE);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stripped_bamboo_eight_immortals_table"), STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
 
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "cold_cut_ham_slices"), COLD_CUT_HAM_SLICES);

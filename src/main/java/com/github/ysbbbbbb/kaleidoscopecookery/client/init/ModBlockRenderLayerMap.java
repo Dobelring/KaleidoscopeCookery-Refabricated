@@ -32,6 +32,9 @@ public final class ModBlockRenderLayerMap {
                 ModBlocks.STOCKPOT,
                 ModBlocks.STRUNG_MUSHROOMS,
                 ModBlocks.TEAPOT,
+                ModBlocks.CLAY_POT_MILK_TEA,
+                ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE,
+                ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE,
                 ModBlocks.TEA_TREE
         );
 

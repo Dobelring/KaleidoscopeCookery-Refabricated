@@ -1,0 +1,272 @@
+package com.github.ysbbbbbb.kaleidoscopecookery;
+
+import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ITeapot;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.EightImmortalsTableBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBehavior;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.EmptyCupBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.TeapotBlockEntity;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.TeapotItem;
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSourceImpl;
+import net.minecraft.core.Direction;
+import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DripstoneThickness;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+
+public class CookeryGameTests implements FabricGameTest {
+    private static final BlockPos POT = new BlockPos(1, 1, 1);
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 100)
+    public void dripstoneFillsWater(GameTestHelper helper) {
+        testDripstone(helper, Fluids.WATER);
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 100)
+    public void dripstoneFillsLava(GameTestHelper helper) {
+        testDripstone(helper, Fluids.LAVA);
+    }
+
+    private static void testDripstone(GameTestHelper helper, Fluid fluid) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        helper.setBlock(POT.above(2), Blocks.POINTED_DRIPSTONE.defaultBlockState()
+                .setValue(PointedDripstoneBlock.TIP_DIRECTION, Direction.DOWN)
+                .setValue(PointedDripstoneBlock.THICKNESS, DripstoneThickness.TIP));
+        helper.setBlock(POT.above(3), Blocks.DRIPSTONE_BLOCK);
+        helper.setBlock(POT.above(4), fluid.defaultFluidState().createLegacyBlock());
+        BlockPos absolute = helper.absolutePos(POT);
+        ModBlocks.TEAPOT.randomTick(teapot.getBlockState(), helper.getLevel(), absolute, helper.getLevel().random);
+        helper.assertTrue(teapot.canReceiveDripstoneFluid(), "Drip must be delayed");
+        helper.runAfterDelay(60, () -> {
+            helper.assertTrue(teapot.getTeaTank().iterator().next().getAmount() == FluidConstants.BUCKET, "Drip must fill one bucket");
+            helper.assertTrue(teapot.getTeaFluidId().equals(new ResourceLocation(fluid == Fluids.WATER ? "water" : "lava")), "Wrong fluid");
+            helper.assertTrue(!teapot.receiveDripstoneFluid(fluid == Fluids.WATER ? Fluids.LAVA : Fluids.WATER), "Must not overwrite a filled teapot");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 100)
+    public void obstructedDripstoneDoesNotFill(GameTestHelper helper) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        helper.setBlock(POT.above(2), Blocks.POINTED_DRIPSTONE.defaultBlockState()
+                .setValue(PointedDripstoneBlock.TIP_DIRECTION, Direction.DOWN)
+                .setValue(PointedDripstoneBlock.THICKNESS, DripstoneThickness.TIP));
+        helper.setBlock(POT.above(3), Blocks.DRIPSTONE_BLOCK);
+        helper.setBlock(POT.above(4), Blocks.WATER);
+        helper.setBlock(POT.above(), Blocks.STONE);
+        ModBlocks.TEAPOT.randomTick(teapot.getBlockState(), helper.getLevel(), helper.absolutePos(POT), helper.getLevel().random);
+        helper.runAfterDelay(60, () -> {
+            helper.assertTrue(teapot.canReceiveDripstoneFluid(), "Solid blocks must stop drips");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 60)
+    public void hopperInsertsExactlyOneIngredient(GameTestHelper helper) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        teapot.receiveDripstoneFluid(Fluids.WATER);
+        helper.setBlock(POT.above(), Blocks.HOPPER);
+        HopperBlockEntity hopper = (HopperBlockEntity) helper.getBlockEntity(POT.above());
+        hopper.setItem(0, new ItemStack(ModItems.BARLEY_TEA_BAG, 64));
+        helper.runAfterDelay(20, () -> {
+            helper.assertTrue(teapot.getInput().is(ModItems.BARLEY_TEA_BAG) && teapot.getInput().getCount() == 1, "Hopper must insert one tea bag");
+            helper.assertTrue(hopper.getItem(0).getCount() == 63, "Hopper must retain the other 63 bags");
+            helper.assertTrue(teapot.getCurrentTick() == TeapotBlockEntity.INGREDIENT_TIME, "Cold teapot must retain ingredient grace period");
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 100)
+    public void teaBagBrewsTwelveCups(GameTestHelper helper) {
+        brew(helper, ModItems.BARLEY_TEA_BAG.getDefaultInstance(), TeacupRegistry.BARLEY_TEA, 12);
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 100)
+    public void invalidIngredientBrewsFourMysteryCups(GameTestHelper helper) {
+        brew(helper, new ItemStack(Items.COBBLESTONE), TeacupRegistry.MYSTERY_TEA, 4);
+    }
+
+    private static void brew(GameTestHelper helper, ItemStack input, ResourceLocation result, int count) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        helper.setBlock(POT.below(), Blocks.MAGMA_BLOCK);
+        teapot.receiveDripstoneFluid(Fluids.WATER);
+        teapot.insertIngredient(input);
+        CompoundTag tag = teapot.saveWithoutMetadata();
+        tag.putInt("CurrentTick", 0);
+        teapot.load(tag);
+        helper.succeedWhen(() -> {
+            if (teapot.getStatus() == ITeapot.PROCESSING) {
+                CompoundTag processing = teapot.saveWithoutMetadata();
+                processing.putInt("CurrentTick", 0);
+                teapot.load(processing);
+                try (Transaction transaction = Transaction.openOuter()) {
+                    var storage = FluidStorage.SIDED.find(helper.getLevel(), helper.absolutePos(POT), Direction.DOWN);
+                    helper.assertTrue(storage.extract(FluidVariant.of(Fluids.WATER), FluidConstants.BUCKET, transaction) == 0, "Processing fluid must not be extracted");
+                }
+            }
+            helper.assertTrue(teapot.getStatus() == ITeapot.FINISHED, "Tea has not finished");
+            helper.assertTrue(teapot.getResult().is(TeacupRegistry.getItem(result)) && teapot.getResult().getCount() == count, "Incorrect tea result");
+            ItemStack dropped = teapot.getDrops().get(0);
+            helper.assertTrue(TeapotItem.getPourOut(dropped).getCount() == count, "Picked-up teapot lost its result");
+            for (int i = 0; i < count; i++) TeapotItem.pourOut(dropped);
+            helper.assertTrue(BlockItem.getBlockEntityData(dropped) == null, "Empty teapot must reset its data");
+        });
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void dispenserPlacesFilledTeapot(GameTestHelper helper) {
+        helper.setBlock(POT.below(), Blocks.STONE);
+        helper.setBlock(POT.west(), Blocks.DISPENSER.defaultBlockState().setValue(DispenserBlock.FACING, Direction.EAST));
+        ItemStack stack = ModItems.TEAPOT.getDefaultInstance();
+        TeapotItem.fillFluid(stack, Fluids.WATER, helper.makeMockPlayer());
+        new TeapotDispenseBehavior().dispense(new BlockSourceImpl(helper.getLevel(), helper.absolutePos(POT.west())), stack);
+        helper.assertTrue(stack.isEmpty(), "Dispenser must consume the placed teapot");
+        TeapotBlockEntity placed = (TeapotBlockEntity) helper.getBlockEntity(POT);
+        helper.assertTrue(placed.getTeaFluidId().equals(new ResourceLocation("water")), "Placement must preserve water NBT");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void lastTeaLeavesUsableEmptyCups(GameTestHelper helper) {
+        TeacupBlock tea = (TeacupBlock) TeacupRegistry.getBlock(TeacupRegistry.BARLEY_TEA);
+        BlockState state = tea.defaultBlockState().setValue(tea.getCupCountProperty(), 3)
+                .setValue(tea.getTeaCountProperty(), 1).setValue(TeacupBlock.WATERLOGGED, true);
+        helper.setBlock(POT, state);
+        Player player = helper.makeMockSurvivalPlayer();
+        BlockPos absolute = helper.absolutePos(POT);
+        tea.use(state, helper.getLevel(), absolute, player, InteractionHand.MAIN_HAND,
+                new BlockHitResult(Vec3.atCenterOf(absolute), Direction.UP, absolute, false));
+        BlockState remaining = helper.getBlockState(POT);
+        helper.assertTrue(remaining.is(ModBlocks.EMPTY_CUP) && remaining.getValue(EmptyCupBlock.CUP_COUNT) == 2, "Last tea must leave two empty cups");
+        helper.assertTrue(remaining.getValue(EmptyCupBlock.WATERLOGGED), "Cup conversion must preserve waterlogging");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void clayPotTeaRemovesOnlyHarmfulEffects(GameTestHelper helper) {
+        Player player = helper.makeMockSurvivalPlayer();
+        player.addEffect(new MobEffectInstance(MobEffects.POISON, 200));
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200));
+        ItemStack result = ModItems.CLAY_POT_MILK_TEA.finishUsingItem(new ItemStack(ModItems.CLAY_POT_MILK_TEA), helper.getLevel(), player);
+        helper.assertTrue(!player.hasEffect(MobEffects.POISON), "Milk tea must remove harmful effects");
+        helper.assertTrue(player.hasEffect(MobEffects.MOVEMENT_SPEED), "Milk tea must retain beneficial effects");
+        helper.assertTrue(result.is(Items.FLOWER_POT), "Milk tea must return a flower pot");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void tablePlacementAndBreakingEveryPart(GameTestHelper helper) {
+        BlockPos anchor = helper.absolutePos(new BlockPos(3, 1, 3));
+        for (Block table : new Block[]{ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE, ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE}) {
+            for (Direction facing : Direction.Plane.HORIZONTAL) {
+                for (EightImmortalsTableBlock.Part broken : EightImmortalsTableBlock.Part.values()) {
+                    ItemStack item = new ItemStack(table);
+                    DirectionalPlaceContext context = new DirectionalPlaceContext(helper.getLevel(), anchor, facing, item, Direction.UP);
+                    helper.assertTrue(((BlockItem) item.getItem()).place(context).consumesAction(), "Table placement failed");
+                    Direction actualFacing = helper.getLevel().getBlockState(anchor).getValue(EightImmortalsTableBlock.FACING);
+                    BlockPos breakPos = anchor;
+                    for (EightImmortalsTableBlock.Part part : EightImmortalsTableBlock.Part.values()) {
+                        BlockPos pos = tablePart(anchor, actualFacing, part);
+                        BlockState state = helper.getLevel().getBlockState(pos);
+                        helper.assertTrue(state.is(table) && state.getValue(EightImmortalsTableBlock.PART) == part, "Missing table part");
+                        if (part == broken) breakPos = pos;
+                    }
+                    helper.getLevel().destroyBlock(breakPos, true);
+                    for (EightImmortalsTableBlock.Part part : EightImmortalsTableBlock.Part.values()) {
+                        helper.assertTrue(helper.getLevel().getBlockState(tablePart(anchor, actualFacing, part)).isAir(), "Breaking one part must remove the whole table");
+                    }
+                    var drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(anchor).inflate(3));
+                    int count = drops.stream().filter(entity -> entity.getItem().is(table.asItem())).mapToInt(entity -> entity.getItem().getCount()).sum();
+                    helper.assertTrue(count == 1, "Each table must drop exactly one item");
+                    drops.forEach(ItemEntity::discard);
+                }
+            }
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void obstructedTablePlacementDoesNotConsumeItem(GameTestHelper helper) {
+        BlockPos anchor = helper.absolutePos(POT);
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            helper.getLevel().setBlockAndUpdate(anchor.relative(side), Blocks.STONE.defaultBlockState());
+        }
+        ItemStack item = new ItemStack(ModItems.BAMBOO_EIGHT_IMMORTALS_TABLE);
+        var context = new DirectionalPlaceContext(helper.getLevel(), anchor, Direction.NORTH, item, Direction.UP);
+        helper.assertTrue(!((BlockItem) item.getItem()).place(context).consumesAction(), "Obstructed table must not place");
+        helper.assertTrue(item.getCount() == 1 && helper.getLevel().getBlockState(anchor).isAir(), "Failed placement must leave no partial table or consume items");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void creativeMilkTeaKeepsTheItem(GameTestHelper helper) {
+        Player player = helper.makeMockPlayer();
+        player.addEffect(new MobEffectInstance(MobEffects.POISON, 200));
+        ItemStack input = new ItemStack(ModItems.CLAY_POT_MILK_TEA);
+        ItemStack result = ModItems.CLAY_POT_MILK_TEA.finishUsingItem(input, helper.getLevel(), player);
+        helper.assertTrue(!player.hasEffect(MobEffects.POISON), "Creative players must also lose harmful effects");
+        helper.assertTrue(result == input && result.getCount() == 1, "Creative drinking must not consume the item");
+        helper.assertTrue(!player.getInventory().contains(new ItemStack(Items.FLOWER_POT)), "Creative drinking must not create containers");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void newRecipesAndEffectsAreRegistered(GameTestHelper helper) {
+        for (String tea : new String[]{"barley_tea", "biluochun", "butter_tea", "flower_tea", "oolong", "sakura_fubuki", "tieguanyin"}) {
+            helper.assertTrue(helper.getLevel().getRecipeManager().byKey(new ResourceLocation(KaleidoscopeCookery.MOD_ID, "teapot/" + tea)).isPresent(), "Missing tea recipe: " + tea);
+        }
+        for (int i = 1; i <= 9; i++) {
+            helper.assertTrue(helper.getLevel().getRecipeManager().byKey(new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stockpot/clay_pot_milk_tea_count_" + i)).isPresent(), "Missing clay pot milk tea recipe");
+        }
+        for (int i = 1; i <= 4; i++) {
+            helper.assertTrue(helper.getLevel().getRecipeManager().byKey(new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stockpot/tea_egg_count_" + i)).isPresent(), "Missing tea egg recipe");
+        }
+        Player player = helper.makeMockSurvivalPlayer();
+        ModItems.TEA_EGG.finishUsingItem(new ItemStack(ModItems.TEA_EGG), helper.getLevel(), player);
+        helper.assertTrue(player.hasEffect(ModEffects.SULFUR.get()), "Tea eggs must grant Sulfur");
+        helper.assertTrue(player.getEffect(ModEffects.SULFUR.get()).getDuration() == 1200, "Tea egg effect must last one minute");
+        helper.succeed();
+    }
+
+    private static BlockPos tablePart(BlockPos anchor, Direction facing, EightImmortalsTableBlock.Part part) {
+        return switch (part) {
+            case RIGHT_BOTTOM -> anchor;
+            case LEFT_BOTTOM -> anchor.relative(facing.getCounterClockWise());
+            case RIGHT_TOP -> anchor.relative(facing);
+            case LEFT_TOP -> anchor.relative(facing).relative(facing.getCounterClockWise());
+        };
+    }
+
+    private static TeapotBlockEntity placeTeapot(GameTestHelper helper) {
+        helper.setBlock(POT.below(), Blocks.STONE);
+        helper.setBlock(POT, ModBlocks.TEAPOT);
+        return (TeapotBlockEntity) helper.getBlockEntity(POT);
+    }
+}

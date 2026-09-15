@@ -6,11 +6,14 @@ import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotContaine
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
+import com.github.ysbbbbbb.kaleidoscopecookery.inventory.itemhandler.SingleIngredientStorage;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.tag.TagMod;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.CustomFluidTank;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.google.common.collect.Lists;
+import net.minecraft.CrashReportCategory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +28,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +38,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
@@ -60,7 +65,23 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
     private static final String CURRENT_TICK = "CurrentTick";
 
     private final RecipeManager.CachedCheck<TeapotContainer, TeapotRecipe> quickCheck = RecipeManager.createCheck(ModRecipes.TEAPOT_RECIPE);
-    private final CustomFluidTank teaTank = new CustomFluidTank(FluidConstants.BUCKET, this::onTankChanged);
+    private final CustomFluidTank teaTank = new CustomFluidTank(FluidConstants.BUCKET, this::onTankChanged) {
+        @Override
+        protected boolean canInsert(FluidVariant variant) {
+            return status == PUT_INGREDIENT && input.isEmpty();
+        }
+
+        @Override
+        protected boolean canExtract(FluidVariant variant) {
+            return status == PUT_INGREDIENT && input.isEmpty();
+        }
+    };
+    private final SingleIngredientStorage inputStorage = new SingleIngredientStorage(
+            () -> this.input, stack -> this.input = stack, this::canAcceptIngredient,
+            () -> {
+                this.currentTick = INGREDIENT_TIME;
+                this.refresh();
+            });
 
     private ItemStack input = ItemStack.EMPTY;
     private ResourceLocation teaFluidId = TeapotRecipeSerializer.EMPTY_TEA_FLUID;
@@ -76,6 +97,16 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
     }
 
     public void tick(Level level) {
+        if (level.isClientSide) {
+            if (Math.floorMod(level.getGameTime() + worldPosition.hashCode(), 11) == 0) {
+                if (status == FINISHED && hasHeatSource(level)) {
+                    this.boilingState.startIfStopped((int) level.getGameTime());
+                } else {
+                    this.boilingState.stop();
+                }
+            }
+            return;
+        }
         // 如果现在处于 PUT_INGREDIENT 阶段
         if (status == ITeapot.PUT_INGREDIENT) {
             // 每 23 tick 检查一次
@@ -114,12 +145,10 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
                     this.refresh();
                     return;
                 }
-                // 如果配方找不到，弹出
-                Block.popResource(level, worldPosition, input);
-                this.input = ItemStack.EMPTY;
-                this.result = ItemStack.EMPTY;
-                this.status = ITeapot.PUT_INGREDIENT;
-                this.currentTick = -1;
+                // 未匹配配方时仍然煮茶，但只产出四杯谜之茶。
+                this.result = new ItemStack(TeacupRegistry.getItem(TeacupRegistry.MYSTERY_TEA), 4);
+                this.currentTick = TeapotRecipeSerializer.DEFAULT_TIME;
+                this.status = PROCESSING;
                 this.refresh();
             }
             return;
@@ -250,10 +279,6 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
 
     @Override
     public boolean addIngredient(Level level, LivingEntity user, ItemStack itemStack) {
-        if (itemStack.is(TagMod.INGREDIENT_BLOCKLIST)) {
-            return false;
-        }
-
         if (this.status != PUT_INGREDIENT) {
             this.sendActionBarMessage(user, "tooltip.kaleidoscope_cookery.teapot.add_ingredient.state_incorrect", this.getStatusText());
             return false;
@@ -271,22 +296,12 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
             return false;
         }
 
-        // 查询配方
-        TeapotContainer container = new TeapotContainer(itemStack, this.teaFluidId);
-        Optional<TeapotRecipe> recipeOpt = this.quickCheck.getRecipeFor(container, level);
-        if (recipeOpt.isPresent()) {
-            TeapotRecipe recipe = recipeOpt.get();
-            int count = recipe.ingredientCount();
-
-            this.input = itemStack.copyWithCount(count);
-            this.currentTick = INGREDIENT_TIME;
-            this.refresh();
-            itemStack.shrink(count);
-            return true;
+        if (!this.canInsertIngredient(itemStack)) {
+            return false;
         }
-
-        this.sendActionBarMessage(user, "tooltip.kaleidoscope_cookery.teapot.add_ingredient.recipe_incorrect");
-        return false;
+        this.insertIngredient(itemStack);
+        itemStack.shrink(1);
+        return true;
     }
 
     public void addAllIngredients(List<ItemStack> ingredients, LivingEntity user) {
@@ -299,7 +314,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         if (this.status != PUT_INGREDIENT) {
             return;
         }
-        if (ingredients.size() > 1) return;
+        if (ingredients.size() != 1 || !this.canAcceptIngredient()) return;
         ItemStack stack = ingredients.get(0);
         if (stack.isEmpty()) {
             return;
@@ -311,6 +326,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         }
         // 茶壶配方需要 ingredientCount 个原料，保留记录中的实际数量以便匹配配方
         this.input = stack.copy();
+        this.currentTick = INGREDIENT_TIME;
         level.playSound(null, this.worldPosition,
                 SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F,
                 ((level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -384,8 +400,6 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         CompoundTag tag = new CompoundTag();
         tag.put(RESULT, result.copy().save(new CompoundTag()));
         tag.putInt(STATUS, this.status);
-        tag.put(TANK, this.teaTank.writeToNBT(new CompoundTag()));
-        tag.putString(TEA_FLUID_ID, this.teaFluidId.toString());
         BlockItem.setBlockEntityData(teapot, ModBlocks.TEAPOT_BE, tag);
         drops.add(teapot);
 
@@ -441,6 +455,15 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
     }
 
     @Override
+    public void fillCrashReportCategory(@NotNull CrashReportCategory category) {
+        super.fillCrashReportCategory(category);
+        category.setDetail("Tea brewing status", this.status);
+        category.setDetail("Tea fluid", this.teaFluidId);
+        category.setDetail("Tea ingredient", () -> this.input.toString());
+        category.setDetail("Tea remaining ticks", this.currentTick);
+    }
+
+    @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put(INPUT, this.input.save(new CompoundTag()));
@@ -484,6 +507,43 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         return input;
     }
 
+    public boolean canReceiveDripstoneFluid() {
+        return this.status == PUT_INGREDIENT
+                && this.teaTank.isResourceBlank()
+                && this.teaFluidId.equals(TeapotRecipeSerializer.EMPTY_TEA_FLUID)
+                && this.input.isEmpty();
+    }
+
+    public boolean receiveDripstoneFluid(Fluid fluid) {
+        if (!canReceiveDripstoneFluid() || (fluid != Fluids.WATER && fluid != Fluids.LAVA)) {
+            return false;
+        }
+        this.teaTank.fill(FluidVariant.of(fluid), FluidConstants.BUCKET, CustomFluidTank.FluidAction.EXECUTE);
+        this.refresh();
+        return true;
+    }
+
+    private boolean canAcceptIngredient() {
+        return !this.isRemoved() && this.status == PUT_INGREDIENT && this.input.isEmpty()
+                && this.teaTank.getAmount() == FluidConstants.BUCKET;
+    }
+
+    public boolean canInsertIngredient(ItemStack stack) {
+        return !stack.isEmpty() && this.canAcceptIngredient();
+    }
+
+    public void insertIngredient(ItemStack stack) {
+        if (this.canInsertIngredient(stack)) {
+            this.input = stack.copyWithCount(1);
+            this.currentTick = INGREDIENT_TIME;
+            this.refresh();
+        }
+    }
+
+    public Storage<ItemVariant> getInputStorage() {
+        return this.inputStorage;
+    }
+
     public ResourceLocation getTeaFluidId() {
         return teaFluidId;
     }
@@ -495,7 +555,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
     private void onTankChanged() {
         this.refreshTeaFluidId();
         if (this.level != null && !this.level.isClientSide()) {
-            this.setChanged();
+            this.refresh();
         }
     }
 

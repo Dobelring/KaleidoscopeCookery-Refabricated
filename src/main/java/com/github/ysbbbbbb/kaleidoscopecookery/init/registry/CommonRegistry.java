@@ -6,6 +6,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.api.event.SickleHarvestEvent;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.PlateBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.BambooTrayDispenseBehavior;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.OilPotDispenseBehavior;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBehavior;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteOneByTwoBlock;
@@ -25,6 +26,7 @@ import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.packs.PackType;
@@ -38,6 +40,7 @@ public final class CommonRegistry {
     public static void init() {
         registerDataListeners();
         registerFluidStorage();
+        ItemStorage.SIDED.registerForBlockEntity((teapot, side) -> teapot.getInputStorage(), ModBlocks.TEAPOT_BE);
         modCompat();
         addComposter();
         registerPlateBlocks();
@@ -101,7 +104,7 @@ public final class CommonRegistry {
         TeacupRegistry.init();
 
         TeacupRegistry.TEACUP_DATA_MAP.forEach((resourceLocation, data) -> {
-            TeacupBlock teacupBlock = new TeacupBlock(data.getMaxCount());
+            TeacupBlock teacupBlock = new TeacupBlock(data.getMaxCount(), data.getAnimateTick());
             VoxelShape aabb = data.getAABB();
             if (aabb != null) {
                 teacupBlock.setAABB(aabb);
@@ -170,5 +173,6 @@ public final class CommonRegistry {
     private static void addDispenserBehavior() {
         DispenserBlock.registerBehavior(ModItems.OIL_POT, new OilPotDispenseBehavior());
         DispenserBlock.registerBehavior(ModItems.BAMBOO_TRAY, new BambooTrayDispenseBehavior());
+        DispenserBlock.registerBehavior(ModItems.TEAPOT, new TeapotDispenseBehavior());
     }
 }

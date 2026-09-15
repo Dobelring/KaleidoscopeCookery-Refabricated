@@ -32,6 +32,8 @@ bin/
 
 run/
 
+ref/
+
 # java
 
 hs_err_*.log

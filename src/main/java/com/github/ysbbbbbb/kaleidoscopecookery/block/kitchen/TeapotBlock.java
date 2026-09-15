@@ -6,6 +6,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,9 +26,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.*;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -59,8 +60,9 @@ public class TeapotBlock extends HorizontalDirectionalBlock implements SimpleWat
                 .sound(SoundType.LANTERN)
                 .mapColor(MapColor.COLOR_ORANGE)
                 .noOcclusion()
-                .instabreak()
-                .strength(1.25F, 2.0F));
+                .pushReaction(PushReaction.DESTROY)
+                .randomTicks()
+                .instabreak());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, false)
@@ -86,7 +88,52 @@ public class TeapotBlock extends HorizontalDirectionalBlock implements SimpleWat
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor levelAccessor, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+    public void randomTick(
+            @NotNull BlockState state,
+            @NotNull ServerLevel level,
+            @NotNull BlockPos pos,
+            @NotNull RandomSource random) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof TeapotBlockEntity teapot) || !teapot.canReceiveDripstoneFluid()) {
+            return;
+        }
+        BlockPos tipPos = PointedDripstoneBlock.findStalactiteTipAboveCauldron(level, pos);
+        if (tipPos == null) {
+            return;
+        }
+        Fluid fluid = PointedDripstoneBlock.getCauldronFillFluidType(level, tipPos);
+        if ((fluid == Fluids.WATER || fluid == Fluids.LAVA)) {
+            level.levelEvent(LevelEvent.DRIPSTONE_DRIP, tipPos, 0);
+            level.scheduleTick(pos, this, 50 + tipPos.getY() - pos.getY());
+        }
+    }
+
+    @Override
+    public void tick(
+            @NotNull BlockState state,
+            @NotNull ServerLevel level,
+            @NotNull BlockPos pos,
+            @NotNull RandomSource random) {
+        BlockPos tipPos = PointedDripstoneBlock.findStalactiteTipAboveCauldron(level, pos);
+        if (tipPos == null) {
+            return;
+        }
+        Fluid fluid = PointedDripstoneBlock.getCauldronFillFluidType(level, tipPos);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof TeapotBlockEntity teapot && teapot.receiveDripstoneFluid(fluid)) {
+            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+            level.levelEvent(fluid == Fluids.LAVA ? LevelEvent.SOUND_DRIP_LAVA_INTO_CAULDRON : LevelEvent.SOUND_DRIP_WATER_INTO_CAULDRON, pos, 0);
+        }
+    }
+
+    @Override
+    public @NotNull BlockState updateShape(
+            @NotNull BlockState state,
+            @NotNull Direction direction,
+            @NotNull BlockState neighborState,
+            @NotNull LevelAccessor levelAccessor,
+            @NotNull BlockPos pos,
+            @NotNull BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
