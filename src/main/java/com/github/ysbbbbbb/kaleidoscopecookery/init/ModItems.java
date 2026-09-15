@@ -40,8 +40,7 @@ public final class ModItems {
     public static final Item BUTTER_TEA_BAG = new Item(new Item.Properties());
     public static final Item CLAY_POT_MILK_TEA = new ClayPotMilkTeaItem(ModBlocks.CLAY_POT_MILK_TEA);
     public static final Item TEA_EGG = new FoodWithEffectsItem(ModFoods.TEA_EGG);
-    public static final Item BAMBOO_EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE, new Item.Properties());
-    public static final Item STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE, new Item.Properties());
+    public static final Item EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.EIGHT_IMMORTALS_TABLE, new Item.Properties());
     public static final Item TEA_BANNER =  new TeaBannerItem();
     public static Item EMPTY_CUP = new EmptyCupItem();
 
@@ -425,8 +424,7 @@ public final class ModItems {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "butter_tea_bag"), BUTTER_TEA_BAG);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_egg"), TEA_EGG);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_eight_immortals_table"), BAMBOO_EIGHT_IMMORTALS_TABLE);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stripped_bamboo_eight_immortals_table"), STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "eight_immortals_table"), EIGHT_IMMORTALS_TABLE);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
 

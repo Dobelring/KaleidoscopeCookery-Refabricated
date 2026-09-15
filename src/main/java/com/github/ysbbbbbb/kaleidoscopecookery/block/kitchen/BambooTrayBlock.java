@@ -93,6 +93,9 @@ public class BambooTrayBlock extends Block implements EntityBlock, SimpleWaterlo
         if (direction == Direction.DOWN) {
             return state.setValue(STAND, neighborState.is(this));
         }
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 

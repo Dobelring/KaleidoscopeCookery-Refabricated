@@ -8,21 +8,28 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EightImmortalsTableBlock extends HorizontalDirectionalBlock {
+public class EightImmortalsTableBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public EightImmortalsTableBlock() {
         super(Properties.of()
@@ -35,6 +42,7 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock {
                 .ignitedByLava());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
+                .setValue(WATERLOGGED, false)
                 .setValue(PART, Part.RIGHT_BOTTOM));
     }
 
@@ -42,7 +50,8 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock {
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction facing = context.getHorizontalDirection();
-        BlockState state = this.defaultBlockState().setValue(FACING, facing);
+        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        BlockState state = this.defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
         BlockPos anchor = context.getClickedPos();
         Level level = context.getLevel();
 
@@ -58,6 +67,21 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock {
             }
         }
         return state;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull BlockState updateShape(BlockState blockState, @NotNull Direction direction, @NotNull BlockState blockState2, @NotNull LevelAccessor levelAccessor, @NotNull BlockPos blockPos, @NotNull BlockPos blockPos2) {
+        if (blockState.getValue(WATERLOGGED)) {
+            levelAccessor.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
+        }
+        return super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
     }
 
     @Override
@@ -101,7 +125,7 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, PART);
+        builder.add(FACING, PART, WATERLOGGED);
     }
 
     static BlockPos getPartPos(BlockPos anchor, Direction facing, Part part) {

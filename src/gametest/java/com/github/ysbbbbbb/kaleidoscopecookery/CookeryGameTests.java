@@ -6,7 +6,6 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBeh
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.EmptyCupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.TeapotBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.TeapotItem;
@@ -184,7 +183,7 @@ public class CookeryGameTests implements FabricGameTest {
     @GameTest(template = EMPTY_STRUCTURE)
     public void tablePlacementAndBreakingEveryPart(GameTestHelper helper) {
         BlockPos anchor = helper.absolutePos(new BlockPos(3, 1, 3));
-        for (Block table : new Block[]{ModBlocks.BAMBOO_EIGHT_IMMORTALS_TABLE, ModBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE}) {
+        for (Block table : new Block[]{ModBlocks.EIGHT_IMMORTALS_TABLE}) {
             for (Direction facing : Direction.Plane.HORIZONTAL) {
                 for (EightImmortalsTableBlock.Part broken : EightImmortalsTableBlock.Part.values()) {
                     ItemStack item = new ItemStack(table);
@@ -218,7 +217,7 @@ public class CookeryGameTests implements FabricGameTest {
         for (Direction side : Direction.Plane.HORIZONTAL) {
             helper.getLevel().setBlockAndUpdate(anchor.relative(side), Blocks.STONE.defaultBlockState());
         }
-        ItemStack item = new ItemStack(ModItems.BAMBOO_EIGHT_IMMORTALS_TABLE);
+        ItemStack item = new ItemStack(ModItems.EIGHT_IMMORTALS_TABLE);
         var context = new DirectionalPlaceContext(helper.getLevel(), anchor, Direction.NORTH, item, Direction.UP);
         helper.assertTrue(!((BlockItem) item.getItem()).place(context).consumesAction(), "Obstructed table must not place");
         helper.assertTrue(item.getCount() == 1 && helper.getLevel().getBlockState(anchor).isAir(), "Failed placement must leave no partial table or consume items");

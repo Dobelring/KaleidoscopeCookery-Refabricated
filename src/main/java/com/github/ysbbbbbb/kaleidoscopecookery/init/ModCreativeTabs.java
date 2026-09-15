@@ -116,8 +116,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.TABLE_JUNGLE);
                     output.accept(ModItems.TABLE_MANGROVE);
                     output.accept(ModItems.TABLE_WARPED);
-                    output.accept(ModItems.BAMBOO_EIGHT_IMMORTALS_TABLE);
-                    output.accept(ModItems.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+                    output.accept(ModItems.EIGHT_IMMORTALS_TABLE);
                 }).build());
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, COOKERY_FOOD_TAB, FabricItemGroup.builder()

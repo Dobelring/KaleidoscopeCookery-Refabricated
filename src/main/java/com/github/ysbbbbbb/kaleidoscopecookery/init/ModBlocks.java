@@ -42,8 +42,7 @@ public final class ModBlocks {
     public static final Block TEAPOT = new TeapotBlock();
     public static final Block TEA_BANNER = new TeaBannerBlock();
     public static final Block CLAY_POT_MILK_TEA = new ClayPotMilkTeaBlock();
-    public static final Block BAMBOO_EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
-    public static final Block STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
+    public static final Block EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
 
     public static final Block EMPTY_CUP = new EmptyCupBlock();
 
@@ -176,8 +175,7 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_tree"), TEA_TREE);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
-        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_eight_immortals_table"), BAMBOO_EIGHT_IMMORTALS_TABLE);
-        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "stripped_bamboo_eight_immortals_table"), STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "eight_immortals_table"), EIGHT_IMMORTALS_TABLE);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
 
