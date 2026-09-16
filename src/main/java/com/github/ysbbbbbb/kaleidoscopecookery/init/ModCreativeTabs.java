@@ -116,7 +116,12 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.TABLE_JUNGLE);
                     output.accept(ModItems.TABLE_MANGROVE);
                     output.accept(ModItems.TABLE_WARPED);
+                    // 长板凳
+                    output.accept(ModItems.LONG_BENCH);
+                    // 八仙桌
                     output.accept(ModItems.EIGHT_IMMORTALS_TABLE);
+                    // 红灯笼
+                    output.accept(ModItems.RED_LANTERN);
                 }).build());
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, COOKERY_FOOD_TAB, FabricItemGroup.builder()

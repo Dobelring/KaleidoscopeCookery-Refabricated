@@ -47,6 +47,9 @@ public final class ModItems {
     // 垃圾桶
     public static final Item TRASH_CAN = new BlockItem(ModBlocks.TRASH_CAN, new Item.Properties());
 
+    public static final Item LONG_BENCH = new BlockItem(ModBlocks.LONG_BENCH, new Item.Properties());
+    public static final Item RED_LANTERN = new BlockItem(ModBlocks.RED_LANTERN, new Item.Properties());
+
     // 油
     public static final Item OIL = new WithTooltipsItem(new Item.Properties(), "oil");
     public static final Item OIL_POT = new OilPotItem();
@@ -234,6 +237,9 @@ public final class ModItems {
 
         // 垃圾桶
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "trash_can"), TRASH_CAN);
+
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "long_bench"), LONG_BENCH);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "red_lantern"), RED_LANTERN);
 
         // 油
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "oil"), OIL);

@@ -43,7 +43,6 @@ public final class ModBlocks {
     public static final Block TEA_BANNER = new TeaBannerBlock();
     public static final Block CLAY_POT_MILK_TEA = new ClayPotMilkTeaBlock();
     public static final Block EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
-
     public static final Block EMPTY_CUP = new EmptyCupBlock();
 
     // Crop blocks
@@ -98,6 +97,9 @@ public final class ModBlocks {
     public static final Block TABLE_JUNGLE = new TableBlock(SoundType.WOOD);
     public static final Block TABLE_MANGROVE = new TableBlock(SoundType.WOOD);
     public static final Block TABLE_WARPED = new TableBlock(SoundType.NETHER_WOOD);
+
+    public static final Block LONG_BENCH = new LongBenchBlock();
+    public static final Block RED_LANTERN = new RedLanternBlock();
 
     // Feast
     public static final Block COLD_CUT_HAM_SLICES = new FoodBiteThreeByThreeBlock(ModFoods.COLD_CUT_HAM_SLICES_BLOCK, 8, null);
@@ -224,6 +226,9 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "table_jungle"), TABLE_JUNGLE);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "table_mangrove"), TABLE_MANGROVE);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "table_warped"), TABLE_WARPED);
+
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "long_bench"), LONG_BENCH);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "red_lantern"), RED_LANTERN);
 
         // Feast
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "cold_cut_ham_slices"), COLD_CUT_HAM_SLICES);

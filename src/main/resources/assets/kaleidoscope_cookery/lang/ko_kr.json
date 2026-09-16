@@ -40,6 +40,8 @@
   "tooltip.kaleidoscope_cookery.tea_banner.color": "색: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern": "패턴: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "차",
+  "block.kaleidoscope_cookery.long_bench": "긴 벤치",
+  "block.kaleidoscope_cookery.red_lantern": "빨간 등",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "만화경 요리: 주방",

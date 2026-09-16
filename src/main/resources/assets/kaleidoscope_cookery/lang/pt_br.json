@@ -40,6 +40,8 @@
   "tooltip.kaleidoscope_cookery.tea_banner.color": "Cor: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern": "Padrão: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Chá",
+  "block.kaleidoscope_cookery.long_bench": "banco comprido",
+  "block.kaleidoscope_cookery.red_lantern": "Lanterna vermelha",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Culinária",

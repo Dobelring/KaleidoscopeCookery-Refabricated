@@ -40,6 +40,8 @@
   "tooltip.kaleidoscope_cookery.tea_banner.color": "Color: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern": "Pattern: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Tea",
+  "block.kaleidoscope_cookery.long_bench": "Long Bench",
+  "block.kaleidoscope_cookery.red_lantern": "Red Lantern",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Cookery",

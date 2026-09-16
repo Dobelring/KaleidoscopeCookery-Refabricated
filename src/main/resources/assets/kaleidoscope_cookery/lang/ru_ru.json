@@ -40,6 +40,8 @@
   "tooltip.kaleidoscope_cookery.tea_banner.color": "Цвет: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern": "Шаблон: %s",
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Чай",
+  "block.kaleidoscope_cookery.long_bench": "длинная скамейка",
+  "block.kaleidoscope_cookery.red_lantern": "красный фонарь",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Кулинария",
