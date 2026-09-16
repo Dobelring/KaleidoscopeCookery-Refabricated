@@ -58,7 +58,7 @@ repositories {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft("com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}")
-	compileOnly("maven.modrinth:farmers-delight-refabricated:${providers.gradleProperty("fdrf_version").get()}") {
+	implementation("maven.modrinth:farmers-delight-refabricated:${providers.gradleProperty("fdrf_version").get()}") {
 		exclude(group = "net.fabricmc")
 	}
 	implementation("maven.modrinth:rrv:${providers.gradleProperty("rrv_version").get()}") {
