@@ -74,12 +74,13 @@ public class ExtraLootTableDrop implements LootTableEvents.Modify {
         var chili = getSeed(ModItems.CHILI_SEED);
         var lettuce = getSeed(ModItems.LETTUCE_SEED);
         var rice = getSeed(ModItems.WILD_RICE_SEED);
+        var tea = getSeed(ModItems.TEA_SEED);
         var empty = EmptyLootItem.emptyItem().setWeight(2);
         tableBuilder.withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
                 .add(tomato).add(chili)
                 .add(lettuce).add(rice)
-                .add(empty));
+                .add(tea).add(empty));
     }
 
     private LootPoolSingletonContainer.Builder<?> getSeed(ItemLike item) {

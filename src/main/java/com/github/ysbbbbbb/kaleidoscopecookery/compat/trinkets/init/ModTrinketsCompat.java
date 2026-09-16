@@ -54,6 +54,9 @@ public class ModTrinketsCompat {
                             .add(LootItem.lootTableItem(ModItems.WILD_RICE_SEED)
                                     .when(chance).when(match)
                                     .apply(enchantments))
+                            .add(LootItem.lootTableItem(ModItems.TEA_SEED)
+                                    .when(chance).when(match)
+                                    .apply(enchantments))
                             .add(EmptyLootItem.emptyItem().setWeight(2)));
                 }
             });
