@@ -63,6 +63,7 @@ public class RecipeBlockEntityRender implements BlockEntityRenderer<RecipeBlockE
             poseStack.translate(1, 1.25, 0);
         } else {
             poseStack.translate(1, 0.75, 2);
+            poseStack.mulPose(Axis.ZP.rotationDegrees(180F));
         }
 
         itemRenderer.renderStatic(output, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, buffer, recipeBlock.getLevel(), 0);
