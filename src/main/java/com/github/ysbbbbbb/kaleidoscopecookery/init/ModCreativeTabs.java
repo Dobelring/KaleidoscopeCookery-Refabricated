@@ -37,12 +37,12 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.STOCKPOT);
                     output.accept(ModItems.STOCKPOT_LID);
                     output.accept(ModItems.CHOPPING_BOARD);
+                    output.accept(ModItems.BAMBOO_TRAY);
                     output.accept(ModItems.MILLSTONE);
                     output.accept(ModItems.STEAMER);
                     output.accept(ModItems.TEAPOT);
                     output.accept(ModItems.TRASH_CAN);
                     output.accept(ModItems.KITCHENWARE_RACKS);
-                    output.accept(ModItems.BAMBOO_TRAY);
                     output.accept(ModItems.FRUIT_BASKET);
                     output.accept(ModItems.SCARECROW);
                     output.accept(ModItems.ENAMEL_BASIN);
