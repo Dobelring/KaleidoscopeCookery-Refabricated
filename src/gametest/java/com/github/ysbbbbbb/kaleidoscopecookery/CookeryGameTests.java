@@ -6,9 +6,16 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBeh
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.EmptyCupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.TeapotBlockEntity;
+import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.StockpotBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.TeapotItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotContainer;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.FluidSoupBase;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.SoupBaseManager;
+import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -17,6 +24,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSourceImpl;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -42,6 +50,99 @@ import net.minecraft.world.phys.Vec3;
 
 public class CookeryGameTests implements FabricGameTest {
     private static final BlockPos POT = new BlockPos(1, 1, 1);
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void milkBucketFillsAndDrainsTeapot(GameTestHelper helper) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        Player player = helper.makeMockSurvivalPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
+        helper.assertTrue(teapot.addTeaFluid(helper.getLevel(), player, player.getMainHandItem()), "Milk bucket must fill teapot");
+        helper.assertTrue(player.getMainHandItem().is(Items.BUCKET), "Filling must return an empty bucket");
+        helper.assertTrue(FluidUtils.findFirstAmount(teapot.getTeaTank()) == FluidConstants.BUCKET, "Must transfer exactly one bucket");
+        helper.assertTrue(ModFluids.matchesTeaFluid(ModFluids.MILK_ID, teapot.getTeaFluidId()), "Stored fluid must match milk recipes");
+        ResourceLocation storedMilk = teapot.getTeaFluidId();
+        teapot.load(teapot.saveWithoutMetadata());
+        helper.assertTrue(teapot.getTeaFluidId().equals(storedMilk), "Saving must preserve the actual milk fluid ID");
+        helper.assertTrue(teapot.removeTeaFluid(helper.getLevel(), player, player.getMainHandItem()), "Milk must be recoverable");
+        helper.assertTrue(player.getMainHandItem().is(Items.MILK_BUCKET), "Draining must return a milk bucket");
+        helper.assertTrue(FluidUtils.findFirstAmount(teapot.getTeaTank()) == 0, "Draining must empty the teapot");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void registeredMilkSupportsTransactionsAndSoupBase(GameTestHelper helper) {
+        Fluid milk = BuiltInRegistries.FLUID.get(ModFluids.MILK_ID);
+        helper.assertTrue(milk != Fluids.EMPTY && milk.getBucket() == Items.MILK_BUCKET, "minecraft:milk must be registered");
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        Player player = helper.makeMockSurvivalPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET));
+        try (Transaction transaction = Transaction.openOuter()) {
+            helper.assertTrue(teapot.getTeaTank().insert(FluidVariant.of(milk), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET,
+                    "Registered milk must enter the tank");
+            transaction.commit();
+        }
+        var bucket = ContainerItemContext.ofPlayerHand(player, InteractionHand.MAIN_HAND).find(FluidStorage.ITEM);
+        try (Transaction transaction = Transaction.openOuter()) {
+            helper.assertTrue(bucket.insert(FluidVariant.of(milk), FluidConstants.BUCKET, transaction) == FluidConstants.BUCKET,
+                    "Empty buckets must accept registered milk");
+        }
+        helper.assertTrue(player.getMainHandItem().is(Items.BUCKET), "Aborted filling must preserve empty bucket");
+        helper.assertTrue(teapot.removeTeaFluid(helper.getLevel(), player, player.getMainHandItem()), "Registered milk must drain into a bucket");
+        helper.assertTrue(player.getMainHandItem().is(Items.MILK_BUCKET), "Must produce a vanilla milk bucket");
+        var soup = SoupBaseManager.getSoupBase(ModSoupBases.MILK);
+        helper.assertTrue(soup instanceof FluidSoupBase && ((FluidSoupBase) soup).getFluid() == milk, "Milk soup base must use registered fluid");
+        helper.assertTrue(soup.getReturnContainer(helper.getLevel(), player, player.getMainHandItem()).is(Items.BUCKET), "Soup must return an empty bucket");
+        helper.assertTrue(soup.getReturnSoupBase(helper.getLevel(), player, new ItemStack(Items.BUCKET)).is(Items.MILK_BUCKET), "Soup must return milk");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void butterTeaRecipeAcceptsMilkProvidersOnly(GameTestHelper helper) {
+        var recipe = (TeapotRecipe) helper.getLevel().getRecipeManager()
+                .byKey(new ResourceLocation(KaleidoscopeCookery.MOD_ID, "teapot/butter_tea")).orElseThrow();
+        for (Fluid fluid : BuiltInRegistries.FLUID) {
+            if (fluid.getBucket() == Items.MILK_BUCKET) {
+                helper.assertTrue(recipe.matches(new TeapotContainer(new ItemStack(ModItems.BUTTER_TEA_BAG),
+                        BuiltInRegistries.FLUID.getKey(fluid)), helper.getLevel()), "Milk provider must match butter tea: " + BuiltInRegistries.FLUID.getKey(fluid));
+            }
+        }
+        helper.assertTrue(!recipe.matches(new TeapotContainer(new ItemStack(ModItems.BUTTER_TEA_BAG), new ResourceLocation("water")), helper.getLevel()),
+                "Water must not brew butter tea");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void milkSoupAllowsIngredientRetrievalWithoutDamage(GameTestHelper helper) {
+        helper.setBlock(POT.below(), Blocks.STONE);
+        helper.setBlock(POT, ModBlocks.STOCKPOT);
+        StockpotBlockEntity stockpot = (StockpotBlockEntity) helper.getBlockEntity(POT);
+        Player player = helper.makeMockSurvivalPlayer();
+        helper.assertTrue(stockpot.addSoupBase(helper.getLevel(), player, new ItemStack(Items.MILK_BUCKET)), "Milk soup base must be accepted");
+        helper.assertTrue(stockpot.addIngredient(helper.getLevel(), player, new ItemStack(Items.APPLE)), "Ingredient must enter milk soup");
+        float health = player.getHealth();
+        helper.assertTrue(stockpot.removeIngredient(helper.getLevel(), player), "Ingredient must be recoverable from milk soup");
+        helper.assertTrue(player.getHealth() == health, "Milk soup must not burn the player");
+        helper.assertTrue(stockpot.removeSoupBase(helper.getLevel(), player, new ItemStack(Items.BUCKET)), "Milk soup must remain recoverable");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 600)
+    public void milkBucketBrewsTwelveButterTeas(GameTestHelper helper) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        helper.setBlock(POT.below(), Blocks.MAGMA_BLOCK);
+        Player player = helper.makeMockSurvivalPlayer();
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
+        helper.assertTrue(teapot.addTeaFluid(helper.getLevel(), player, player.getMainHandItem()), "Milk must fill the teapot");
+        ItemStack ingredient = new ItemStack(ModItems.BUTTER_TEA_BAG);
+        helper.assertTrue(teapot.addIngredient(helper.getLevel(), player, ingredient), "Butter tea bag must be accepted");
+        helper.assertTrue(ingredient.isEmpty(), "Exactly one tea bag must be consumed");
+        helper.assertTrue(!teapot.removeTeaFluid(helper.getLevel(), player, player.getMainHandItem()), "Milk cannot be removed after adding ingredients");
+        helper.succeedWhen(() -> {
+            helper.assertTrue(teapot.getStatus() == ITeapot.FINISHED, "Butter tea has not finished");
+            helper.assertTrue(teapot.getResult().is(TeacupRegistry.getItem(TeacupRegistry.BUTTER_TEA))
+                    && teapot.getResult().getCount() == 12, "Milk and one butter tea bag must brew twelve butter teas");
+        });
+    }
 
     @GameTest(template = EMPTY_STRUCTURE, timeoutTicks = 100)
     public void dripstoneFillsWater(GameTestHelper helper) {

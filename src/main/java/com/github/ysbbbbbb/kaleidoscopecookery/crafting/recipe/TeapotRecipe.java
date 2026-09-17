@@ -2,6 +2,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotContainer;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModFluids;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +25,7 @@ public record TeapotRecipe(ResourceLocation id, ResourceLocation teaFluid,
     public boolean matches(TeapotContainer container, @NotNull Level level) {
         ItemStack stack = container.getItemStack();
         ResourceLocation fluid = container.getTeaFluid();
-        return teaFluid.equals(fluid) && ingredient.test(stack) && stack.getCount() >= ingredientCount;
+        return ModFluids.matchesTeaFluid(teaFluid, fluid) && ingredient.test(stack) && stack.getCount() >= ingredientCount;
     }
 
     @Override

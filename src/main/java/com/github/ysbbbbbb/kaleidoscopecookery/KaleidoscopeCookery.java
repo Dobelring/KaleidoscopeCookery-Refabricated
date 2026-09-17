@@ -21,6 +21,7 @@ public final class KaleidoscopeCookery implements ModInitializer {
         CommonRegistry.init();
         NetworkHandler.init();
         ModTrigger.init();
+        ModFluids.registerFluids();
         ModBlocks.registerBlocks();
         ModItems.registerItems();
         ModEntities.registerEntities();

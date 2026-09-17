@@ -21,7 +21,6 @@ public final class ModEntities {
         Registry.register(BuiltInRegistries.ENTITY_TYPE, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "scarecrow"), SCARECROW);
         Registry.register(BuiltInRegistries.ENTITY_TYPE, new ResourceLocation(KaleidoscopeCookery.MOD_ID, "throwable_baozi"), THROWABLE_BAOZI);
 
-        // Register entity attributes
         FabricDefaultAttributeRegistry.register(SCARECROW, LivingEntity.createLivingAttributes());
     }
 }

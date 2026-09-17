@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class CommonRegistry {
     public static void init() {
         registerDataListeners();
