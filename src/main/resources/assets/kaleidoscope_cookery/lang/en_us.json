@@ -42,6 +42,18 @@
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Tea",
   "block.kaleidoscope_cookery.long_bench": "Long Bench",
   "block.kaleidoscope_cookery.red_lantern": "Red Lantern",
+  "block.kaleidoscope_cookery.cook_stool_poplar": "Poplar Cook's Stool",
+  "block.kaleidoscope_cookery.cook_stool_pale_oak": "Pale Oak Cook's Stool",
+  "block.kaleidoscope_cookery.chair_poplar": "Poplar Chair",
+  "block.kaleidoscope_cookery.chair_pale_oak": "Pale Oak Chair",
+  "block.kaleidoscope_cookery.table_poplar": "Poplar Table",
+  "block.kaleidoscope_cookery.table_pale_oak": "Pale Oak Table",
+  "item.kaleidoscope_cookery.copper_kitchen_knife": "Copper Kitchen Knife",
+  "item.kaleidoscope_cookery.recipe_item": "Recipe Record",
+  "item.kaleidoscope_cookery.model_display": "Display",
+  "tooltip.kaleidoscope_cookery.model_display": "You shouldn't have this item...",
+  "resourcePack.kaleidoscope_eating_animation": "Kaleidoscope Foods Eating Animation",
+  "resourcePack.kaleidoscope_classic_texture": "Kaleidoscope Cookery Classic Texture",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Cookery",

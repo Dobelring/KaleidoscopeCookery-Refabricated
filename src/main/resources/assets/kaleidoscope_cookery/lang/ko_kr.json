@@ -42,6 +42,18 @@
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "차",
   "block.kaleidoscope_cookery.long_bench": "긴 벤치",
   "block.kaleidoscope_cookery.red_lantern": "빨간 등",
+  "block.kaleidoscope_cookery.cook_stool_poplar": "포플러 요리사 의자",
+  "block.kaleidoscope_cookery.cook_stool_pale_oak": "창백한 참나무 요리사 의자",
+  "block.kaleidoscope_cookery.chair_poplar": "포플러 의자",
+  "block.kaleidoscope_cookery.chair_pale_oak": "창백한 참나무 의자",
+  "block.kaleidoscope_cookery.table_poplar": "포플러 식탁",
+  "block.kaleidoscope_cookery.table_pale_oak": "창백한 참나무 식탁",
+  "item.kaleidoscope_cookery.copper_kitchen_knife": "구리 부엌칼",
+  "item.kaleidoscope_cookery.recipe_item": "조리법",
+  "item.kaleidoscope_cookery.model_display": "전시 모델",
+  "tooltip.kaleidoscope_cookery.model_display": "당신은 이 아이템을 가지고 있으면 안 됩니다...",
+  "resourcePack.kaleidoscope_eating_animation": "모리 모노가타리: 식사 애니메이션",
+  "resourcePack.kaleidoscope_classic_texture": "모리 모노가타리: 클래식 텍스처",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "만화경 요리: 주방",

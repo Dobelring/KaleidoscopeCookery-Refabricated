@@ -42,6 +42,18 @@
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Chá",
   "block.kaleidoscope_cookery.long_bench": "banco comprido",
   "block.kaleidoscope_cookery.red_lantern": "Lanterna vermelha",
+  "block.kaleidoscope_cookery.cook_stool_poplar": "Banquinho de cozinheira de álamo",
+  "block.kaleidoscope_cookery.cook_stool_pale_oak": "Banquinho de cozinheira de carvalho pálido",
+  "block.kaleidoscope_cookery.chair_poplar": "Cadeira de álamo",
+  "block.kaleidoscope_cookery.chair_pale_oak": "Cadeira de carvalho pálido",
+  "block.kaleidoscope_cookery.table_poplar": "Mesa de álamo",
+  "block.kaleidoscope_cookery.table_pale_oak": "Mesa de carvalho pálido",
+  "item.kaleidoscope_cookery.copper_kitchen_knife": "Faca de cozinha de cobre",
+  "item.kaleidoscope_cookery.recipe_item": "Receita",
+  "item.kaleidoscope_cookery.model_display": "Modelo de exibição",
+  "tooltip.kaleidoscope_cookery.model_display": "Você não deveria ter este item...",
+  "resourcePack.kaleidoscope_eating_animation": "Mori no Monogatari: Animação de comer",
+  "resourcePack.kaleidoscope_classic_texture": "Mori no Monogatari: Texturas clássicas",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Culinária",

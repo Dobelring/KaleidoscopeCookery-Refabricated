@@ -42,6 +42,18 @@
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "茶紋",
   "block.kaleidoscope_cookery.long_bench": "長板凳",
   "block.kaleidoscope_cookery.red_lantern": "紅燈籠",
+  "block.kaleidoscope_cookery.cook_stool_poplar": "楊木廚娘凳",
+  "block.kaleidoscope_cookery.cook_stool_pale_oak": "蒼白木廚娘凳",
+  "block.kaleidoscope_cookery.chair_poplar": "楊木椅子",
+  "block.kaleidoscope_cookery.chair_pale_oak": "蒼白木椅子",
+  "block.kaleidoscope_cookery.table_poplar": "楊木餐桌",
+  "block.kaleidoscope_cookery.table_pale_oak": "蒼白木餐桌",
+  "item.kaleidoscope_cookery.copper_kitchen_knife": "銅菜刀",
+  "item.kaleidoscope_cookery.recipe_item": "菜譜",
+  "item.kaleidoscope_cookery.model_display": "展示模型",
+  "tooltip.kaleidoscope_cookery.model_display": "你不應該擁有這個物品...",
+  "resourcePack.kaleidoscope_eating_animation": "森羅物語：進食動畫",
+  "resourcePack.kaleidoscope_classic_texture": "森羅物語：經典材質",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "森羅物語：廚房",

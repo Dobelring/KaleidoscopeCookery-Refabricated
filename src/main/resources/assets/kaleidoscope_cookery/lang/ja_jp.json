@@ -1,5 +1,5 @@
 {
-  "modmenu.nameTranslation.kaleidoscope_cookery": "森羅物語：再構築",
+  "modmenu.nameTranslation.kaleidoscope_cookery": "森羅物語キッチン：再構築",
   "modmenu.descriptionTranslation.kaleidoscope_cookery": "いろんな美味しい料理を作ろう！",
   "block.kaleidoscope_cookery.fruit_platter": "フルーツ盛り合わせ",
   "block.kaleidoscope_cookery.braised_fish": "煮魚",
@@ -42,6 +42,18 @@
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "お茶",
   "block.kaleidoscope_cookery.long_bench": "長いベンチ",
   "block.kaleidoscope_cookery.red_lantern": "赤い提灯",
+  "block.kaleidoscope_cookery.cook_stool_poplar": "ポプラの料理人用スツール",
+  "block.kaleidoscope_cookery.cook_stool_pale_oak": "ペイルオークの料理人用スツール",
+  "block.kaleidoscope_cookery.chair_poplar": "ポプラの椅子",
+  "block.kaleidoscope_cookery.chair_pale_oak": "ペイルオークの椅子",
+  "block.kaleidoscope_cookery.table_poplar": "ポプラの食卓",
+  "block.kaleidoscope_cookery.table_pale_oak": "ペイルオークの食卓",
+  "item.kaleidoscope_cookery.copper_kitchen_knife": "銅の包丁",
+  "item.kaleidoscope_cookery.recipe_item": "レシピ",
+  "item.kaleidoscope_cookery.model_display": "展示モデル",
+  "tooltip.kaleidoscope_cookery.model_display": "あなたはこのアイテムを持つべきではない...",
+  "resourcePack.kaleidoscope_eating_animation": "森羅物語：食事アニメーション",
+  "resourcePack.kaleidoscope_classic_texture": "森羅物語：クラシックテクスチャ",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "森羅物語：キッチン",

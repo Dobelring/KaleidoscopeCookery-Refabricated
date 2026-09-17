@@ -42,6 +42,18 @@
   "tooltip.kaleidoscope_cookery.tea_banner.pattern.tea": "Чай",
   "block.kaleidoscope_cookery.long_bench": "длинная скамейка",
   "block.kaleidoscope_cookery.red_lantern": "красный фонарь",
+  "block.kaleidoscope_cookery.cook_stool_poplar": "Тополевый табурет повара",
+  "block.kaleidoscope_cookery.cook_stool_pale_oak": "Табурет повара из бледного дуба",
+  "block.kaleidoscope_cookery.chair_poplar": "Тополевый стул",
+  "block.kaleidoscope_cookery.chair_pale_oak": "Стул из бледного дуба",
+  "block.kaleidoscope_cookery.table_poplar": "Тополевый стол",
+  "block.kaleidoscope_cookery.table_pale_oak": "Стол из бледного дуба",
+  "item.kaleidoscope_cookery.copper_kitchen_knife": "Медный кухонный нож",
+  "item.kaleidoscope_cookery.recipe_item": "Рецепт",
+  "item.kaleidoscope_cookery.model_display": "Модель для отображения",
+  "tooltip.kaleidoscope_cookery.model_display": "У вас не должно быть этого предмета...",
+  "resourcePack.kaleidoscope_eating_animation": "Синра Моногатари: Анимация еды",
+  "resourcePack.kaleidoscope_classic_texture": "Синра Моногатари: Классические текстуры",
 
 
   "item_group.kaleidoscope_cookery.cookery_main.name": "Kaleidoscope: Кулинария",
