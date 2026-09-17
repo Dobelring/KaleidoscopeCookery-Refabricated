@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
 
@@ -74,7 +75,7 @@ public class BambooTrayRecipe extends SingleItemRecipe {
         }
 
         @Override
-        public String getSerializedName() {
+        public @NotNull String getSerializedName() {
             return serializedName;
         }
 

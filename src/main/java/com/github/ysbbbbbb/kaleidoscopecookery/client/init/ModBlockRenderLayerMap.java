@@ -13,12 +13,8 @@ import net.minecraft.world.level.block.Block;
 @Environment(EnvType.CLIENT)
 public final class ModBlockRenderLayerMap {
     public static void register() {
-        TeacupRegistry.TEACUP_DATA_MAP.forEach((resourceLocation, data) -> {
-            BlockRenderLayerMap.INSTANCE.putBlock(TeacupRegistry.getBlock(resourceLocation), RenderType.cutout());
-        });
-        PlateRegistry.PLATE_DATA_MAP.forEach((resourceLocation, data) -> {
-            BlockRenderLayerMap.INSTANCE.putBlock(PlateRegistry.getBlock(resourceLocation), RenderType.cutout());
-        });
+        TeacupRegistry.TEACUP_DATA_MAP.forEach((resourceLocation, data) -> BlockRenderLayerMap.INSTANCE.putBlock(TeacupRegistry.getBlock(resourceLocation), RenderType.cutout()));
+        PlateRegistry.PLATE_DATA_MAP.forEach((resourceLocation, data) -> BlockRenderLayerMap.INSTANCE.putBlock(PlateRegistry.getBlock(resourceLocation), RenderType.cutout()));
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(),
                 ModBlocks.POT,
                 ModBlocks.KITCHENWARE_RACKS,

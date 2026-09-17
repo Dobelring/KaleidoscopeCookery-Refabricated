@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +33,22 @@ public class ClayPotMilkTeaItem extends BlockItem implements IHasContainer {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
+    public @NotNull UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.DRINK;
     }
 
     @Override
-    public SoundEvent getDrinkingSound() {
+    public @NotNull SoundEvent getDrinkingSound() {
         return SoundEvents.HONEY_DRINK;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+    public @NotNull ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof ServerPlayer serverPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));

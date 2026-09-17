@@ -13,11 +13,12 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 /** A transferable fluid without a placeable world block. */
 public final class MilkFluid extends Fluid {
     @Override
-    public Item getBucket() {
+    public @NotNull Item getBucket() {
         return Items.MILK_BUCKET;
     }
 
@@ -27,7 +28,7 @@ public final class MilkFluid extends Fluid {
     }
 
     @Override
-    protected Vec3 getFlow(BlockGetter level, BlockPos pos, FluidState state) {
+    protected @NotNull Vec3 getFlow(BlockGetter level, BlockPos pos, FluidState state) {
         return Vec3.ZERO;
     }
 
@@ -52,7 +53,7 @@ public final class MilkFluid extends Fluid {
     }
 
     @Override
-    protected BlockState createLegacyBlock(FluidState state) {
+    protected @NotNull BlockState createLegacyBlock(FluidState state) {
         return Blocks.AIR.defaultBlockState();
     }
 
@@ -67,7 +68,7 @@ public final class MilkFluid extends Fluid {
     }
 
     @Override
-    public VoxelShape getShape(FluidState state, BlockGetter level, BlockPos pos) {
+    public @NotNull VoxelShape getShape(FluidState state, BlockGetter level, BlockPos pos) {
         return Shapes.block();
     }
 }

@@ -7,6 +7,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBeh
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteOneByTwoBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.BambooTrayBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.farmersdelight.FarmersDelightCompat;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.trinkets.init.TrinketsCompatServer;
 import com.github.ysbbbbbb.kaleidoscopecookery.datagen.lootable.GiftLootTables;
@@ -49,7 +50,7 @@ public final class CommonRegistry {
         ItemStorage.SIDED.registerForBlockEntity((teapot, side) -> teapot.getInputStorage(), ModBlocks.TEAPOT_BE);
         ItemStorage.SIDED.registerForBlockEntity(
                 (millstone, side) -> side == Direction.UP ? millstone.getInputStorage() : null, ModBlocks.MILLSTONE_BE);
-        ItemStorage.SIDED.registerForBlockEntity((tray, side) -> tray.getStorage(side), ModBlocks.BAMBOO_TRAY_BE);
+        ItemStorage.SIDED.registerForBlockEntity(BambooTrayBlockEntity::getStorage, ModBlocks.BAMBOO_TRAY_BE);
     }
 
     public static void registerDataListeners() {

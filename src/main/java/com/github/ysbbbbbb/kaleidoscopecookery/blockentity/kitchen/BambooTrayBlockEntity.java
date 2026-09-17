@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -258,7 +259,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
     }
 
     @Override
-    public int[] getSlotsForFace(Direction side) {
+    public int @NotNull [] getSlotsForFace(Direction side) {
         return SLOTS;
     }
 
@@ -287,12 +288,12 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
     }
 
     @Override
-    public ItemStack getItem(int slot) {
+    public @NotNull ItemStack getItem(int slot) {
         return this.items.get(slot);
     }
 
     @Override
-    public ItemStack removeItem(int slot, int amount) {
+    public @NotNull ItemStack removeItem(int slot, int amount) {
         ItemStack result = ContainerHelper.removeItem(this.items, slot, amount);
         if (!result.isEmpty()) {
             if (this.items.get(slot).isEmpty()) {
@@ -304,7 +305,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int slot) {
+    public @NotNull ItemStack removeItemNoUpdate(int slot) {
         ItemStack result = ContainerHelper.takeItem(this.items, slot);
         if (!result.isEmpty()) {
             resetProcessing(slot);

@@ -26,6 +26,7 @@ public class SoupBaseManager {
         registerSoupBase(new FluidSoupBase(name, bucketItem, fluid, bubbleColor));
     }
 
+    @SuppressWarnings("unused")
     public static void registerMobSoupBase(ResourceLocation name, Item bucketItem, int bubbleColor) {
         registerSoupBase(new MobSoupBase(name, bucketItem, bubbleColor));
     }

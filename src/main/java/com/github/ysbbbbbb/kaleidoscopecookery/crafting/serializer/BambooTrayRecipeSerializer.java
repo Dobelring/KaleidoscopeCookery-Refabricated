@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class BambooTrayRecipeSerializer implements RecipeSerializer<BambooTrayRecipe> {
     public static final int DEFAULT_DURATION = 60 * 20;
@@ -29,12 +30,12 @@ public class BambooTrayRecipeSerializer implements RecipeSerializer<BambooTrayRe
             BambooTrayRecipe::new);
 
     @Override
-    public MapCodec<BambooTrayRecipe> codec() {
+    public @NotNull MapCodec<BambooTrayRecipe> codec() {
         return CODEC;
     }
 
     @Override
-    public StreamCodec<RegistryFriendlyByteBuf, BambooTrayRecipe> streamCodec() {
+    public @NotNull StreamCodec<RegistryFriendlyByteBuf, BambooTrayRecipe> streamCodec() {
         return STREAM_CODEC;
     }
 }

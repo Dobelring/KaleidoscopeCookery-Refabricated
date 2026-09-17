@@ -4,6 +4,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.UseOnContext;
+import org.jetbrains.annotations.NotNull;
 
 public class EmptyCupItem extends BlockItem {
     public EmptyCupItem() {
@@ -11,7 +12,7 @@ public class EmptyCupItem extends BlockItem {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         return super.useOn(context);
     }
 }
