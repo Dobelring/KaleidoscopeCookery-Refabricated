@@ -4,6 +4,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
+import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.TeaFluidHelper;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -11,12 +12,10 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.material.Fluid;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,8 +47,7 @@ public class EmiTeapotRecipe extends BasicEmiRecipe {
 
         registry.getRecipeManager().getAllRecipesFor(ModRecipes.TEAPOT_RECIPE).forEach(r -> {
             TeapotRecipe value = r.value();
-            Fluid fluid = BuiltInRegistries.FLUID.get(value.teaFluid());
-            Item bucket = fluid.getBucket();
+            Item bucket = TeaFluidHelper.getFilledContainer(value.teaFluid()).getItem();
             List<EmiIngredient> inputs = List.of(EmiIngredient.of(Arrays.stream(value.ingredient().getItems())
                     .map(stack -> EmiStack.of(stack.copyWithCount(value.ingredientCount())))
                     .toList()));
@@ -62,9 +60,11 @@ public class EmiTeapotRecipe extends BasicEmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         widgets.addTexture(BG, 1, 1, WIDTH, HEIGHT, 0, 0);
 
-        widgets.addSlot(EmiStack.of(fluidBucket), 65, 3);
-        widgets.addSlot(inputs.getFirst(), 83, 3);
-        widgets.addSlot(outputs.getFirst(), 128, 30)
+        widgets.addSlot(EmiStack.of(fluidBucket), 65, 0);
+        widgets.addSlot(inputs.getFirst(), 83, 0);
+        widgets.addSlot(EmiStack.of(ModItems.EMPTY_CUP), 122, 0)
+                .drawBack(false);
+        widgets.addSlot(outputs.getFirst(), 128, 45)
                 .drawBack(false)
                 .recipeContext(this);
 

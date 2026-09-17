@@ -2,6 +2,8 @@ package com.github.ysbbbbbb.kaleidoscopecookery.init.registry;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.PlateBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.OilPotDispenseBehavior;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.BambooTrayDispenseBehavior;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBehavior;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteOneByTwoBlock;
@@ -12,6 +14,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.datamap.resources.MillstoneBindab
 import com.github.ysbbbbbb.kaleidoscopecookery.event.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.event.effect.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModVillager;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.BowlFoodBlockItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.PlateBlockItem;
@@ -19,6 +22,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.item.TeacupItem;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.packs.PackType;
@@ -41,6 +46,10 @@ public final class CommonRegistry {
         addVillagerGift();
         addDispenserBehavior();
         fuelRegister();
+        ItemStorage.SIDED.registerForBlockEntity((teapot, side) -> teapot.getInputStorage(), ModBlocks.TEAPOT_BE);
+        ItemStorage.SIDED.registerForBlockEntity(
+                (millstone, side) -> side == Direction.UP ? millstone.getInputStorage() : null, ModBlocks.MILLSTONE_BE);
+        ItemStorage.SIDED.registerForBlockEntity((tray, side) -> tray.getStorage(side), ModBlocks.BAMBOO_TRAY_BE);
     }
 
     public static void registerDataListeners() {
@@ -95,7 +104,7 @@ public final class CommonRegistry {
         TeacupRegistry.init();
 
         TeacupRegistry.TEACUP_DATA_MAP.forEach((resourceLocation, data) -> {
-            TeacupBlock teacupBlock = new TeacupBlock(data.getMaxCount());
+            TeacupBlock teacupBlock = new TeacupBlock(data.getMaxCount(), data.getAnimateTick());
             VoxelShape aabb = data.getAABB();
             if (aabb != null) {
                 teacupBlock.setAABB(aabb);
@@ -137,6 +146,9 @@ public final class CommonRegistry {
     }
 
     private static void addComposter() {
+        CompostingChanceRegistry.INSTANCE.add(ModItems.TEA_SEED, 0.3F);
+        CompostingChanceRegistry.INSTANCE.add(ModItems.FRESH_TEA_LEAVES, 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(ModItems.DRIED_TEA_LEAVES, 0.65F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.TOMATO_SEED, 0.3F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.CHILI_SEED, 0.3F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.LETTUCE_SEED, 0.3F);
@@ -157,5 +169,7 @@ public final class CommonRegistry {
 
     private static void addDispenserBehavior() {
         DispenserBlock.registerBehavior(ModItems.OIL_POT, new OilPotDispenseBehavior());
+        DispenserBlock.registerBehavior(ModItems.BAMBOO_TRAY, new BambooTrayDispenseBehavior());
+        DispenserBlock.registerBehavior(ModItems.TEAPOT, new TeapotDispenseBehavior());
     }
 }

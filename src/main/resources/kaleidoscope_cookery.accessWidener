@@ -16,3 +16,5 @@ accessible field net/minecraft/core/registries/BuiltInRegistries LOADERS Ljava/u
 accessible field net/minecraft/world/effect/MobEffectInstance duration I
 accessible field net/minecraft/world/entity/ai/behavior/GiveGiftToHero GIFTS Ljava/util/Map;
 accessible method net/minecraft/world/item/crafting/RecipeManager byType (Lnet/minecraft/world/item/crafting/RecipeType;)Ljava/util/Collection;
+accessible method net/minecraft/world/level/block/PointedDripstoneBlock findStalactiteTipAboveCauldron (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/BlockPos;
+accessible method net/minecraft/world/level/block/PointedDripstoneBlock getCauldronFillFluidType (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/Fluid;

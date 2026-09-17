@@ -14,6 +14,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.init.ModEvents;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModSounds;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.tag.TagMod;
+import com.github.ysbbbbbb.kaleidoscopecookery.inventory.itemhandler.IngredientStorage;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.IItemHandler;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.ItemStackHandler;
@@ -75,6 +76,19 @@ public class MillstoneBlockEntity extends BaseBlockEntity implements IMillstone 
     };
 
     private ItemStack input = ItemStack.EMPTY;
+    private final IngredientStorage inputStorage = new IngredientStorage(
+            () -> this.input, stack -> this.input = stack,
+            stack -> !this.isRemoved() && this.level != null && this.input.isEmpty() && this.isOutputEmpty()
+                    && this.matchRecipe(new SimpleInput(List.of(stack)), this.level).isPresent(),
+            MAX_INPUT_COUNT,
+            () -> {
+                this.progress = Math.max(Math.round(this.rotSpeedTick), 1);
+                this.refresh();
+                if (this.level != null) {
+                    this.level.playSound(null, this.worldPosition, SoundEvents.STONE_HIT, SoundSource.BLOCKS,
+                            0.8F, this.level.random.nextFloat() * 0.2F + 0.9F);
+                }
+            });
     private UUID entityId = Util.NIL_UUID;
 
     // 缓存的角度，避免动画突兀的跳动变化
@@ -463,5 +477,9 @@ public class MillstoneBlockEntity extends BaseBlockEntity implements IMillstone 
             return 0f;
         }
         return Math.abs(value) % 360;
+    }
+
+    public IngredientStorage getInputStorage() {
+        return this.inputStorage;
     }
 }

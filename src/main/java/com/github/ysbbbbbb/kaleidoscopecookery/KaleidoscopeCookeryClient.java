@@ -26,6 +26,7 @@ public final class KaleidoscopeCookeryClient implements ClientModInitializer {
         ModModelLoading.register();
         ModClientTooltip.register();
         ModEntitiesRender.register();
+        ModFluidRenderers.register();
         ModParticleFactoryRegistry.register();
         ModBlockRenderLayerMap.register();
 

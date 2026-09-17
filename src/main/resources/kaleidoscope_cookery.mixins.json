@@ -8,6 +8,7 @@
     "AbstractArrowMixin",
     "AbstractHurtingProjectileMixin",
     "BlockMixin",
+    "CropBlockMixin",
     "FallingBlockEntityMixin",
     "FarmBlockMixin",
     "FishingHookMixin",
@@ -25,12 +26,12 @@
   "client": [
     "client.BlockEntityRendererMixin",
     "client.CameraMixin",
+    "client.HumanoidModelImplementationMixin",
+    "client.HumanoidModelMixin",
     "client.ItemRendererMixin",
     "client.LeftClickMixin",
     "client.ModelBakeryMixin",
-    "client.PlayerRendererMixin",
-    "client.HumanoidModelImplementationMixin",
-    "client.HumanoidModelMixin"
+    "client.PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 
 import java.util.function.Function;
+
 @Environment(EnvType.CLIENT)
 public class ChairBlockEntityRender implements BlockEntityRenderer<ChairBlockEntity> {
     private static final Function<DyeColor, ResourceLocation> CACHE_MODEL = Util.memoize(color ->

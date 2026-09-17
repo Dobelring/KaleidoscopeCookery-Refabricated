@@ -5,6 +5,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.compat.rei.ReiUtil;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
+import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.TeaFluidHelper;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -20,12 +21,10 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.material.Fluid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +36,7 @@ public class ReiTeapotRecipeCategory implements DisplayCategory<ReiTeapotRecipeC
     private static final ResourceLocation BG = ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "textures/gui/jei/teapot.png");
     private static final MutableComponent TITLE = Component.translatable("block.kaleidoscope_cookery.teapot");
     public static final int WIDTH = 176;
-    public static final int HEIGHT = 88;
+    public static final int HEIGHT = 78;
 
     @Override
     public CategoryIdentifier<TeapotRecipeDisplay> getCategoryIdentifier() {
@@ -46,21 +45,24 @@ public class ReiTeapotRecipeCategory implements DisplayCategory<ReiTeapotRecipeC
 
     @Override
     public List<Widget> setupDisplay(TeapotRecipeDisplay display, Rectangle bounds) {
-        List<Widget> widgets = new ArrayList<>();
+        List<Widget> widgets = new ArrayList<>(7);
         int startX = bounds.x;
-        int startY = bounds.y + 4;
+        int startY = bounds.y;
         Component brewTime = Component.translatable("jei.kaleidoscope_cookery.teapot.time", display.brewTime / 20);
 
         widgets.add(Widgets.createRecipeBase(bounds));
         widgets.add(Widgets.createTexturedWidget(BG, startX, startY, 0, 0, WIDTH, HEIGHT));
         widgets.add(Widgets.withTranslate(Widgets.createDrawableWidget((guiGraphics, mouseX, mouseY, v) -> drawCenteredString(guiGraphics, brewTime, WIDTH / 2, 70)), startX, startY, 0));
-        widgets.add(Widgets.createSlot(new Point(startX + 65, startY + 3))
+        widgets.add(Widgets.createSlot(new Point(startX + 65, startY))
                 .entries(display.getInputEntries().get(0))
                 .markInput());
-        widgets.add(Widgets.createSlot(new Point(startX + 83, startY + 3))
+        widgets.add(Widgets.createSlot(new Point(startX + 83, startY))
                 .entries(display.getInputEntries().get(1))
                 .markInput());
-        widgets.add(Widgets.createSlot(new Point(startX + 128, startY + 30))
+        widgets.add(Widgets.createSlot(new Point(startX + 122, startY))
+                .entry(EntryStacks.of(ModItems.EMPTY_CUP))
+                .disableBackground());
+        widgets.add(Widgets.createSlot(new Point(startX + 128, startY + 45))
                 .entries(display.getOutputEntries().getFirst())
                 .backgroundEnabled(false)
                 .markOutput());
@@ -101,8 +103,7 @@ public class ReiTeapotRecipeCategory implements DisplayCategory<ReiTeapotRecipeC
     public static void registerDisplays(DisplayRegistry registry) {
         registry.getRecipeManager().getAllRecipesFor(ModRecipes.TEAPOT_RECIPE)
                 .forEach(r -> {
-                    Fluid fluid = BuiltInRegistries.FLUID.get(r.value().teaFluid());
-                    Item bucket = fluid.getBucket();
+                    Item bucket = TeaFluidHelper.getFilledContainer(r.value().teaFluid()).getItem();
                     List<EntryIngredient> fluidInput = ReiUtil.ofItems(bucket);
                     List<EntryIngredient> inputs = List.of(EntryIngredient.of(Arrays.stream(r.value().ingredient().getItems())
                             .map(stack -> EntryStacks.of(stack.copyWithCount(r.value().ingredientCount())))

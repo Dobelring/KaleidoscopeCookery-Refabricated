@@ -5,9 +5,10 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.BaseCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.ChiliCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.LettuceCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.RiceCropBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.TeaTreeBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.ClayPotMilkTeaBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.EmptyCupBlock;
-import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteThreeByThreeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.misc.*;
@@ -15,7 +16,6 @@ import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.food.FoodBiteThreeByThreeBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.misc.TrashCanBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -46,6 +46,13 @@ public final class ModBlocks {
     // Tea
     public static final Block TEAPOT = new TeapotBlock();
     public static final Block EMPTY_CUP = new EmptyCupBlock();
+    public static final Block CLAY_POT_MILK_TEA = new ClayPotMilkTeaBlock();
+    public static final Block BAMBOO_TRAY = new BambooTrayBlock();
+    public static final Block TEA_BANNER = new TeaBannerBlock();
+    public static final Block LONG_BENCH = new LongBenchBlock();
+    public static final Block RED_LANTERN = new RedLanternBlock();
+    public static final Block EIGHT_IMMORTALS_TABLE = new EightImmortalsTableBlock();
+    public static final Block TEA_TREE = new TeaTreeBlock();
 
 
     public static final Block TRASH_CAN = new TrashCanBlock();
@@ -115,6 +122,8 @@ public final class ModBlocks {
             ).build();
 
     // Block entities
+    public static final BlockEntityType<BambooTrayBlockEntity> BAMBOO_TRAY_BE = BlockEntityType.Builder.of(BambooTrayBlockEntity::new, BAMBOO_TRAY).build(null);
+    public static final BlockEntityType<TeaBannerBlockEntity> TEA_BANNER_BE = BlockEntityType.Builder.of(TeaBannerBlockEntity::new, TEA_BANNER).build(null);
     public static final BlockEntityType<PotBlockEntity> POT_BE = BlockEntityType.Builder.of(PotBlockEntity::new, POT).build(null);
     public static final BlockEntityType<StockpotBlockEntity> STOCKPOT_BE = BlockEntityType.Builder.of(StockpotBlockEntity::new, STOCKPOT).build(null);
     public static final BlockEntityType<FruitBasketBlockEntity> FRUIT_BASKET_BE = BlockEntityType.Builder.of(FruitBasketBlockEntity::new, FRUIT_BASKET).build(null);
@@ -159,12 +168,18 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "millstone"), MILLSTONE);
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "recipe_block"), RECIPE_BLOCK);
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "oil_pot"), OIL_POT);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "trash_can"), TRASH_CAN);
+
+        // Tea
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT);
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "empty_cup"), EMPTY_CUP);
-
-
-
-        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "trash_can"), TRASH_CAN);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_tree"), TEA_TREE);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "long_bench"), LONG_BENCH);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "red_lantern"), RED_LANTERN);
+        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "eight_immortals_table"), EIGHT_IMMORTALS_TABLE);
 
         // Crop blocks
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tomato_crop"), TOMATO_CROP);
@@ -216,6 +231,8 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tube_rice"), BAMBOO_TUBE_RICE);
 
         // Block entities
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_BE);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"), POT_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "stockpot"), STOCKPOT_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "fruit_basket"), FRUIT_BASKET_BE);

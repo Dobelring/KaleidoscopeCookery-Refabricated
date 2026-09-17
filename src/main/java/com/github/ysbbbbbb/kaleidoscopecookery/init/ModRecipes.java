@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public final class ModRecipes {
+    public static final RecipeSerializer<BambooTrayRecipe> BAMBOO_TRAY_SERIALIZER = new BambooTrayRecipeSerializer();
     public static final RecipeSerializer<PotRecipe> POT_SERIALIZER = new PotRecipeSerializer();
     public static final RecipeSerializer<FlexPotRecipe> FLEX_POT_SERIALIZER = new FlexPotRecipeSerializer();
     public static final RecipeSerializer<ChoppingBoardRecipe> CHOPPING_BOARD_SERIALIZER = new ChoppingBoardRecipeSerializer();
@@ -21,6 +22,7 @@ public final class ModRecipes {
     public static final RecipeSerializer<TeapotRecipe> TEAPOT_SERIALIZER = new TeapotRecipeSerializer();
     public static final RecipeSerializer<RiceBowlRecipe> RICE_BOWL_SERIALIZER = new RiceBowlRecipeSerializer();
 
+    public static final RecipeType<BambooTrayRecipe> BAMBOO_TRAY_RECIPE = simple(ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"));
     public static final RecipeType<PotRecipe> POT_RECIPE = simple(ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"));
     public static final RecipeType<FlexPotRecipe> FLEX_POT_RECIPE = simple(ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "flex_pot"));
     public static final RecipeType<ChoppingBoardRecipe> CHOPPING_BOARD_RECIPE = simple(ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "chopping_board"));
@@ -31,6 +33,7 @@ public final class ModRecipes {
     public static final RecipeType<TeapotRecipe> TEAPOT_RECIPE = simple(ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"));
 
     public static void registerRecipes() {
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"), POT_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "flex_pot"), FLEX_POT_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "chopping_board"), CHOPPING_BOARD_SERIALIZER);
@@ -41,6 +44,7 @@ public final class ModRecipes {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "rice_bowl"), RICE_BOWL_SERIALIZER);
 
+        Registry.register(BuiltInRegistries.RECIPE_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_RECIPE);
         Registry.register(BuiltInRegistries.RECIPE_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"), POT_RECIPE);
         Registry.register(BuiltInRegistries.RECIPE_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "flex_pot"), FLEX_POT_RECIPE);
         Registry.register(BuiltInRegistries.RECIPE_TYPE, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "chopping_board"), CHOPPING_BOARD_RECIPE);

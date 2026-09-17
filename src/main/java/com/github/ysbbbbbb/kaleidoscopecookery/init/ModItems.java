@@ -28,6 +28,22 @@ public final class ModItems {
     public static final Item OIL_POT = new OilPotItem();
     public static final Item TEAPOT = new TeapotItem();
     public static final Item EMPTY_CUP = new EmptyCupItem();
+    public static final Item BAMBOO_TRAY = new BlockItem(ModBlocks.BAMBOO_TRAY, new Item.Properties());
+    public static final Item TEA_BANNER = new TeaBannerItem();
+    public static final Item LONG_BENCH = new BlockItem(ModBlocks.LONG_BENCH, new Item.Properties());
+    public static final Item RED_LANTERN = new BlockItem(ModBlocks.RED_LANTERN, new Item.Properties());
+    public static final Item EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.EIGHT_IMMORTALS_TABLE, new Item.Properties());
+    public static final Item TEA_SEED = new ItemNameBlockItem(ModBlocks.TEA_TREE, new Item.Properties());
+    public static final Item FRESH_TEA_LEAVES = new Item(new Item.Properties());
+    public static final Item DRIED_TEA_LEAVES = new Item(new Item.Properties());
+    public static final Item TIEGUANYIN_TEA_BAG = new Item(new Item.Properties());
+    public static final Item BILUOCHUN_TEA_BAG = new Item(new Item.Properties());
+    public static final Item OOLONG_TEA_BAG = new Item(new Item.Properties());
+    public static final Item SAKURA_FUBUKI_TEA_BAG = new Item(new Item.Properties());
+    public static final Item BARLEY_TEA_BAG = new Item(new Item.Properties());
+    public static final Item BUTTER_TEA_BAG = new Item(new Item.Properties());
+    public static final Item CLAY_POT_MILK_TEA = new ClayPotMilkTeaItem(ModBlocks.CLAY_POT_MILK_TEA);
+    public static final Item TEA_EGG = new FoodWithEffectsItem(ModFoods.TEA_EGG);
 
 
     public static final Item TRASH_CAN = new BlockItem(ModBlocks.TRASH_CAN, new Item.Properties());
@@ -185,6 +201,22 @@ public final class ModItems {
     public static final Item COOKED_MEATBALL  = new Item(new Item.Properties().food(ModFoods.COOKED_MEATBALL));
 
     public static void registerItems() {
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "long_bench"), LONG_BENCH);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "red_lantern"), RED_LANTERN);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "eight_immortals_table"), EIGHT_IMMORTALS_TABLE);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_seed"), TEA_SEED);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "fresh_tea_leaves"), FRESH_TEA_LEAVES);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "dried_tea_leaves"), DRIED_TEA_LEAVES);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tieguanyin_tea_bag"), TIEGUANYIN_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "biluochun_tea_bag"), BILUOCHUN_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "oolong_tea_bag"), OOLONG_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "sakura_fubuki_tea_bag"), SAKURA_FUBUKI_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "barley_tea_bag"), BARLEY_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "butter_tea_bag"), BUTTER_TEA_BAG);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "clay_pot_milk_tea"), CLAY_POT_MILK_TEA);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_egg"), TEA_EGG);
         // Block items
         Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "stove"), STOVE);
         Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"), POT);

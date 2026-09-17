@@ -22,6 +22,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.particle.StockpotParticleOptions;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.BlockDrop;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.mojang.datafixers.util.Either;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -34,7 +36,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -475,7 +476,8 @@ public class StockpotBlockEntity extends BaseBlockEntity implements IStockpot {
             ItemUtils.getItemToLivingEntity(user, stack.copy());
             // 如果是流体汤底，且温度过高，玩家会受到伤害
             ISoupBase soupBase = this.getSoupBase();
-            if (soupBase instanceof FluidSoupBase fluidSoupBase && fluidSoupBase.getFluid().is(FluidTags.LAVA)) {
+            if (soupBase instanceof FluidSoupBase fluidSoupBase
+                    && FluidVariantAttributes.getTemperature(FluidVariant.of(fluidSoupBase.getFluid())) > 500) {
                 user.hurt(level.damageSources().inFire(), 1);
                 ModTrigger.EVENT.trigger(user, ModEventTriggerType.HURT_WHEN_TAKEOUT_FROM_STOCKPOT);
             }

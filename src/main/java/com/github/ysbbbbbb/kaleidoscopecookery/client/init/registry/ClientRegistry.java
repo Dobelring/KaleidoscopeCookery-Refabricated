@@ -6,6 +6,10 @@ import com.github.ysbbbbbb.kaleidoscopecookery.client.event.gui.overlay.TrashCan
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.MillstoneModel;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.TeapotModel;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.TrashCanModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.model.banner.LeftBannerModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.model.banner.NormalBannerModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.model.banner.PatternModel;
+import com.github.ysbbbbbb.kaleidoscopecookery.client.gui.overlay.TeapotOverlay;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.render.block.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.render.item.StrawHatArmorRenderer;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.resources.ItemRenderReplacerReloadListener;
@@ -17,6 +21,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -49,6 +54,7 @@ public final class ClientRegistry {
         FlatulenceEvent.register();
         PotOverlayEvent.register();
         TrashCanOverlay.register();
+        HudRenderCallback.EVENT.register(new TeapotOverlay()::render);
     }
 
     private static void registerBlockEntityRenderers() {
@@ -64,12 +70,17 @@ public final class ClientRegistry {
         BlockEntityRenderers.register(ModBlocks.RECIPE_BLOCK_BE, RecipeBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlocks.STEAMER_BE, SteamerBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlocks.TEAPOT_BE, TeapotBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlocks.BAMBOO_TRAY_BE, BambooTrayBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlocks.TEA_BANNER_BE, TeaBannerBlockEntityRenderer::new);
         BlockEntityRenderers.register(ModBlocks.TRASH_CAN_BE, TrashCanBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlocks.FOOD_BITE_THREE_BY_THREE_BE, FoodBiteThreeByThreeBlockEntityRender::new);
 
         EntityModelLayerRegistry.registerModelLayer(MillstoneModel.LAYER_LOCATION, MillstoneModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(TeapotModel.LAYER_LOCATION, TeapotModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(TrashCanModel.LAYER_LOCATION, TrashCanModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(NormalBannerModel.LAYER_LOCATION, NormalBannerModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(LeftBannerModel.LAYER_LOCATION, LeftBannerModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(PatternModel.LAYER_LOCATION, PatternModel::createBodyLayer);
     }
 
     private static void modCompatClient() {

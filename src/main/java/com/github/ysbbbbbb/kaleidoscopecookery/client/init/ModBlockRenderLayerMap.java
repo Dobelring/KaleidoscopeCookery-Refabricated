@@ -32,7 +32,13 @@ public final class ModBlockRenderLayerMap {
                 ModBlocks.STOCKPOT,
                 ModBlocks.STRUNG_MUSHROOMS,
                 ModBlocks.EMPTY_CUP,
-                ModBlocks.TEAPOT
+                ModBlocks.TEAPOT,
+                ModBlocks.BAMBOO_TRAY,
+                ModBlocks.TEA_TREE,
+                ModBlocks.RED_LANTERN,
+                ModBlocks.LONG_BENCH,
+                ModBlocks.EIGHT_IMMORTALS_TABLE,
+                ModBlocks.CLAY_POT_MILK_TEA
         );
 
         FoodBiteRegistry.FOOD_DATA_MAP.keySet().forEach(id -> {
