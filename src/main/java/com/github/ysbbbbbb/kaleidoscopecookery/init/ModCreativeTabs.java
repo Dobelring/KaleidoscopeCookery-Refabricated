@@ -52,7 +52,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.RECIPE_ITEM);
                     output.accept(ModItems.TRANSMUTATION_LUNCH_BAG);
                     output.accept(ModItems.TEA_BANNER);
-                // 原材料
+                    // 原材料
                     output.accept(ModItems.FLOUR);
                     output.accept(ModItems.RAW_DOUGH);
                     output.accept(ModItems.RAW_NOODLES);
@@ -67,20 +67,20 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.CHILI_SEED);
                     output.accept(ModItems.LETTUCE_SEED);
                     output.accept(ModItems.TEA_SEED);
-                // 工具
+                    // 工具
                     output.accept(ModItems.KITCHEN_SHOVEL);
                     output.accept(ModItems.GOLD_KITCHEN_KNIFE);
                     output.accept(ModItems.IRON_KITCHEN_KNIFE);
                     output.accept(ModItems.DIAMOND_KITCHEN_KNIFE);
                     output.accept(ModItems.NETHERITE_KITCHEN_KNIFE);
                     output.accept(ModItems.SICKLE);
-                // 服装
+                    // 服装
                     output.accept(ModItems.STRAW_HAT);
                     output.accept(ModItems.STRAW_HAT_FLOWER);
                     output.accept(ModItems.FARMER_CHEST_PLATE);
                     output.accept(ModItems.FARMER_LEGGINGS);
                     output.accept(ModItems.FARMER_BOOTS);
-                // 凳子
+                    // 凳子
                     output.accept(ModItems.COOK_STOOL_OAK);
                     output.accept(ModItems.COOK_STOOL_SPRUCE);
                     output.accept(ModItems.COOK_STOOL_ACACIA);
@@ -104,7 +104,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.CHAIR_JUNGLE);
                     output.accept(ModItems.CHAIR_MANGROVE);
                     output.accept(ModItems.CHAIR_WARPED);
-                // 桌子
+                    // 桌子
                     output.accept(ModItems.TABLE_OAK);
                     output.accept(ModItems.TABLE_SPRUCE);
                     output.accept(ModItems.TABLE_ACACIA);
@@ -151,7 +151,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.COOKED_CUT_SMALL_MEATS);
                     output.accept(ModItems.RAW_MEATBALL);
                     output.accept(ModItems.COOKED_MEATBALL);
-                // 基础食物
+                    // 基础食物
                     output.accept(ModItems.DONKEY_BURGER);
                     output.accept(ModItems.MANTOU);
                     output.accept(ModItems.BAOZI);
@@ -166,7 +166,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.BAMBOO_TUBE_RICE);
                     output.accept(ModItems.ZONGZI);
                     output.accept(ModItems.QINGTUAN);
-                // 小碗菜和盖饭
+                    // 小碗菜和盖饭
                     output.accept(ModItems.COOKED_RICE);
                     output.accept(ModItems.EGG_FRIED_RICE);
                     output.accept(ModItems.DELICIOUS_EGG_FRIED_RICE);
@@ -186,7 +186,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.BRAISED_FISH_RICE_BOWL);
                     output.accept(ModItems.SPICY_CHICKEN_RICE_BOWL);
                     output.accept(ModItems.SUSPICIOUS_STIR_FRY_RICE_BOWL);
-                // 汤类
+                    // 汤类
                     output.accept(ModItems.PORK_BONE_SOUP);
                     output.accept(ModItems.SEAFOOD_MISO_SOUP);
                     output.accept(ModItems.FEARSOME_THICK_SOUP);
@@ -200,12 +200,12 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.CHICKEN_AND_MUSHROOM_STEW);
                     output.accept(ModItems.DONKEY_SOUP);
                     output.accept(ModItems.LABA_CONGEE);
-                // 面条
+                    // 面条
                     output.accept(ModItems.BEEF_NOODLE);
                     output.accept(ModItems.HUI_NOODLE);
                     output.accept(ModItems.UDON_NOODLE);
                     output.accept(ModItems.HOT_DRY_NOODLES);
-                // 硬菜
+                    // 硬菜
                     FoodBiteRegistry.FOOD_DATA_MAP.keySet().forEach(foodName -> {
                         // 疙瘩汤之前加入厚切火腿片
                         if (foodName.equals(FoodBiteRegistry.DOUGH_DROP_SOUP)) {

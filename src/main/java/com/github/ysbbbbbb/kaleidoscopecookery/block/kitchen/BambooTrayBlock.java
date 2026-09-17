@@ -83,7 +83,7 @@ public class BambooTrayBlock extends Block implements EntityBlock, SimpleWaterlo
         boolean handled = held.isEmpty()
                 ? tray.onTakeOut(level, player, slot, player.isShiftKeyDown())
                 : tray.onPutItem(level, player, held, slot);
-        return InteractionResult.SUCCESS;
+        return handled ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
 
     @SuppressWarnings("deprecation")
