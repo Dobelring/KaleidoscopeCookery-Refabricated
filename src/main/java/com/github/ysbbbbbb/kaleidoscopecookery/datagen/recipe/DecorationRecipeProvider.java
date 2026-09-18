@@ -28,6 +28,7 @@ public class DecorationRecipeProvider extends ModRecipeProvider {
         addCookStool(ModItems.COOK_STOOL_JUNGLE, Blocks.JUNGLE_PLANKS).save(consumer);
         addCookStool(ModItems.COOK_STOOL_MANGROVE, Blocks.MANGROVE_PLANKS).save(consumer);
         addCookStool(ModItems.COOK_STOOL_WARPED, Blocks.WARPED_PLANKS).save(consumer);
+        addCookStool(ModItems.COOK_STOOL_PALE_OAK, Blocks.PALE_OAK_PLANKS).save(consumer);
 
         addChair(ModItems.CHAIR_OAK, Blocks.OAK_FENCE, Blocks.OAK_SLAB).save(consumer);
         addChair(ModItems.CHAIR_SPRUCE, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_SLAB).save(consumer);
@@ -40,6 +41,7 @@ public class DecorationRecipeProvider extends ModRecipeProvider {
         addChair(ModItems.CHAIR_JUNGLE, Blocks.JUNGLE_FENCE, Blocks.JUNGLE_SLAB).save(consumer);
         addChair(ModItems.CHAIR_MANGROVE, Blocks.MANGROVE_FENCE, Blocks.MANGROVE_SLAB).save(consumer);
         addChair(ModItems.CHAIR_WARPED, Blocks.WARPED_FENCE, Blocks.WARPED_SLAB).save(consumer);
+        addTable(ModItems.CHAIR_PALE_OAK, Blocks.PALE_OAK_FENCE, Blocks.PALE_OAK_SLAB).save(consumer);
 
         addTable(ModItems.TABLE_OAK, Blocks.OAK_FENCE, Blocks.OAK_SLAB).save(consumer);
         addTable(ModItems.TABLE_SPRUCE, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_SLAB).save(consumer);
@@ -52,6 +54,7 @@ public class DecorationRecipeProvider extends ModRecipeProvider {
         addTable(ModItems.TABLE_JUNGLE, Blocks.JUNGLE_FENCE, Blocks.JUNGLE_SLAB).save(consumer);
         addTable(ModItems.TABLE_MANGROVE, Blocks.MANGROVE_FENCE, Blocks.MANGROVE_SLAB).save(consumer);
         addTable(ModItems.TABLE_WARPED, Blocks.WARPED_FENCE, Blocks.WARPED_SLAB).save(consumer);
+        addTable(ModItems.TABLE_PALE_OAK, Blocks.PALE_OAK_FENCE, Blocks.PALE_OAK_SLAB).save(consumer);
     }
 
     private ShapedRecipeBuilder addCookStool(Item result, Block wood) {
