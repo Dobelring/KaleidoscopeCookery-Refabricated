@@ -81,6 +81,10 @@ repositories {
         }
     }
 
+    maven {
+        url "https://registry.somethingcatchy.net/repository/maven-public/"
+    }
+
     exclusiveContent {
         forRepository {
             maven {
@@ -168,6 +172,10 @@ dependencies {
     //FTB
     modImplementation "curse.maven:ftb-library-fabric-438495:7296747"
     modImplementation "curse.maven:ftb-ultimine-fabric-448231:6899416"
+
+    // Every Compat
+    modCompileOnly("net.mehvahdjukaar:everycomp-fabric:1.20-2.9.26")
+    modCompileOnly("net.mehvahdjukaar:moonlight-fabric:1.20-2.16.35")
 
     // REI 前置
     modImplementation "me.shedaniel.cloth:cloth-config-fabric:11.1.106"

@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.compat.everycomp.EveryCompatCompat;
 import com.github.ysbbbbbb.kaleidoscopecookery.config.GeneralConfig;
 import com.github.ysbbbbbb.kaleidoscopecookery.event.ExtraLootTableDrop;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
@@ -8,6 +9,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.network.NetworkHandler;
 import com.mojang.logging.LogUtils;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 
@@ -37,5 +39,8 @@ public final class KaleidoscopeCookery implements ModInitializer {
         ModSoupBases.registerSoupBases();
         // 注册额外的战利品表事件
         ExtraLootTableDrop.register();
+        // 木材兼容
+        if(FabricLoader.getInstance().isModLoaded("everycomp"))
+            EveryCompatCompat.init();
     }
 }
