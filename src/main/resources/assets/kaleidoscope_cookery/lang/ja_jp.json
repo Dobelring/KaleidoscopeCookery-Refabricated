@@ -50,14 +50,15 @@
   "block.kaleidoscope_cookery.table_pale_oak": "ペイルオークの食卓",
   "item.kaleidoscope_cookery.copper_kitchen_knife": "銅の包丁",
   "item.kaleidoscope_cookery.recipe_item": "レシピ",
+  "item.kaleidoscope_cookery.straw_bed": "わらのベッド",
   "item.kaleidoscope_cookery.model_display": "展示モデル",
   "tooltip.kaleidoscope_cookery.model_display": "あなたはこのアイテムを持つべきではない...",
   "resourcePack.kaleidoscope_eating_animation": "森羅物語：食事アニメーション",
   "resourcePack.kaleidoscope_classic_texture": "森羅物語：クラシックテクスチャ",
 
 
-  "item_group.kaleidoscope_cookery.cookery_main.name": "森羅物語：キッチン",
-  "item_group.kaleidoscope_cookery.cookery_food.name": "森羅物語：料理",
+  "item_group.kaleidoscope_cookery.cookery_main.name": "森羅物語キッチン",
+  "item_group.kaleidoscope_cookery.cookery_food.name": "森羅物語キッチンの料理",
   "pack.kaleidoscope_cookery.legacy_resources_pack.title": "レガシーリソースパック",
   "pack.kaleidoscope_cookery.legacy_resources_pack.desc": "古いバージョンのMODで追加されたアイテムやブロックのテクスチャとモデルを提供します。",
   "block.kaleidoscope_cookery.stove": "コンロ",
