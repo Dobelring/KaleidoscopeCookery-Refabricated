@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": "kaleidoscope_cookery:straw_block"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "count": 4,
+    "id": "kaleidoscope_cookery:straw_bed"
+  }
+}

@@ -120,6 +120,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.TABLE_JUNGLE);
                     output.accept(ModItems.TABLE_MANGROVE);
                     output.accept(ModItems.TABLE_WARPED);
+                    output.accept(ModItems.STRAW_BED);
                 }).build());
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, COOKERY_FOOD_TAB, FabricCreativeModeTab.builder()

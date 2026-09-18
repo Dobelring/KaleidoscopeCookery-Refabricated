@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StrawBedBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -237,6 +238,17 @@ public final class ModBlocks {
                         ),
                         Block.box(0, 0, 0, 16, 10, 16)
                 ).build(), BlockBehaviour.Properties.of().setId(PortHelper.createBlockId("bamboo_tube_rice"))
+    );
+
+    public static final Block STRAW_BED = commonReg("straw_bed",
+            StrawBedBlock::new,
+            BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_YELLOW)
+            .sound(SoundType.STRAW_BED)
+            .strength(0.2F)
+            .noOcclusion()
+            .ignitedByLava()
+            .pushReaction(PushReaction.POPPED)
     );
 
     // Block entities

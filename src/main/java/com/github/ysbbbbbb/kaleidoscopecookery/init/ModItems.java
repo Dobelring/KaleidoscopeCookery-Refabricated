@@ -224,6 +224,8 @@ public final class ModItems {
 
     // Special
     public static final Item MODEL_DISPLAY = registerItem("model_display", p -> new ModelDisplayItem(p.stacksTo(1).rarity(Rarity.EPIC).component(ModDataComponents.MODEL_DISPLAY_MODEL, "")));
+    public static final Item STRAW_BED = registerItem("straw_bed", p -> new BlockItem(ModBlocks.STRAW_BED, p.stacksTo(16).compostable(ContextIntProviders.COMPOSTABLE_MEDIUM_HIGH)));
+
     public static void registerItems() {
 
     }

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "kaleidoscope_cookery:straw_bed",
+            "state": {
+              "part": "head"
+            }
+          },
+          "name": "kaleidoscope_cookery:straw_bed"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "kaleidoscope_cookery:blocks/straw_bed"
+}
