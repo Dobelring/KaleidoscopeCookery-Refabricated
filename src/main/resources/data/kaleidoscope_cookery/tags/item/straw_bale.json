@@ -1,6 +1,9 @@
 {
   "values": [
     "minecraft:hay_block",
-    "kaleidoscope_cookery:straw_block"
+    "kaleidoscope_cookery:straw_block",
+    {
+      "id": "farmersdelight:straw_bale", "required": false
+    }
   ]
 }
