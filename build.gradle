@@ -260,7 +260,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
 }
 
 fabricApi {
@@ -275,5 +274,4 @@ fabricApi {
 tasks.named('runGameTest', JavaExec) {
     systemProperty 'fabric-api.gametest.report-file', layout.buildDirectory.file('reports/gametest/results.xml').get().asFile.absolutePath
     doFirst { layout.buildDirectory.dir('reports/gametest').get().asFile.mkdirs() }
-    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
 }
