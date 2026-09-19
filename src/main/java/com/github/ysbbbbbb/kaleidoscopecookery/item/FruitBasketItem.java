@@ -5,21 +5,27 @@ import com.github.ysbbbbbb.kaleidoscopecookery.inventory.tooltip.ItemContainerTo
 import com.github.ysbbbbbb.kaleidoscopecookery.util.PortHelper;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.ItemStackHandler;
 import com.mojang.serialization.Codec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.ValueInput;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class FruitBasketItem extends BlockItem {
 
@@ -70,7 +76,7 @@ public class FruitBasketItem extends BlockItem {
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ItemContainer> STREAM_CODEC = new StreamCodec<>() {
             @Override
-            public ItemContainer decode(RegistryFriendlyByteBuf buffer) {
+            public @NonNull ItemContainer decode(RegistryFriendlyByteBuf buffer) {
                 CompoundTag compoundTag = buffer.readNbt();
                 NonNullList<ItemStack> handler = NonNullList.withSize(8, ItemStack.EMPTY);
                 if (compoundTag != null) {
@@ -86,5 +92,11 @@ public class FruitBasketItem extends BlockItem {
                 buffer.writeNbt(compoundTag);
             }
         };
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext tooltip, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag) {
+        consumer.accept(Component.translatable("tooltip.kaleidoscope_cookery.fruit_basket").withStyle(ChatFormatting.GRAY));
     }
 }

@@ -66,6 +66,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.TOMATO_SEED);
                     output.accept(ModItems.CHILI_SEED);
                     output.accept(ModItems.LETTUCE_SEED);
+                    output.accept(ModItems.TEA_SEED);
                     // 工具
                     output.accept(ModItems.KITCHEN_SHOVEL);
                     output.accept(ModItems.COPPER_KITCHEN_KNIFE);

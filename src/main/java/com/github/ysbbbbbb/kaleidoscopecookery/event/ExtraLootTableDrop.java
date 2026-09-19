@@ -79,8 +79,8 @@ public class ExtraLootTableDrop {
         tableBuilder.withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
                 .add(tomato).add(chili)
-                .add(lettuce).add(rice).add(tea)
-                .add(empty));
+                .add(lettuce).add(rice)
+                .add(tea).add(empty));
     }
 
     private static LootPoolSingletonContainer.Builder<?> getSeed(ItemLike item, HolderLookup.RegistryLookup<Enchantment> enchantment, HolderLookup<Item> itemHolder) {
