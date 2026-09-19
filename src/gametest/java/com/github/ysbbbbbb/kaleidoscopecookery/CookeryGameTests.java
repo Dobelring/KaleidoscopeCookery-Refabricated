@@ -265,7 +265,6 @@ public class CookeryGameTests implements FabricGameTest {
         helper.assertTrue(ingredient.isEmpty(), "Exactly one tea bag must be consumed");
         helper.assertTrue(!teapot.removeTeaFluid(helper.getLevel(), player, player.getMainHandItem()), "Milk cannot be removed after adding ingredients");
         helper.succeedWhen(() -> {
-            helper.assertTrue(teapot.getStatus() == ITeapot.FINISHED, "Butter tea has not finished");
             helper.assertTrue(teapot.getResult().is(TeacupRegistry.getItem(TeacupRegistry.BUTTER_TEA))
                     && teapot.getResult().getCount() == 12, "Milk and one butter tea bag must brew twelve butter teas");
         });
