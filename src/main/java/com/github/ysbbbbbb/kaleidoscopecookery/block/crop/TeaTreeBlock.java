@@ -76,7 +76,7 @@ public class TeaTreeBlock extends BushBlock implements BonemealableBlock, Simple
 
     @Override
     protected boolean mayPlaceOn(BlockState state, @NonNull BlockGetter level, @NonNull BlockPos pos) {
-        return state.is(BlockTags.DIRT);
+        return state.is(BlockTags.DIRT) || state.is(BlockTags.GRASS_BLOCKS);
     }
 
     @Override
