@@ -1,9 +1,11 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.recipe.soupbase.ISoupBase;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModFluids;
 import com.google.common.collect.Maps;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 
 import java.util.Map;
 
@@ -12,6 +14,7 @@ public class SoupBaseManager {
 
     public static void registerSoupBase(ISoupBase soupBase) {
         if (ALL_SOUP_BASES.containsKey(soupBase.getName())) {
+            if (soupBase.getName().equals(ModFluids.MILK_ID)) return;
             throw new IllegalArgumentException("Soup base with name " + soupBase.getName() + " already exists!");
         }
         ALL_SOUP_BASES.put(soupBase.getName(), soupBase);
@@ -19,6 +22,10 @@ public class SoupBaseManager {
 
     public static void registerFluidSoupBase(Identifier name, Item bucketItem, int bubbleColor) {
         registerSoupBase(new FluidSoupBase(name, bucketItem, bubbleColor));
+    }
+
+    public static void registerFluidSoupBase(Identifier name, Item bucketItem, Fluid fluid, int bubbleColor) {
+        registerSoupBase(new FluidSoupBase(name, bucketItem, fluid, bubbleColor));
     }
 
     public static void registerMobSoupBase(Identifier name, Item bucketItem, int bubbleColor) {

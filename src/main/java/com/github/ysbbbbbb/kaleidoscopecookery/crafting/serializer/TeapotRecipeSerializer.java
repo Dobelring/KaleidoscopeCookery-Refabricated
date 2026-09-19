@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.jspecify.annotations.NonNull;
 
 public class TeapotRecipeSerializer {
+    // Recipe "time" and the mystery tea fallback use ticks (20 ticks per second).
     public static final int DEFAULT_TIME = 2400;
     public static final int DEFAULT_INGREDIENT_COUNT = 12;
     public static final Identifier EMPTY_TEA_FLUID = Identifier.withDefaultNamespace("empty");

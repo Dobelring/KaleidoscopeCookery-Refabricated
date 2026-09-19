@@ -5,6 +5,7 @@ import cc.cassian.rrv.api.recipe.ReliableClientRecipeType;
 import cc.cassian.rrv.common.recipe.inventory.RecipeViewMenu;
 import cc.cassian.rrv.common.recipe.inventory.SlotContent;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -44,6 +45,7 @@ public class TeapotViewRecipe implements ReliableClientRecipe {
         slotFillContext.bindSlot(0, this.teaFluid);
         slotFillContext.bindSlot(1, SlotContent.of(checkedIngredient));
         slotFillContext.bindSlot(2, SlotContent.of(checkedResult));
+        slotFillContext.bindSlot(3, SlotContent.of(ModItems.EMPTY_CUP));
     }
 
     @Override

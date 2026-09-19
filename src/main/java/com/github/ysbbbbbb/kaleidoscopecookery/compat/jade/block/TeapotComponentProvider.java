@@ -40,6 +40,11 @@ public enum TeapotComponentProvider implements IBlockComponentProvider {
         if (!input.isEmpty()) {
             tooltip.add(Component.translatable("jade.kaleidoscope_cookery.teapot.ingredient", input.getHoverName()));
         }
+
+        if (teapot.getStatus() == ITeapot.PROCESSING) {
+            long remainingSeconds = (Math.max(0L, teapot.getCurrentTick()) + 19L) / 20L;
+            tooltip.add(Component.translatable("jade.kaleidoscope_cookery.teapot.remaining_time", remainingSeconds));
+        }
     }
 
     @Override

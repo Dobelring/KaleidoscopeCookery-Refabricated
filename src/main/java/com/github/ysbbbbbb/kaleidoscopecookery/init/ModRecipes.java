@@ -20,6 +20,7 @@ public final class ModRecipes {
     public static final RecipeSerializer<SteamerRecipe> STEAMER_SERIALIZER = new RecipeSerializer<>(SteamerRecipeSerializer.codec(), SteamerRecipeSerializer.streamCodec());
     public static final RecipeSerializer<MillstoneRecipe> MILLSTONE_SERIALIZER = new RecipeSerializer<>(MillstoneRecipeSerializer.codec(), MillstoneRecipeSerializer.streamCodec());
     public static final RecipeSerializer<TeapotRecipe> TEAPOT_SERIALIZER = new RecipeSerializer<>(TeapotRecipeSerializer.codec(), TeapotRecipeSerializer.streamCodec());
+    public static final RecipeSerializer<BambooTrayRecipe> BAMBOO_TRAY_SERIALIZER = new RecipeSerializer<>(BambooTrayRecipeSerializer.codec(), BambooTrayRecipeSerializer.streamCodec());
     public static final RecipeSerializer<RiceBowlRecipe> RICE_BOWL_SERIALIZER  = new RecipeSerializer<>(RiceBowlRecipeSerializer.codec(), RiceBowlRecipeSerializer.streamCodec());
 
 
@@ -31,6 +32,17 @@ public final class ModRecipes {
     public static final RecipeType<SteamerRecipe> STEAMER_RECIPE = simple(Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer"));
     public static final RecipeType<MillstoneRecipe> MILLSTONE_RECIPE = simple(Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "millstone"));
     public static final RecipeType<TeapotRecipe> TEAPOT_RECIPE = simple(Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"));
+    public static final RecipeType<BambooTrayRecipe> BAMBOO_TRAY_RECIPE = simple(Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"));
+
+    public static final RecipeBookCategory POT_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory FLEX_POT_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory CHOPPING_BOARD_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory STOCKPOT_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory FLEX_STOCKPOT_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory STEAMER_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory MILLSTONE_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory TEAPOT_CATEGORY = new RecipeBookCategory();
+    public static final RecipeBookCategory BAMBOO_TRAY_CATEGORY = new RecipeBookCategory();
 
     public static void registerRecipes() {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"), POT_SERIALIZER);
@@ -41,6 +53,7 @@ public final class ModRecipes {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer"), STEAMER_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "millstone"), MILLSTONE_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT_SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "rice_bowl"), RICE_BOWL_SERIALIZER);
 
 
@@ -52,6 +65,17 @@ public final class ModRecipes {
         Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer"), STEAMER_RECIPE);
         Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "millstone"), MILLSTONE_RECIPE);
         Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT_RECIPE);
+        Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_RECIPE);
+
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot"), POT_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "flex_pot"), FLEX_POT_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "chopping_board"), CHOPPING_BOARD_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "stockpot"), STOCKPOT_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "flex_stockpot"), FLEX_STOCKPOT_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer"), STEAMER_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "millstone"), MILLSTONE_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT_CATEGORY);
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_CATEGORY);
     }
 
     private static <T extends Recipe<?>> RecipeType<T> simple(final Identifier id) {

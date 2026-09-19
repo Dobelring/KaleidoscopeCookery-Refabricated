@@ -5,6 +5,7 @@ import cc.cassian.rrv.api.recipe.ItemView;
 import cc.cassian.rrv.api.recipe.ReliableClientRecipe;
 import cc.cassian.rrv.client.recipe.ClientRecipeManager;
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
+import com.github.ysbbbbbb.kaleidoscopecookery.compat.rrv.bamboo_tray.BambooTrayViewRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.rrv.chopping_board.ChoppingBoardViewRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.rrv.millstone.MillstoneViewRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.rrv.pot.FlexPotViewType;
@@ -35,6 +36,7 @@ public class ModRRVPlugin implements ReliableRecipeViewerClientPlugin {
             addStockpotRecipes(recipeList);
             addFlexStockpotRecipes(recipeList);
             addTeapotRecipes(recipeList);
+            addBambooTrayRecipes(recipeList);
         });
     }
 
@@ -147,6 +149,19 @@ public class ModRRVPlugin implements ReliableRecipeViewerClientPlugin {
                     recipe.ingredientCount(),
                     ItemStackTemplate.fromNonEmptyStack(teaFluid),
                     recipe.result()
+            ));
+        });
+    }
+
+    private static void addBambooTrayRecipes(List<ReliableClientRecipe> recipeList) {
+        ClientRecipeManager.INSTANCE.getRecipesForType(ModRecipes.BAMBOO_TRAY_RECIPE).forEach(holder -> {
+            var recipe = holder.value();
+            recipeList.add(new BambooTrayViewRecipe(
+                    holder.id().identifier(),
+                    recipe.getIngredient(),
+                    recipe.getResult(),
+                    recipe.getSubtype(),
+                    recipe.getDuration()
             ));
         });
     }

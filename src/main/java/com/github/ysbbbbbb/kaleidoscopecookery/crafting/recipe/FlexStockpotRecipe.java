@@ -1,14 +1,11 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe;
 
-import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.StockpotInput;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.RecipeMatcher;
 import com.google.common.collect.Sets;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -114,8 +111,6 @@ public record FlexStockpotRecipe(NonNullList<Ingredient> ingredients,
 
     @Override
     public @NonNull RecipeBookCategory recipeBookCategory() {
-        return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY,
-                Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "flex_stockpot"),
-                new RecipeBookCategory());
+        return ModRecipes.FLEX_STOCKPOT_CATEGORY;
     }
 }

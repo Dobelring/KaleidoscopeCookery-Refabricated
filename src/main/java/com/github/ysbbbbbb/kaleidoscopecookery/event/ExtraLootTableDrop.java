@@ -74,11 +74,12 @@ public class ExtraLootTableDrop {
         var chili = getSeed(ModItems.CHILI_SEED, enchantment, item);
         var lettuce = getSeed(ModItems.LETTUCE_SEED, enchantment, item);
         var rice = getSeed(ModItems.WILD_RICE_SEED, enchantment, item);
+        var tea = getSeed(ModItems.TEA_SEED, enchantment, item);
         var empty = EmptyLootItem.emptyItem().setWeight(2);
         tableBuilder.withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
                 .add(tomato).add(chili)
-                .add(lettuce).add(rice)
+                .add(lettuce).add(rice).add(tea)
                 .add(empty));
     }
 

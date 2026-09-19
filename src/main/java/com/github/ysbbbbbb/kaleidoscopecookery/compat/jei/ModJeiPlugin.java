@@ -31,6 +31,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new MillstoneRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new SteamerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new TeapotRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new BambooTrayRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -43,6 +44,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(MillstoneRecipeCategory.TYPE, ModRecipesLibrary.INSTANCE.millstoneRecipes());
         registration.addRecipes(SteamerRecipeCategory.TYPE, ModRecipesLibrary.INSTANCE.steamerRecipes());
         registration.addRecipes(TeapotRecipeCategory.TYPE, ModRecipesLibrary.INSTANCE.teapotRecipes());
+        registration.addRecipes(BambooTrayRecipeCategory.TYPE, ModRecipesLibrary.INSTANCE.bambooTrayRecipes());
 
         registration.addRecipes(RecipeTypes.CRAFTING, RiceBowlRecipeMaker.createRecipes());
     }
@@ -57,6 +59,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addCraftingStation(MillstoneRecipeCategory.TYPE, ModItems.MILLSTONE.getDefaultInstance());
         registration.addCraftingStation(SteamerRecipeCategory.TYPE, ModItems.STEAMER.getDefaultInstance());
         registration.addCraftingStation(TeapotRecipeCategory.TYPE, ModItems.TEAPOT.getDefaultInstance());
+        registration.addCraftingStation(BambooTrayRecipeCategory.TYPE, ModItems.BAMBOO_TRAY.getDefaultInstance());
     }
 
     public static void syncRecipes() {
@@ -69,6 +72,7 @@ public class ModJeiPlugin implements IModPlugin {
         RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.MILLSTONE_SERIALIZER);
         RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.TEAPOT_SERIALIZER);
         RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.RICE_BOWL_SERIALIZER);
+        RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.BAMBOO_TRAY_SERIALIZER);
     }
 
     @Override

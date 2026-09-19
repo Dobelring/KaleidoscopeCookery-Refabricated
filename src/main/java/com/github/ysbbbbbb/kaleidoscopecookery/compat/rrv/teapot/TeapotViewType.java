@@ -39,7 +39,7 @@ public class TeapotViewType implements ReliableClientRecipeType {
 
     @Override
     public int getSlotCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -47,6 +47,7 @@ public class TeapotViewType implements ReliableClientRecipeType {
         slotDefinition.addItemSlot(0, 7, 55);
         slotDefinition.addItemSlot(1, 62, 6);
         slotDefinition.addItemSlot(2, 81, 30);
+        slotDefinition.addItemSlot(3, 86, 6);
     }
 
     @Override

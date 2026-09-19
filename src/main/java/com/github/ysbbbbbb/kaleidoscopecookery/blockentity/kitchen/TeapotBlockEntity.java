@@ -7,7 +7,9 @@ import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotInput;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.tag.TagMod;
+import com.github.ysbbbbbb.kaleidoscopecookery.inventory.itemhandler.TeapotIngredientStorage;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.CustomFluidTank;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
@@ -15,6 +17,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.TeaFluidHelper;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -68,6 +71,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
     private final RecipeManager.CachedCheck<TeapotInput, TeapotRecipe> quickCheck = RecipeManager.createCheck(ModRecipes.TEAPOT_RECIPE);
 
     private ItemStack input = ItemStack.EMPTY;
+    private final Storage<ItemVariant> ingredientStorage = new TeapotIngredientStorage(this);
     private Identifier teaFluidId = TeapotRecipeSerializer.EMPTY_TEA_FLUID;
     private ItemStack result = ItemStack.EMPTY;
 
@@ -116,16 +120,12 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
                         TeapotRecipe teapotRecipe = recipeOpt.get().value();
                         this.result = teapotRecipe.assemble(container);
                         this.currentTick = teapotRecipe.time();
-                        this.status = PROCESSING;
-                        this.refresh();
-                        return;
+                    } else {
+                        this.result = new ItemStack(BuiltInRegistries.ITEM.getValue(TeacupRegistry.MYSTERY_TEA),
+                                TeapotRecipe.MYSTERY_OUTPUT_COUNT);
+                        this.currentTick = TeapotRecipeSerializer.DEFAULT_TIME;
                     }
-                    // 如果配方找不到，弹出
-                    Block.popResource(level, worldPosition, input);
-                    this.input = ItemStack.EMPTY;
-                    this.result = ItemStack.EMPTY;
-                    this.status = ITeapot.PUT_INGREDIENT;
-                    this.currentTick = -1;
+                    this.status = PROCESSING;
                     this.refresh();
                 }
             }
@@ -291,7 +291,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
 
     @Override
     public boolean addIngredient(Level level, LivingEntity user, ItemStack itemStack) {
-        if (itemStack.is(TagMod.INGREDIENT_BLOCKLIST)) {
+        if (itemStack.isEmpty() || itemStack.is(TagMod.INGREDIENT_BLOCKLIST)) {
             return false;
         }
 
@@ -311,24 +311,48 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
             this.sendActionBarMessage(user, "tooltip.kaleidoscope_cookery.teapot.add_ingredient.has_ingredient");
             return false;
         }
-        if (level instanceof ServerLevel serverLevel) {
-            // 查询配方
-            TeapotInput container = new TeapotInput(itemStack, this.teaFluidId);
-            Optional<RecipeHolder<TeapotRecipe>> recipeOpt = this.quickCheck.getRecipeFor(container, serverLevel);
-            if (recipeOpt.isPresent()) {
-                TeapotRecipe recipe = recipeOpt.get().value();
-                int count = recipe.ingredientCount();
-
-                this.input = itemStack.copyWithCount(count);
-                this.currentTick = INGREDIENT_TIME;
-                this.refresh();
-                itemStack.shrink(count);
-                return true;
-            }
+        if (level instanceof ServerLevel) {
+            int count = Math.min(itemStack.getCount(), getIngredientCapacity(itemStack));
+            this.input = itemStack.copyWithCount(count);
+            this.currentTick = INGREDIENT_TIME;
+            this.refresh();
+            itemStack.shrink(count);
+            return true;
         }
 
-        this.sendActionBarMessage(user, "tooltip.kaleidoscope_cookery.teapot.add_ingredient.recipe_incorrect");
-        return false;
+        return level.isClientSide();
+    }
+
+    public Storage<ItemVariant> getIngredientStorage() {
+        return this.ingredientStorage;
+    }
+
+    public boolean canInsertIngredient(ItemStack stack) {
+        return !isRemoved() && this.status == PUT_INGREDIENT
+                && !this.teaFluidId.equals(TeapotRecipeSerializer.EMPTY_TEA_FLUID)
+                && !stack.isEmpty() && !stack.is(TagMod.INGREDIENT_BLOCKLIST)
+                && !isSupportedFluidContainer(stack)
+                && (this.input.isEmpty() || ItemStack.isSameItemSameComponents(this.input, stack));
+    }
+
+    public int getIngredientCapacity(ItemStack stack) {
+        if (this.level instanceof ServerLevel serverLevel && !stack.isEmpty()) {
+            TeapotInput container = new TeapotInput(stack.copyWithCount(stack.getMaxStackSize()), this.teaFluidId);
+            return this.quickCheck.getRecipeFor(container, serverLevel)
+                    .map(holder -> Math.clamp(holder.value().ingredientCount(), 1, stack.getMaxStackSize()))
+                    .orElse(1);
+        }
+        return 1;
+    }
+
+    // Transfer snapshots only mutate the stack; timers and notifications change on commit.
+    public void setTransferInput(ItemStack stack) {
+        this.input = stack;
+    }
+
+    public void onIngredientTransferCommitted() {
+        this.currentTick = INGREDIENT_TIME;
+        this.refresh();
     }
 
     @Override

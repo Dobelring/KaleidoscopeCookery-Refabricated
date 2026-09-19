@@ -64,4 +64,8 @@ public class ModRecipesLibrary {
     public List<RecipeHolder<TeapotRecipe>> teapotRecipes() {
         return List.copyOf(synchronizedRecipes.getAllOfType(ModRecipes.TEAPOT_RECIPE));
     }
+
+    public List<RecipeHolder<BambooTrayRecipe>> bambooTrayRecipes() {
+        return List.copyOf(synchronizedRecipes.getAllOfType(ModRecipes.BAMBOO_TRAY_RECIPE));
+    }
 }

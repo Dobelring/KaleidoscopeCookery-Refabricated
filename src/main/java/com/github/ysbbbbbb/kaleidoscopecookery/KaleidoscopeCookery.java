@@ -28,6 +28,7 @@ public final class KaleidoscopeCookery implements ModInitializer {
         ModArmorMaterials.registerArmorMaterials();
         ModTrigger.init();
         TeacupRegistry.init();
+        ModFluids.registerFluids();
         ModBlocks.registerBlocks();
         ModItems.registerItems();
         ModEntities.registerEntities();

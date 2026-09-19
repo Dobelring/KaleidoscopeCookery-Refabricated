@@ -77,12 +77,12 @@ public final class TeapotOverlayEvent {
             y -= 12;
         }
 
-        drawWordWrap(guiGraphics, font, teapot.getStatusText(), x, y);
+        drawSingleLine(guiGraphics, font, teapot.getStatusText(), x, y);
         y += font.lineHeight + 2;
 
         Component detail = getDetailText(teapot);
         if (!detail.equals(CommonComponents.EMPTY)) {
-            drawWordWrap(guiGraphics, font, detail, x, y);
+            drawSingleLine(guiGraphics, font, detail, x, y);
         }
     }
 
@@ -115,11 +115,18 @@ public final class TeapotOverlayEvent {
         return CommonComponents.EMPTY;
     }
 
-    private static void drawWordWrap(GuiGraphicsExtractor graphics, Font font, Component text, int centerX, int startY) {
-        int y = startY;
-        for (FormattedCharSequence sequence : font.split(text, 160)) {
-            graphics.text(font, sequence, centerX - font.width(sequence) / 2, y, -1);
-            y += font.lineHeight;
+    private static void drawSingleLine(GuiGraphicsExtractor graphics, Font font, Component text, int centerX, int y) {
+        FormattedCharSequence sequence = text.getVisualOrderText();
+        int width = font.width(sequence);
+        int availableWidth = Math.max(1, graphics.guiWidth() - 16);
+        float scale = width > availableWidth ? (float) availableWidth / width : 1.0F;
+        graphics.pose().pushMatrix();
+        try {
+            graphics.pose().translate(centerX, y);
+            graphics.pose().scale(scale, scale);
+            graphics.text(font, sequence, -width / 2, 0, -1);
+        } finally {
+            graphics.pose().popMatrix();
         }
     }
 }

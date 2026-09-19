@@ -11,7 +11,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -72,9 +71,7 @@ public class TeapotBlockEntityRender implements BlockEntityRenderer<TeapotBlockE
             return;
         }
 
-        this.model.root().getAllParts().forEach(ModelPart::resetPose);
         TeapotModel.State state = new TeapotModel.State(blockEntityRenderState.ageInTicks, blockEntityRenderState.boilingState, blockEntityRenderState.variant);
-        this.model.setupAnim(state);
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);

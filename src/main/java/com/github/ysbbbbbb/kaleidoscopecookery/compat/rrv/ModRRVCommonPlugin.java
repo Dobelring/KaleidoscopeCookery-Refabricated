@@ -17,5 +17,6 @@ public class ModRRVCommonPlugin implements ReliableRecipeViewerPlugin {
         ServerRecipeManager.INSTANCE.synchronizeRecipeType(ModRecipes.STEAMER_SERIALIZER, ModRecipes.STEAMER_RECIPE);
         ServerRecipeManager.INSTANCE.synchronizeRecipeType(ModRecipes.MILLSTONE_SERIALIZER, ModRecipes.MILLSTONE_RECIPE);
         ServerRecipeManager.INSTANCE.synchronizeRecipeType(ModRecipes.TEAPOT_SERIALIZER, ModRecipes.TEAPOT_RECIPE);
+        ServerRecipeManager.INSTANCE.synchronizeRecipeType(ModRecipes.BAMBOO_TRAY_SERIALIZER, ModRecipes.BAMBOO_TRAY_RECIPE);
     }
 }
