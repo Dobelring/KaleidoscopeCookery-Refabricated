@@ -33,7 +33,6 @@ public final class ModItems {
     public static final Item LONG_BENCH = new BlockItem(ModBlocks.LONG_BENCH, new Item.Properties());
     public static final Item RED_LANTERN = new BlockItem(ModBlocks.RED_LANTERN, new Item.Properties());
     public static final Item EIGHT_IMMORTALS_TABLE = new BlockItem(ModBlocks.EIGHT_IMMORTALS_TABLE, new Item.Properties());
-    public static final Item TEA_SEED = new ItemNameBlockItem(ModBlocks.TEA_TREE, new Item.Properties());
     public static final Item FRESH_TEA_LEAVES = new Item(new Item.Properties());
     public static final Item DRIED_TEA_LEAVES = new Item(new Item.Properties());
     public static final Item TIEGUANYIN_TEA_BAG = new Item(new Item.Properties());
@@ -74,6 +73,7 @@ public final class ModItems {
     public static final Item TRANSMUTATION_LUNCH_BAG = new TransmutationLunchBagItem();
 
     // Seeds
+    public static final Item TEA_SEED = new ItemNameBlockItem(ModBlocks.TEA_TREE, new Item.Properties());
     public static final Item TOMATO_SEED = new ItemNameBlockItem(ModBlocks.TOMATO_CROP, new Item.Properties());
     public static final Item CHILI_SEED = new ItemNameBlockItem(ModBlocks.CHILI_CROP, new Item.Properties());
     public static final Item LETTUCE_SEED = new ItemNameBlockItem(ModBlocks.LETTUCE_CROP, new Item.Properties());
