@@ -61,7 +61,7 @@ dependencies {
 	implementation("maven.modrinth:farmers-delight-refabricated:${providers.gradleProperty("fdrf_version").get()}") {
 		exclude(group = "net.fabricmc")
 	}
-	implementation("maven.modrinth:rrv:${providers.gradleProperty("rrv_version").get()}") {
+	compileOnly("maven.modrinth:rrv:${providers.gradleProperty("rrv_version").get()}") {
 		exclude(group = "net.fabricmc.fabric-api")
 		exclude(group = "eu.pb4")
 	}
@@ -74,7 +74,7 @@ dependencies {
 	implementation("maven.modrinth:jade:${providers.gradleProperty("jade_version").get()}")
 	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 	compileOnly ("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${providers.gradleProperty("forge_config_api_version").get()}")
-	compileOnly("mezz.jei:jei-${providers.gradleProperty("jei_version").get()}")
+	implementation("mezz.jei:jei-${providers.gradleProperty("jei_version").get()}")
 	implementation("eu.pb4:trinkets:${providers.gradleProperty("trinkets_version").get()}")
 	testImplementation("net.fabricmc:fabric-loader-junit:${providers.gradleProperty("loader_version").get()}")
 }
