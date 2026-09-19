@@ -30,7 +30,9 @@
   "jade.kaleidoscope_cookery.teapot.fluid": "액체 종류: %s",
   "jade.kaleidoscope_cookery.teapot.ingredient": "재료: %s",
   "jade.kaleidoscope_cookery.teapot.result": "결과: %s",
+  "jade.kaleidoscope_cookery.teapot.remaining_time": "남은 시간: %s초",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "티팟",
+  "config.jade.plugin_kaleidoscope_cookery.bamboo_tray": "대나무 쟁반",
 
 
   "jei.kaleidoscope_cookery.bamboo_tray.drying": "건조한 (맑아): %ss",

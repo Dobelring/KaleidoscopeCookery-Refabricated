@@ -36,6 +36,11 @@ public class FluidUtils {
         if (context == null) {
             return false;
         }
+        boolean creative = user instanceof Player player && player.isCreative();
+        if (creative) {
+            // Discard returned containers without exposing the player's inventory to extraction.
+            context = ContainerItemContext.withConstant(bucket.copyWithCount(1));
+        }
         Storage<FluidVariant> itemStorage = context.find(FluidStorage.ITEM);
         if (itemStorage == null) {
             return false;
@@ -59,9 +64,14 @@ public class FluidUtils {
             if (inserted <= 0) {
                 return false;
             }
-            long extracted = itemStorage.extract(resource, inserted, transaction);
-            if (extracted != inserted) {
-                return false;
+            try (Transaction extraction = transaction.openNested()) {
+                long extracted = itemStorage.extract(resource, inserted, extraction);
+                if (extracted != inserted) {
+                    return false;
+                }
+                if (!creative) {
+                    extraction.commit();
+                }
             }
             transaction.commit();
         }

@@ -1,6 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.recipe.soupbase.ISoupBase;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModFluids;
 import com.google.common.collect.Maps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -13,6 +14,7 @@ public class SoupBaseManager {
 
     public static void registerSoupBase(ISoupBase soupBase) {
         if (ALL_SOUP_BASES.containsKey(soupBase.getName())) {
+            if (soupBase.getName().equals(ModFluids.MILK_ID)) return;
             throw new IllegalArgumentException("Soup base with name " + soupBase.getName() + " already exists!");
         }
         ALL_SOUP_BASES.put(soupBase.getName(), soupBase);

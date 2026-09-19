@@ -30,7 +30,9 @@
   "jade.kaleidoscope_cookery.teapot.fluid": "Жидкость: %s",
   "jade.kaleidoscope_cookery.teapot.ingredient": "Ингредиент: %s",
   "jade.kaleidoscope_cookery.teapot.result": "Результат: %s",
+  "jade.kaleidoscope_cookery.teapot.remaining_time": "Осталось: %s с",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "Чайник",
+  "config.jade.plugin_kaleidoscope_cookery.bamboo_tray": "Бамбуковый поднос",
 
 
   "jei.kaleidoscope_cookery.bamboo_tray.drying": "Сухой (солнечный день): %ss",

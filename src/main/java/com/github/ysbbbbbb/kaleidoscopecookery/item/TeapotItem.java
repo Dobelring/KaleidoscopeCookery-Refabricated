@@ -4,7 +4,6 @@ import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ITeapot;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.TeapotBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
-import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.CustomFluidTank;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -199,6 +198,12 @@ public class TeapotItem extends BlockItem {
         return InteractionResult.PASS;
     }
 
+    private static boolean isMysteryTea(CompoundTag tag) {
+        return tag.getCompound(TeapotBlockEntity.RESULT)
+                .getString("id")
+                .contains("mystery_tea");
+    }
+
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
@@ -308,7 +313,7 @@ public class TeapotItem extends BlockItem {
             }
         }
         if (status == ITeapot.FINISHED)
-            return 0x89ee24;
+            return isMysteryTea(data) ? 0xd536d8 : 0x89ee24;
         return 0x9df7ff;
     }
 

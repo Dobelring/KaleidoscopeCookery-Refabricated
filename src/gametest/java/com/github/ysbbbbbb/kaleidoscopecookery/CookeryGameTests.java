@@ -14,6 +14,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotContaine
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.FluidSoupBase;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.SoupBaseManager;
+import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.CustomFluidTank;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
@@ -35,6 +36,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
@@ -50,6 +52,131 @@ import net.minecraft.world.phys.Vec3;
 
 public class CookeryGameTests implements FabricGameTest {
     private static final BlockPos POT = new BlockPos(1, 1, 1);
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void creativeWaterBucketFillsTeapotWithoutConsumption(GameTestHelper helper) {
+        testCreativeBucket(helper, Items.WATER_BUCKET, InteractionHand.MAIN_HAND, 1);
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void creativeOffhandWaterBucketsDoNotReturnEmptyBuckets(GameTestHelper helper) {
+        testCreativeBucket(helper, Items.WATER_BUCKET, InteractionHand.OFF_HAND, 2);
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void creativeMilkBucketFillsTeapotWithoutConsumption(GameTestHelper helper) {
+        testCreativeBucket(helper, Items.MILK_BUCKET, InteractionHand.MAIN_HAND, 1);
+    }
+
+    private static void testCreativeBucket(GameTestHelper helper, Item item,
+                                           InteractionHand hand, int count) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        Player player = helper.makeMockPlayer();
+        player.getAbilities().instabuild = true;
+        ItemStack bucket = new ItemStack(item, count);
+        bucket.getOrCreateTag().putString("CreativeBucket", "preserved");
+        ItemStack original = bucket.copy();
+        player.setItemInHand(hand, bucket);
+        ItemStack[] inventoryBefore = copyInventory(player);
+        helper.assertTrue(teapot.addTeaFluid(helper.getLevel(), player, player.getItemInHand(hand)),
+                "Creative bucket must fill the teapot");
+        helper.assertTrue(FluidUtils.findFirstAmount(teapot.getTeaTank()) == FluidConstants.BUCKET,
+                "Creative filling must transfer exactly one bucket");
+        helper.assertTrue(ItemStack.matches(original, player.getItemInHand(hand)),
+                "Creative filling must preserve the held item, count and NBT");
+        assertInventoryUnchanged(helper, player, inventoryBefore);
+        assertNoDroppedBuckets(helper);
+        helper.assertTrue(!teapot.addTeaFluid(helper.getLevel(), player, player.getItemInHand(hand)),
+                "A full teapot must reject another bucket");
+        helper.assertTrue(ItemStack.matches(original, player.getItemInHand(hand)),
+                "Rejected filling must preserve the creative bucket");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void creativeTeapotInteractionDoesNotReturnOrDropBuckets(GameTestHelper helper) {
+        Player player = helper.makeMockPlayer();
+        player.getAbilities().instabuild = true;
+        BlockPos absolute = helper.absolutePos(POT);
+        player.setPos(absolute.getX(), absolute.getY(), absolute.getZ());
+        for (boolean fullInventory : new boolean[]{false, true}) {
+            player.getInventory().clearContent();
+            if (fullInventory) {
+                for (int slot = 0; slot < player.getInventory().items.size(); slot++) {
+                    player.getInventory().setItem(slot, new ItemStack(Items.COBBLESTONE, 64));
+                }
+            }
+            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WATER_BUCKET, 2));
+            ItemStack[] inventoryBefore = copyInventory(player);
+            for (int attempt = 0; attempt < 2; attempt++) {
+                helper.setBlock(POT, Blocks.AIR);
+                TeapotBlockEntity teapot = placeTeapot(helper);
+                helper.assertTrue(ModBlocks.TEAPOT.use(teapot.getBlockState(), helper.getLevel(), absolute,
+                                player, InteractionHand.MAIN_HAND,
+                                new BlockHitResult(Vec3.atCenterOf(absolute), Direction.UP, absolute, false)).consumesAction(),
+                        "Creative bucket interaction must be handled");
+                helper.assertTrue(FluidUtils.findFirstAmount(teapot.getTeaTank()) == FluidConstants.BUCKET,
+                        "Creative interaction must fill the teapot");
+                assertInventoryUnchanged(helper, player, inventoryBefore);
+                assertNoDroppedBuckets(helper);
+            }
+        }
+        helper.succeed();
+    }
+
+    private static ItemStack[] copyInventory(Player player) {
+        ItemStack[] stacks = new ItemStack[player.getInventory().getContainerSize()];
+        for (int slot = 0; slot < stacks.length; slot++) {
+            stacks[slot] = player.getInventory().getItem(slot).copy();
+        }
+        return stacks;
+    }
+
+    private static void assertInventoryUnchanged(GameTestHelper helper, Player player, ItemStack[] before) {
+        for (int slot = 0; slot < before.length; slot++) {
+            helper.assertTrue(ItemStack.matches(before[slot], player.getInventory().getItem(slot)),
+                    "Creative filling must preserve every inventory slot, including item NBT: " + slot);
+        }
+    }
+
+    private static void assertNoDroppedBuckets(GameTestHelper helper) {
+        var drops = helper.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(helper.absolutePos(POT)).inflate(8));
+        helper.assertTrue(drops.stream().noneMatch(entity -> entity.getItem().is(Items.BUCKET)),
+                "Creative filling must not drop empty buckets into the world");
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void survivalOffhandWaterBucketIsConsumed(GameTestHelper helper) {
+        TeapotBlockEntity teapot = placeTeapot(helper);
+        Player player = helper.makeMockSurvivalPlayer();
+        player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.WATER_BUCKET));
+        helper.assertTrue(teapot.addTeaFluid(helper.getLevel(), player, player.getOffhandItem()),
+                "Survival offhand bucket must fill the teapot");
+        helper.assertTrue(player.getOffhandItem().is(Items.BUCKET) && player.getOffhandItem().getCount() == 1,
+                "Survival filling must replace the water bucket with one empty bucket");
+        helper.assertTrue(FluidUtils.findFirstAmount(teapot.getTeaTank()) == FluidConstants.BUCKET,
+                "Survival filling must transfer exactly one bucket");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void failedBucketExtractionRollsBackTankInsertion(GameTestHelper helper) {
+        for (boolean creative : new boolean[]{false, true}) {
+            Player player = creative ? helper.makeMockPlayer() : helper.makeMockSurvivalPlayer();
+            player.getAbilities().instabuild = creative;
+            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WATER_BUCKET));
+            CustomFluidTank tank = new CustomFluidTank(FluidConstants.BUCKET / 2, null);
+            helper.assertTrue(!FluidUtils.emptyItem(player, player.getMainHandItem(), tank, CustomFluidTank.MB_PER_BUCKET),
+                    "A bucket must reject partial extraction even in creative mode");
+            helper.assertTrue(tank.getAmount() == 0 && tank.isResourceBlank(),
+                    "Failed extraction must roll back the tank insertion");
+            helper.assertTrue(player.getMainHandItem().is(Items.WATER_BUCKET) && player.getMainHandItem().getCount() == 1,
+                    "Failed extraction must preserve the water bucket");
+            helper.assertTrue(!player.getInventory().contains(new ItemStack(Items.BUCKET)),
+                    "Failed extraction must not produce an empty bucket");
+        }
+        helper.succeed();
+    }
 
     @GameTest(template = EMPTY_STRUCTURE)
     public void milkBucketFillsAndDrainsTeapot(GameTestHelper helper) {

@@ -28,7 +28,9 @@ public class ModPlugin implements IWailaPlugin {
     public static final ResourceLocation OIL_POT = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "oil_pot");
     public static final ResourceLocation RECIPE_BLOCK = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "recipe_block");
     public static final ResourceLocation STEAMER = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "steamer");
+    public static final ResourceLocation TEAPOT = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "teapot");
     public static final ResourceLocation FOOD_BITE_BLOCK = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "food_bite_block");
+    public static final ResourceLocation BAMBOO_TRAY = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "bamboo_tray");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
@@ -46,6 +48,7 @@ public class ModPlugin implements IWailaPlugin {
         registration.registerBlockComponent(ShawarmaSpitComponentProvider.INSTANCE, ShawarmaSpitBlock.class);
         registration.registerBlockComponent(ChoppingBoardComponentProvider.INSTANCE, ChoppingBoardBlock.class);
         registration.registerBlockComponent(EnamelBasinComponentProvider.INSTANCE, EnamelBasinBlock.class);
+        registration.registerBlockComponent(BambooTrayComponentProvider.INSTANCE, BambooTrayBlock.class);
 
         registration.registerItemStorageClient(FruitBasketComponentProvider.INSTANCE);
         registration.registerItemStorageClient(KitchenwareRackComponentProvider.INSTANCE);
@@ -56,7 +59,7 @@ public class ModPlugin implements IWailaPlugin {
 
         registration.registerBlockComponent(MillstoneComponentProvider.INSTANCE, MillstoneBlock.class);
         registration.registerBlockComponent(RecipeBlockComponentProvider.INSTANCE, RecipeBlock.class);
-
+        registration.registerBlockComponent(TeapotComponentProvider.INSTANCE, TeapotBlock.class);
         registration.registerBlockComponent(FoodBiteBlockComponentProvider.INSTANCE, FoodBiteBlock.class);
     }
 }
