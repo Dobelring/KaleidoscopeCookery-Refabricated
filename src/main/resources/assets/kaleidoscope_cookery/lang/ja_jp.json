@@ -30,7 +30,9 @@
   "jade.kaleidoscope_cookery.teapot.fluid": "液体の種類： %s",
   "jade.kaleidoscope_cookery.teapot.ingredient": "材料： %s",
   "jade.kaleidoscope_cookery.teapot.result": "結果： %s",
+  "jade.kaleidoscope_cookery.teapot.remaining_time": "残り時間：%s 秒",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "ティーポット",
+  "config.jade.plugin_kaleidoscope_cookery.bamboo_tray": "竹の札",
 
 
   "jei.kaleidoscope_cookery.bamboo_tray.drying": "乾いた （晴れ）: %ss",

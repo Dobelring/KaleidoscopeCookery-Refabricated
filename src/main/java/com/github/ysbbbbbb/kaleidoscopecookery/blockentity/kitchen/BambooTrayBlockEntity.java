@@ -41,10 +41,12 @@ import static net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.GL
 public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyContainer, IBambooTray {
     private static final int[] SLOTS = {0, 1, 2, 3};
     private static final String PROGRESS_TAG = "ProcessingProgress";
+    private static final String DURATIONS_TAG = "ProcessingDurations";
     private static final String COMPLETION_STATES_TAG = "CompletionStates";
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
     private final int[] processingProgress = new int[4];
+    private final int[] processingDurations = new int[4];
     private final CompletionState[] completionStates = new CompletionState[4];
     private final Storage<ItemVariant> storage = new CombinedStorage<>(List.of(
             new BambooTraySlotStorage(this, 0), new BambooTraySlotStorage(this, 1),
@@ -92,8 +94,9 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
                     .findFirst()
                     .orElse(null);
             if (recipe == null) {
-                if (tray.processingProgress[slot] != 0) {
+                if (tray.processingProgress[slot] != 0 || tray.processingDurations[slot] != 0) {
                     tray.processingProgress[slot] = 0;
+                    tray.processingDurations[slot] = 0;
                     changed = true;
                 }
                 continue;
@@ -103,6 +106,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
                 tray.processingProgress[slot] = 0;
                 tray.completionStates[slot] = CompletionState.NONE;
             }
+            tray.processingDurations[slot] = recipe.getDuration();
             tray.processingProgress[slot] += 19;
             changed = true;
 
@@ -120,6 +124,17 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
         if (changed) {
             tray.refresh();
         }
+    }
+
+    public int getProgressPercent(int slot) {
+        if (slot < 0 || slot >= this.items.size() || this.items.get(slot).isEmpty()) {
+            return 0;
+        }
+        if (this.completionStates[slot].isCompleted()) {
+            return 100;
+        }
+        int duration = this.processingDurations[slot];
+        return duration <= 0 ? 0 : (int) Math.clamp(this.processingProgress[slot] * 100L / duration, 0L, 100L);
     }
 
     private static boolean hasDryingExposure(Level level, BlockPos pos) {
@@ -206,6 +221,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
 
     private void resetProcessing(int slot) {
         this.processingProgress[slot] = 0;
+        this.processingDurations[slot] = 0;
         this.completionStates[slot] = CompletionState.NONE;
     }
 
@@ -233,6 +249,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, this.items, true, registries);
         tag.putIntArray(PROGRESS_TAG, this.processingProgress);
+        tag.putIntArray(DURATIONS_TAG, this.processingDurations);
 
         byte[] completionValues = new byte[this.completionStates.length];
         for (int i = 0; i < this.completionStates.length; i++) {
@@ -247,11 +264,14 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
         this.items.clear();
 
         Arrays.fill(this.processingProgress, 0);
+        Arrays.fill(this.processingDurations, 0);
         Arrays.fill(this.completionStates, CompletionState.NONE);
         ContainerHelper.loadAllItems(tag, this.items, registries);
 
         int[] progress = tag.getIntArray(PROGRESS_TAG);
         System.arraycopy(progress, 0, this.processingProgress, 0, Math.min(progress.length, this.processingProgress.length));
+        int[] durations = tag.getIntArray(DURATIONS_TAG);
+        System.arraycopy(durations, 0, this.processingDurations, 0, Math.min(durations.length, this.processingDurations.length));
         byte[] completionValues = tag.getByteArray(COMPLETION_STATES_TAG);
         for (int i = 0; i < Math.min(completionValues.length, this.completionStates.length); i++) {
             this.completionStates[i] = CompletionState.fromSerializedValue(completionValues[i]);
@@ -333,6 +353,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
     public void clearContent() {
         this.items.clear();
         Arrays.fill(this.processingProgress, 0);
+        Arrays.fill(this.processingDurations, 0);
         Arrays.fill(this.completionStates, CompletionState.NONE);
         this.refresh();
     }

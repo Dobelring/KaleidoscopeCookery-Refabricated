@@ -93,6 +93,9 @@ public final class TeaFluidHelper {
             return Component.translatable("mco.configure.world.slot.empty");
         }
         if (isPhysicalFluid(id)) {
+            if (id.toString().contains("minecraft:milk")) {
+                return Component.translatable("fluid.minecraft.milk");
+            }
             Fluid fluid = BuiltInRegistries.FLUID.get(id);
             return FluidVariantAttributes.getName(FluidVariant.of(fluid));
         }
@@ -211,17 +214,11 @@ public final class TeaFluidHelper {
     }
 
     public static void playEmptySound(LivingEntity user, ResourceLocation id) {
-        SoundEvent sound = getEmptySound(id);
-        if (sound != null) {
-            user.playSound(sound);
-        }
+        FluidUtils.playTransferSound(user, getEmptySound(id));
     }
 
     public static void playFillSound(LivingEntity user, ResourceLocation id) {
-        SoundEvent sound = getFillSound(id);
-        if (sound != null) {
-            user.playSound(sound);
-        }
+        FluidUtils.playTransferSound(user, getFillSound(id));
     }
 
     @Nullable

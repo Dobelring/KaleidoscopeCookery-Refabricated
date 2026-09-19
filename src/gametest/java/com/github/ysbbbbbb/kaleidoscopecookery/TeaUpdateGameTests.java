@@ -111,6 +111,61 @@ public class TeaUpdateGameTests implements FabricGameTest {
     }
 
     @GameTest(template = EMPTY_STRUCTURE, skyAccess = true, timeoutTicks = 60)
+    public void bambooTrayProgressUsesRecipeDurationAndSyncs(GameTestHelper helper) {
+        helper.setBlock(POS, ModBlocks.BAMBOO_TRAY);
+        BambooTrayBlockEntity tray = helper.getBlockEntity(POS);
+        tray.setItem(0, ModItems.FRESH_TEA_LEAVES.getDefaultInstance());
+        int duration = helper.getLevel().getRecipeManager().getAllRecipesFor(ModRecipes.BAMBOO_TRAY_RECIPE).stream()
+                .map(holder -> holder.value())
+                .filter(recipe -> recipe.getSubtype() == BambooTrayRecipe.Subtype.DRYING
+                        && recipe.getIngredient().test(tray.getItem(0)))
+                .findFirst().orElseThrow().getDuration();
+        CompoundTag saved = tray.saveWithoutMetadata(helper.getLevel().registryAccess());
+        saved.putIntArray("ProcessingProgress", new int[]{duration / 2, 0, 0, 0});
+        saved.remove("ProcessingDurations");
+        tray.loadAdditional(saved, helper.getLevel().registryAccess());
+        helper.succeedWhen(() -> {
+            var registries = helper.getLevel().registryAccess();
+            CompoundTag update = tray.getUpdateTag(registries);
+            helper.assertTrue(update.getIntArray("ProcessingDurations")[0] == duration, "Recipe duration was not recorded");
+            int expected = (int) Math.clamp(update.getIntArray("ProcessingProgress")[0] * 100L / duration, 0L, 100L);
+            helper.assertTrue(expected >= 50 && expected < 100 && tray.getProgressPercent(0) == expected,
+                    "Wrong recipe conversion percentage");
+            var clientCopy = new BambooTrayBlockEntity(helper.absolutePos(POS), ModBlocks.BAMBOO_TRAY.defaultBlockState());
+            clientCopy.loadAdditional(update, registries);
+            helper.assertTrue(clientCopy.getProgressPercent(0) == expected, "Progress was not synchronized");
+            helper.setBlock(POS.above(), Blocks.STONE);
+            BambooTrayBlockEntity.serverTick(helper.getLevel(), helper.absolutePos(POS), tray.getBlockState(), tray);
+            helper.assertTrue(tray.getProgressPercent(0) == expected, "Paused processing lost progress");
+            tray.setItem(0, Items.STONE.getDefaultInstance());
+            helper.assertTrue(tray.getProgressPercent(0) == 0, "Replacement kept stale progress");
+            tray.clearContent();
+            helper.assertTrue(tray.getProgressPercent(0) == 0, "Empty tray has progress");
+        });
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void bambooTrayProgressHandlesBoundsAndMissingDuration(GameTestHelper helper) {
+        var tray = new BambooTrayBlockEntity(helper.absolutePos(POS), ModBlocks.BAMBOO_TRAY.defaultBlockState());
+        for (int slot = 0; slot < 4; slot++) {
+            tray.setItem(slot, ModItems.FRESH_TEA_LEAVES.getDefaultInstance());
+        }
+        var registries = helper.getLevel().registryAccess();
+        CompoundTag saved = tray.saveWithoutMetadata(registries);
+        saved.putIntArray("ProcessingProgress", new int[]{Integer.MAX_VALUE, -19, 50, 50});
+        saved.putIntArray("ProcessingDurations", new int[]{100, 100, 0, -1});
+        tray.loadAdditional(saved, registries);
+        helper.assertTrue(tray.getProgressPercent(0) == 100, "Progress overflowed");
+        helper.assertTrue(tray.getProgressPercent(1) == 0 && tray.getProgressPercent(2) == 0
+                && tray.getProgressPercent(3) == 0, "Invalid progress or duration was not handled");
+        helper.assertTrue(tray.getProgressPercent(-1) == 0 && tray.getProgressPercent(4) == 0, "Invalid slot was not handled");
+        saved.remove("ProcessingDurations");
+        tray.loadAdditional(saved, registries);
+        helper.assertTrue(tray.getProgressPercent(0) == 0, "Old save retained stale duration");
+        helper.succeed();
+    }
+
+    @GameTest(template = EMPTY_STRUCTURE, skyAccess = true, timeoutTicks = 60)
     public void bambooTrayDriesAndTransfersWithoutLosingCompletion(GameTestHelper helper) {
         helper.setBlock(POS, ModBlocks.BAMBOO_TRAY);
         BambooTrayBlockEntity tray = helper.getBlockEntity(POS);
@@ -118,6 +173,7 @@ public class TeaUpdateGameTests implements FabricGameTest {
         primeTray(helper, tray, BambooTrayRecipe.Subtype.DRYING);
         helper.succeedWhen(() -> {
             helper.assertTrue(tray.getItem(0).is(ModItems.DRIED_TEA_LEAVES), "Leaves did not dry");
+            helper.assertTrue(tray.getProgressPercent(0) == 100, "Finished recipe should report 100 percent");
             Storage<ItemVariant> bottom = ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(POS), Direction.DOWN);
             ItemVariant dried = ItemVariant.of(ModItems.DRIED_TEA_LEAVES);
             try (Transaction tx = Transaction.openOuter()) {
@@ -134,6 +190,7 @@ public class TeaUpdateGameTests implements FabricGameTest {
             var saved = tray.saveWithoutMetadata(helper.getLevel().registryAccess());
             var restored = new BambooTrayBlockEntity(helper.absolutePos(POS), ModBlocks.BAMBOO_TRAY.defaultBlockState());
             restored.loadAdditional(saved, helper.getLevel().registryAccess());
+            helper.assertTrue(restored.getProgressPercent(0) == 100, "Finished percentage was not saved");
             helper.assertTrue(restored.canTakeItemThroughFace(0, restored.getItem(0), Direction.DOWN), "Completion not saved");
         });
     }

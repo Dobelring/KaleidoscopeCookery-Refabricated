@@ -10,7 +10,8 @@
     ],
     "fabric-gametest": [
       "com.github.ysbbbbbb.kaleidoscopecookery.TeaUpdateGameTests",
-      "com.github.ysbbbbbb.kaleidoscopecookery.MilkGameTests"
+      "com.github.ysbbbbbb.kaleidoscopecookery.MilkGameTests",
+      "com.github.ysbbbbbb.kaleidoscopecookery.TeapotSoundGameTests"
     ]
   }
 }

@@ -5,12 +5,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.RecipeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.FruitBasketBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.OilPotBlockEntity;
+import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.TableBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.KitchenwareRacksBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.PotBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.SteamerBlockEntity;
-import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.StockpotBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.jade.block.*;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.IWailaClientRegistration;
@@ -34,6 +30,7 @@ public class ModPlugin implements IWailaPlugin {
     public static final ResourceLocation STEAMER = ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer");
     public static final ResourceLocation TEAPOT = ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot");
     public static final ResourceLocation FOOD_BITE_BLOCK = ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "food_bite_block");
+    public static final ResourceLocation BAMBOO_TRAY = ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
@@ -51,6 +48,7 @@ public class ModPlugin implements IWailaPlugin {
         registration.registerBlockComponent(ShawarmaSpitComponentProvider.INSTANCE, ShawarmaSpitBlock.class);
         registration.registerBlockComponent(ChoppingBoardComponentProvider.INSTANCE, ChoppingBoardBlock.class);
         registration.registerBlockComponent(EnamelBasinComponentProvider.INSTANCE, EnamelBasinBlock.class);
+        registration.registerBlockComponent(BambooTrayComponentProvider.INSTANCE, BambooTrayBlock.class);
 
         registration.registerItemStorageClient(FruitBasketComponentProvider.INSTANCE);
         registration.registerItemStorageClient(KitchenwareRackComponentProvider.INSTANCE);

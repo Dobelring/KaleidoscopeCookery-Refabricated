@@ -44,6 +44,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -135,7 +136,7 @@ public class TeapotItem extends BlockItem {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
         // 潜行时只放置方块
         if (player == null || player.isSecondaryUseActive()) {
@@ -145,7 +146,7 @@ public class TeapotItem extends BlockItem {
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+    public @NotNull InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         CustomData data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
         if (data == null) {
             return InteractionResult.PASS;
@@ -191,7 +192,7 @@ public class TeapotItem extends BlockItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
 
         // 如果已经有流体了，返回
@@ -298,8 +299,14 @@ public class TeapotItem extends BlockItem {
             }
         }
         if (status == ITeapot.FINISHED)
-            return 0x89ee24;
+            return isMysteryTea(tag) ? 0xd536d8 : 0x89ee24;
         return 0x9df7ff;
+    }
+
+    private static boolean isMysteryTea(CompoundTag tag) {
+        return tag.getCompound(TeapotBlockEntity.RESULT)
+                .getString("id")
+                .contains("mystery_tea");
     }
 
     @Override
