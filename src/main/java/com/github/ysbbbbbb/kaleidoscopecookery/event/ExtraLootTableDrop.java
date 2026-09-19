@@ -114,8 +114,8 @@ public final class ExtraLootTableDrop {
         return LootPool.lootPool()
                 .setRolls(ContextIntProviders.exactly(1))
                 .add(tomato).add(chili)
-                .add(lettuce).add(rice).add(tea)
-                .add(empty);
+                .add(lettuce).add(rice)
+                .add(tea).add(empty);
     }
 
     private static UniformContainerBase.Builder<?> createSeedEntry(
