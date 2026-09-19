@@ -30,7 +30,9 @@
   "jade.kaleidoscope_cookery.teapot.fluid": "Fluid: %s",
   "jade.kaleidoscope_cookery.teapot.ingredient": "Ingredient: %s",
   "jade.kaleidoscope_cookery.teapot.result": "Result: %s",
+  "jade.kaleidoscope_cookery.teapot.remaining_time": "Time remaining: %s s",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "Teapot",
+  "config.jade.plugin_kaleidoscope_cookery.bamboo_tray": "Bamboo Tray",
 
 
   "jei.kaleidoscope_cookery.bamboo_tray.drying": "Dry (clear sky): %ss",

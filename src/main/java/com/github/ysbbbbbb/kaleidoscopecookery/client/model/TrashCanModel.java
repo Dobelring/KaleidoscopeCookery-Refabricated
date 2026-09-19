@@ -68,6 +68,7 @@ public class TrashCanModel extends Model<TrashCanModel.State> {
 
     @Override
     public void setupAnim(@NonNull State object) {
+        super.setupAnim(object);
         this.putAnimation.apply(object.putState, object.ageInTicks);
         this.withdrawAnimation.apply(object.withdrawState, object.ageInTicks);
         this.playerAnimation1.apply(object.player1State, object.ageInTicks);

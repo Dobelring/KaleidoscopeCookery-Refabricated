@@ -2,10 +2,13 @@ package com.github.ysbbbbbb.kaleidoscopecookery.init.registry;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.PlateBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.BambooTrayDispenseBehavior;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.OilPotDispenseBehavior;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.dispenser.TeapotDispenseBehavior;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.TeacupBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteOneByTwoBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.BambooTrayBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.create.automation.init.AutomationCompat;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.farmersdelight.FarmersDelightCompat;
 import com.github.ysbbbbbb.kaleidoscopecookery.compat.trinkets.init.TrinketsCompatServer;
@@ -13,6 +16,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.datamap.resources.MillstoneBindab
 import com.github.ysbbbbbb.kaleidoscopecookery.event.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.event.effect.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModVillager;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.BowlFoodBlockItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.PlateBlockItem;
@@ -21,6 +25,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.util.PortHelper;
 import net.fabricmc.fabric.api.registry.CompostableRegistry;
 import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -50,6 +55,12 @@ public final class CommonRegistry {
         addVillagerGift();
         addDispenserBehavior();
         fuelRegister();
+        storageRegister();
+    }
+
+    public static void storageRegister() {
+        ItemStorage.SIDED.registerForBlockEntity(BambooTrayBlockEntity::getStorage, ModBlocks.BAMBOO_TRAY_BE);
+        ItemStorage.SIDED.registerForBlockEntity((teapot, _) -> teapot.getIngredientStorage(), ModBlocks.TEAPOT_BE);
     }
 
     public static void registerDataListeners() {
@@ -114,7 +125,9 @@ public final class CommonRegistry {
             TeacupBlock teacupBlock = new TeacupBlock(
                     BlockBehaviour.Properties
                             .of()
-                            .setId(PortHelper.createBlockId(resourceLocation.getPath())), data.getMaxCount());
+                            .setId(PortHelper.createBlockId(resourceLocation.getPath())),
+                    data.getMaxCount(),
+                    data.getAnimateTick());
             VoxelShape aabb = data.getAABB();
             if (aabb != null) {
                 teacupBlock.setAABB(aabb);
@@ -165,6 +178,9 @@ public final class CommonRegistry {
     }
 
     private static void addComposter() {
+        CompostableRegistry.INSTANCE.add(ModItems.TEA_SEED, 0.3F);
+        CompostableRegistry.INSTANCE.add(ModItems.FRESH_TEA_LEAVES, 0.65F);
+        CompostableRegistry.INSTANCE.add(ModItems.DRIED_TEA_LEAVES, 0.65F);
         CompostableRegistry.INSTANCE.add(ModItems.TOMATO_SEED, 0.3F);
         CompostableRegistry.INSTANCE.add(ModItems.CHILI_SEED, 0.3F);
         CompostableRegistry.INSTANCE.add(ModItems.LETTUCE_SEED, 0.3F);
@@ -186,5 +202,7 @@ public final class CommonRegistry {
 
     private static void addDispenserBehavior() {
         DispenserBlock.registerBehavior(ModItems.OIL_POT, new OilPotDispenseBehavior());
+        DispenserBlock.registerBehavior(ModItems.BAMBOO_TRAY, new BambooTrayDispenseBehavior());
+        DispenserBlock.registerBehavior(ModItems.TEAPOT, new TeapotDispenseBehavior());
     }
 }

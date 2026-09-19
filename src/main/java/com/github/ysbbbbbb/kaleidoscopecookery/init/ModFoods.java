@@ -3,6 +3,10 @@ package com.github.ysbbbbbb.kaleidoscopecookery.init;
 import net.minecraft.world.food.FoodProperties;
 
 public interface ModFoods {
+    FoodProperties TEA_EGG = new FoodProperties.Builder()
+            .nutrition(4).saturationModifier(0.5F)
+            .alwaysEdible().build();
+
     // 青团
     FoodProperties QINGTUAN = (new FoodProperties.Builder())
             .nutrition(5).saturationModifier(0.6F)

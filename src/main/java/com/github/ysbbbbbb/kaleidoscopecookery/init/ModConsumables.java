@@ -11,6 +11,9 @@ import static com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.*;
 import static net.minecraft.world.effect.MobEffects.*;
 
 public interface ModConsumables {
+    Consumable TEA_EGG = Consumables.defaultFood()
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(SULFUR, 60 * 20), 1.0F))
+            .build();
 
     // 腊八粥
     Consumable LABA_CONGEE = Consumables.defaultFood()

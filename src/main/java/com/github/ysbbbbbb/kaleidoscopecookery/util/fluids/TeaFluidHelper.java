@@ -1,6 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.util.fluids;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModFluids;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.tag.TagMod;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -93,12 +94,18 @@ public final class TeaFluidHelper {
         if (id == null || id.equals(TeapotRecipeSerializer.EMPTY_TEA_FLUID)) {
             return Component.translatable("mco.configure.world.slot.empty");
         }
+        if (ModFluids.matchesTeaFluid(ModFluids.MILK_ID, id)) {
+            return Component.translatable("fluid.minecraft.milk");
+        }
+        ItemStack filledContainer = getFilledContainer(id);
         if (isPhysicalFluid(id)) {
             Fluid fluid = BuiltInRegistries.FLUID.getValue(id);
-            return FluidVariantAttributes.getName(FluidVariant.of(fluid));
+            Component fluidName = FluidVariantAttributes.getName(FluidVariant.of(fluid));
+            if (filledContainer.isEmpty() || !fluidName.getString().equals(filledContainer.getHoverName().getString())) {
+                return fluidName;
+            }
         }
 
-        ItemStack filledContainer = getFilledContainer(id);
         if (!filledContainer.isEmpty()) {
             String displayName = filledContainer.getHoverName().getString();
             Item containerItem = ItemUtils.getContainerItem(filledContainer);

@@ -28,6 +28,7 @@ public class ModJadePlugin implements IWailaPlugin {
     public static final Identifier RECIPE_BLOCK = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "recipe_block");
     public static final Identifier STEAMER = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer");
     public static final Identifier TEAPOT = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot");
+    public static final Identifier BAMBOO_TRAY = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
@@ -54,6 +55,7 @@ public class ModJadePlugin implements IWailaPlugin {
         registration.registerItemStorageClient(SteamerComponentProvider.INSTANCE);
 
         registration.registerBlockComponent(TeapotComponentProvider.INSTANCE, TeapotBlock.class);
+        registration.registerBlockComponent(BambooTrayComponentProvider.INSTANCE, BambooTrayBlock.class);
         registration.registerBlockComponent(MillstoneComponentProvider.INSTANCE, MillstoneBlock.class);
         registration.registerBlockComponent(RecipeBlockComponentProvider.INSTANCE, RecipeBlock.class);
     }

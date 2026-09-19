@@ -1,11 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe;
 
-import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -31,7 +26,7 @@ public class SteamerRecipe extends SingleItemRecipe {
 
     @Override
     public @NonNull RecipeBookCategory recipeBookCategory() {
-        return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "steamer"), new RecipeBookCategory());
+        return ModRecipes.STEAMER_CATEGORY;
     }
 
     @Override

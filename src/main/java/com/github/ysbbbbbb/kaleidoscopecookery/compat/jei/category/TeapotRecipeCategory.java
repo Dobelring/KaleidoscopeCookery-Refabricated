@@ -73,9 +73,10 @@ public class TeapotRecipeCategory implements IRecipeCategory<RecipeHolder<Teapot
         Fluid fluid = BuiltInRegistries.FLUID.getValue(recipe.teaFluid());
         Item bucket = fluid.getBucket();
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 65, 3).setStandardSlotBackground().add(bucket);
-        builder.addSlot(RecipeIngredientRole.INPUT, 83, 3).setStandardSlotBackground().addItemStacks(inputs);
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 128, 30).add(output);
+        builder.addSlot(RecipeIngredientRole.INPUT, 65, 0).setStandardSlotBackground().add(bucket);
+        builder.addSlot(RecipeIngredientRole.INPUT, 83, 0).setStandardSlotBackground().addItemStacks(inputs);
+        builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 122, 0).add(ModItems.EMPTY_CUP);
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 128, 45).add(output);
     }
 
     @Override
