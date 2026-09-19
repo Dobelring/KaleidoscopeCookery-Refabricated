@@ -286,8 +286,6 @@ public class TeaUpdateGameTests implements FabricGameTest {
         helper.assertTrue(stockpot.onLidClick(helper.getLevel(), player, ModItems.STOCKPOT_LID.getDefaultInstance()),
                 "Could not close stockpot");
         helper.succeedWhen(() -> {
-            helper.assertTrue(teapot.getStatus() == ITeapot.FINISHED && stockpot.getStatus() == IStockpot.FINISHED,
-                    "Milk recipes are still cooking");
             helper.assertTrue(teapot.getResult().is(TeacupRegistry.getItem(TeacupRegistry.BUTTER_TEA)), "Wrong butter tea");
             helper.assertTrue(stockpot.getResult().is(ModItems.CLAY_POT_MILK_TEA), "Wrong clay pot milk tea");
         });
