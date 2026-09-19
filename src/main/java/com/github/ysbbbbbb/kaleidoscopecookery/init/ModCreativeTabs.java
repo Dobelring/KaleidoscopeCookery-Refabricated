@@ -37,6 +37,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.STOCKPOT);
                     output.accept(ModItems.STOCKPOT_LID);
                     output.accept(ModItems.CHOPPING_BOARD);
+                    output.accept(ModItems.BAMBOO_TRAY);
                     output.accept(ModItems.MILLSTONE);
                     output.accept(ModItems.STEAMER);
                     output.accept(ModItems.TEAPOT);
@@ -50,6 +51,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.OIL);
                     output.accept(ModItems.RECIPE_ITEM);
                     output.accept(ModItems.TRANSMUTATION_LUNCH_BAG);
+                    output.accept(ModItems.TEA_BANNER);
                     // 原材料
                     output.accept(ModItems.FLOUR);
                     output.accept(ModItems.RAW_DOUGH);
@@ -120,6 +122,9 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.TABLE_JUNGLE);
                     output.accept(ModItems.TABLE_MANGROVE);
                     output.accept(ModItems.TABLE_WARPED);
+                    output.accept(ModItems.LONG_BENCH);
+                    output.accept(ModItems.EIGHT_IMMORTALS_TABLE);
+                    output.accept(ModItems.RED_LANTERN);
                     output.accept(ModItems.STRAW_BED);
                 }).build());
 
@@ -133,6 +138,8 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.GREEN_CHILI);
                     output.accept(ModItems.LETTUCE);
                     output.accept(ModItems.RICE_PANICLE);
+                    output.accept(ModItems.FRESH_TEA_LEAVES);
+                    output.accept(ModItems.DRIED_TEA_LEAVES);
                     output.accept(ModItems.CATERPILLAR);
                     // 肉类
                     output.accept(ModItems.SASHIMI);
@@ -157,6 +164,7 @@ public final class ModCreativeTabs {
                     output.accept(ModItems.MEAT_PIE);
                     output.accept(ModItems.DUMPLING);
                     output.accept(ModItems.FRIED_EGG);
+                    output.accept(ModItems.TEA_EGG);
                     output.accept(ModItems.STICKY_CANDY);
                     output.accept(ModItems.STICKY_RICE_CAKE);
                     output.accept(ModItems.BAMBOO_TUBE_RICE);
@@ -218,6 +226,13 @@ public final class ModCreativeTabs {
                     });
 
                     // 茶水
+                    output.accept(ModItems.TIEGUANYIN_TEA_BAG);
+                    output.accept(ModItems.BILUOCHUN_TEA_BAG);
+                    output.accept(ModItems.OOLONG_TEA_BAG);
+                    output.accept(ModItems.SAKURA_FUBUKI_TEA_BAG);
+                    output.accept(ModItems.BARLEY_TEA_BAG);
+                    output.accept(ModItems.BUTTER_TEA_BAG);
+                    output.accept(ModItems.CLAY_POT_MILK_TEA);
                     output.accept(ModItems.EMPTY_CUP);
                     TeacupRegistry.TEACUP_DATA_MAP.keySet().forEach(teacupName -> {
                         var teacupItem = BuiltInRegistries.ITEM.getValue(teacupName);

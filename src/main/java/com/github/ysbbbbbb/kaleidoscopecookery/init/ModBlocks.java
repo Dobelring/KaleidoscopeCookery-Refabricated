@@ -5,8 +5,10 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.BaseCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.ChiliCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.LettuceCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.RiceCropBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.TeaTreeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.EmptyCupBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.drink.ClayPotMilkTeaBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteThreeByThreeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.misc.*;
@@ -14,6 +16,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.ChairBlock
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.FruitBasketBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.RecipeBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.TableBlockEntity;
+import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.TeaBannerBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.food.FoodBiteThreeByThreeBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.PortHelper;
@@ -155,12 +158,15 @@ public final class ModBlocks {
             .noOcclusion());
 
     // Tea
-    public static final Block TEAPOT = commonReg("teapot", TeapotBlock::new, BlockBehaviour.Properties.of()
-            .sound(SoundType.LANTERN)
-            .mapColor(MapColor.COLOR_ORANGE)
-            .noOcclusion()
-            .instabreak());
+    public static final Block TEAPOT = commonReg("teapot", TeapotBlock::new, BlockBehaviour.Properties.of());
     public static final Block EMPTY_CUP = commonReg("empty_cup", EmptyCupBlock::new, BlockBehaviour.Properties.of());
+    public static final Block CLAY_POT_MILK_TEA = commonReg("clay_pot_milk_tea", ClayPotMilkTeaBlock::new, BlockBehaviour.Properties.of());
+    public static final Block BAMBOO_TRAY = commonReg("bamboo_tray", BambooTrayBlock::new, BlockBehaviour.Properties.of());
+    public static final Block TEA_BANNER = commonReg("tea_banner", TeaBannerBlock::new, BlockBehaviour.Properties.of());
+    public static final Block LONG_BENCH = commonReg("long_bench", LongBenchBlock::new, BlockBehaviour.Properties.of());
+    public static final Block RED_LANTERN = commonReg("red_lantern", RedLanternBlock::new, BlockBehaviour.Properties.of());
+    public static final Block EIGHT_IMMORTALS_TABLE = commonReg("eight_immortals_table", EightImmortalsTableBlock::new, BlockBehaviour.Properties.of());
+    public static final Block TEA_TREE = commonReg("tea_tree", TeaTreeBlock::new, BlockBehaviour.Properties.of());
 
     // Crop blocks
     public static final Block TOMATO_CROP = cropReg("tomato_crop",p -> new BaseCropBlock(p, () -> ModItems.TOMATO, () -> ModItems.TOMATO_SEED));
@@ -265,6 +271,8 @@ public final class ModBlocks {
     public static final BlockEntityType<com.github.ysbbbbbb.kaleidoscopecookery.blockentity.misc.TrashCanBlockEntity> TRASH_CAN_BE = FabricBlockEntityTypeBuilder.create(com.github.ysbbbbbb.kaleidoscopecookery.blockentity.misc.TrashCanBlockEntity::new, TRASH_CAN).build();
     public static final BlockEntityType<TeapotBlockEntity> TEAPOT_BE = FabricBlockEntityTypeBuilder.create(TeapotBlockEntity::new, TEAPOT).build();
     public static final BlockEntityType<FoodBiteThreeByThreeBlockEntity> FOOD_BITE_THREE_BY_THREE_BE = FabricBlockEntityTypeBuilder.create(FoodBiteThreeByThreeBlockEntity::new, COLD_CUT_HAM_SLICES).build();
+    public static final BlockEntityType<BambooTrayBlockEntity> BAMBOO_TRAY_BE = FabricBlockEntityTypeBuilder.create(BambooTrayBlockEntity::new, BAMBOO_TRAY).build();
+    public static final BlockEntityType<TeaBannerBlockEntity> TEA_BANNER_BE = FabricBlockEntityTypeBuilder.create(TeaBannerBlockEntity::new, TEA_BANNER).build();
 
     public static final BlockEntityType<ChairBlockEntity> CHAIR_BE = FabricBlockEntityTypeBuilder.create(ChairBlockEntity::new,
             CHAIR_OAK, CHAIR_SPRUCE, CHAIR_ACACIA, CHAIR_BAMBOO,
@@ -296,6 +304,8 @@ public final class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "trash_can"), TRASH_CAN_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"), TEAPOT_BE);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "food_bite_three_by_three"), FOOD_BITE_THREE_BY_THREE_BE);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "bamboo_tray"), BAMBOO_TRAY_BE);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "tea_banner"), TEA_BANNER_BE);
     }
     public static Block register(ResourceKey<Block> resourceKey, Function<BlockBehaviour.Properties, Block> function, BlockBehaviour.Properties properties) {
         Block block = function.apply(properties.setId(resourceKey));

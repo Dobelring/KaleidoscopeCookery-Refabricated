@@ -2,6 +2,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.block.drink;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModParticles;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteAnimateTicks;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.TeacupItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.TeapotItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
@@ -46,10 +47,11 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
     protected final IntegerProperty cupCount;
     protected final IntegerProperty teaCount;
     protected final int maxCount;
+    protected final @Nullable FoodBiteAnimateTicks.AnimateTick animateTick;
 
     protected VoxelShape aabb = AABB;
 
-    public TeacupBlock(Properties properties, int maxCount) {
+    public TeacupBlock(Properties properties, int maxCount, @Nullable FoodBiteAnimateTicks.AnimateTick animateTick) {
         super(properties
                 .forceSolidOn()
                 .instabreak()
@@ -59,6 +61,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
                 .noOcclusion());
 
         this.maxCount = maxCount;
+        this.animateTick = animateTick;
         this.cupCount = IntegerProperty.create("cup_count", 1, maxCount);
         this.teaCount = IntegerProperty.create("tea_count", 1, maxCount);
 
@@ -74,7 +77,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
     }
 
     public TeacupBlock(Properties properties) {
-        this(properties, 4);
+        this(properties, 4, null);
     }
 
     public TeacupBlock setAABB(VoxelShape aabb) {
@@ -210,6 +213,10 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
 
     @Override
     public void animateTick(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, RandomSource random) {
+        if (this.animateTick != null) {
+            this.animateTick.animateTick(state, level, pos, random);
+            return;
+        }
         if (random.nextInt(20) != 0) {
             return;
         }

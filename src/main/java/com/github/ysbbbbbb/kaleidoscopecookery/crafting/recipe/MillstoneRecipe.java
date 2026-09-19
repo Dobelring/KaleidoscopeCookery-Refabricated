@@ -1,15 +1,11 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe;
 
-import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.SimpleInput;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.output.RandomOutput;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -78,8 +74,6 @@ public record MillstoneRecipe(Ingredient ingredient, List<RandomOutput> results)
 
     @Override
     public @NonNull RecipeBookCategory recipeBookCategory() {
-        return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY,
-                Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "millstone"),
-                new RecipeBookCategory());
+        return ModRecipes.MILLSTONE_CATEGORY;
     }
 }

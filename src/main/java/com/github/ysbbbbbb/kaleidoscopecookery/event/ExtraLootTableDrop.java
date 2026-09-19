@@ -108,12 +108,13 @@ public final class ExtraLootTableDrop {
         var chili = createSeedEntry(ModItems.CHILI_SEED, enchantmentLookup, itemLookup);
         var lettuce = createSeedEntry(ModItems.LETTUCE_SEED, enchantmentLookup, itemLookup);
         var rice = createSeedEntry(ModItems.WILD_RICE_SEED, enchantmentLookup, itemLookup);
+        var tea = createSeedEntry(ModItems.TEA_SEED, enchantmentLookup, itemLookup);
         var empty = EmptyLootItem.emptyItem().setWeight(2);
 
         return LootPool.lootPool()
                 .setRolls(ContextIntProviders.exactly(1))
                 .add(tomato).add(chili)
-                .add(lettuce).add(rice)
+                .add(lettuce).add(rice).add(tea)
                 .add(empty);
     }
 

@@ -30,7 +30,9 @@
   "jade.kaleidoscope_cookery.teapot.fluid": "液体: %s",
   "jade.kaleidoscope_cookery.teapot.ingredient": "原料: %s",
   "jade.kaleidoscope_cookery.teapot.result": "输出: %s",
+  "jade.kaleidoscope_cookery.teapot.remaining_time": "剩余时间：%s 秒",
   "config.jade.plugin_kaleidoscope_cookery.teapot": "茶壶",
+  "config.jade.plugin_kaleidoscope_cookery.bamboo_tray": "竹匾",
 
 
   "jei.kaleidoscope_cookery.bamboo_tray.drying": "晒干（晴天露天）：%s 秒",

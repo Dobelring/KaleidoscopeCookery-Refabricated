@@ -1,11 +1,9 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe;
 
-import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotInput;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModFluids;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -24,12 +22,15 @@ public record TeapotRecipe(Identifier teaFluid,
                            int time,
                            ItemStackTemplate result) implements BaseRecipe<TeapotInput> {
     public static final int OUTPUT_COUNT = 12;
+    public static final int MYSTERY_OUTPUT_COUNT = 4;
 
     @Override
     public boolean matches(TeapotInput container, @NonNull Level level) {
         ItemStack stack = container.getItemStack();
         Identifier fluid = container.getTeaFluid();
-        return teaFluid.equals(fluid) && ingredient.test(stack) && stack.getCount() >= ingredientCount;
+        return ModFluids.matchesTeaFluid(teaFluid, fluid)
+                && ingredient.test(stack)
+                && stack.getCount() >= ingredientCount;
     }
 
     @Override
@@ -69,8 +70,6 @@ public record TeapotRecipe(Identifier teaFluid,
 
     @Override
     public @NonNull RecipeBookCategory recipeBookCategory() {
-        return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY,
-                Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "teapot"),
-                new RecipeBookCategory());
+        return ModRecipes.TEAPOT_CATEGORY;
     }
 }

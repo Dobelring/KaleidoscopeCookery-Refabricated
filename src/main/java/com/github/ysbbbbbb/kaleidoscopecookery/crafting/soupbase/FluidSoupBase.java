@@ -3,11 +3,11 @@ package com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.client.render.ISoupBaseRender;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.recipe.soupbase.ISoupBase;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.render.soupbase.FluidSoupBaseRender;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -24,14 +24,21 @@ public class FluidSoupBase implements ISoupBase {
     protected final int bubbleColor;
 
     public FluidSoupBase(Identifier name, Item bucketItem, int bubbleColor) {
+        this(name, bucketItem, getBucketFluid(bucketItem), bubbleColor);
+    }
+
+    public FluidSoupBase(Identifier name, Item bucketItem, Fluid fluid, int bubbleColor) {
         this.name = name;
         this.bucketItem = bucketItem;
-        if (bucketItem instanceof BucketItem bucket) {
-            this.fluid = bucket.content;
-        } else {
-            throw new IllegalArgumentException("Item must be a bucket item!");
-        }
+        this.fluid = fluid;
         this.bubbleColor = bubbleColor;
+    }
+
+    private static Fluid getBucketFluid(Item bucketItem) {
+        if (bucketItem instanceof BucketItem bucket) {
+            return bucket.content;
+        }
+        throw new IllegalArgumentException("Item must be a bucket item when fluid is not specified!");
     }
 
     @Override

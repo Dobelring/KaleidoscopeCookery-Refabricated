@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -63,8 +62,6 @@ public class TrashCanBlockEntityRender implements BlockEntityRenderer<TrashCanBl
                 blockEntityRenderState.player2State,
                 blockEntityRenderState.enterState
         );
-        this.model.root().getAllParts().forEach(ModelPart::resetPose);
-        this.model.setupAnim(state);
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.rotateDegrees(Axis.ZN, 180);

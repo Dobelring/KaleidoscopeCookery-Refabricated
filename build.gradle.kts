@@ -119,6 +119,19 @@ tasks.jar {
 	}
 }
 
+val testBlockEntityAnimationIsolation by tasks.registering(JavaExec::class) {
+	group = "verification"
+	description = "Checks shared block entity models for animation pose leakage."
+	val gameTestSourceSet = sourceSets.named("gametest").get()
+	dependsOn(gameTestSourceSet.classesTaskName)
+	classpath = gameTestSourceSet.runtimeClasspath
+	mainClass.set("com.github.ysbbbbbb.kaleidoscopecookery.client.model.BlockEntityAnimationIsolationTest")
+}
+
+tasks.check {
+	dependsOn(testBlockEntityAnimationIsolation)
+}
+
 // configure the maven publication
 publishing {
 	publications {

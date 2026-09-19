@@ -78,6 +78,7 @@ public class TeapotModel extends Model<TeapotModel.State> {
 
     @Override
     public void setupAnim(@NonNull State object) {
+        super.setupAnim(object);
         updateVariant(object.variant);
         this.boilingAnimation.apply(object.boiling, object.ageInTicks);
     }

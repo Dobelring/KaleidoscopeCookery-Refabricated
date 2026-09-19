@@ -41,7 +41,7 @@ public class ReiTeapotRecipeCategory implements DisplayCategory<ReiTeapotRecipeC
     private static final Identifier BG = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "textures/gui/jei/teapot.png");
     private static final MutableComponent TITLE = Component.translatable("block.kaleidoscope_cookery.teapot");
     public static final int WIDTH = 176;
-    public static final int HEIGHT = 88;
+    public static final int HEIGHT = 78;
 
     @Override
     public CategoryIdentifier<TeapotRecipeDisplay> getCategoryIdentifier() {
@@ -50,21 +50,24 @@ public class ReiTeapotRecipeCategory implements DisplayCategory<ReiTeapotRecipeC
 
     @Override
     public List<Widget> setupDisplay(TeapotRecipeDisplay display, Rectangle bounds) {
-        List<Widget> widgets = new ArrayList<>();
+        List<Widget> widgets = new ArrayList<>(7);
         int startX = bounds.x;
-        int startY = bounds.y + 4;
+        int startY = bounds.y;
         Component brewTime = Component.translatable("jei.kaleidoscope_cookery.teapot.time", display.brewTime / 20);
 
         widgets.add(Widgets.createRecipeBase(bounds));
         widgets.add(Widgets.createTexturedWidget(BG, startX, startY, 0, 0, WIDTH, HEIGHT));
         widgets.add(Widgets.withTranslate(Widgets.createDrawableWidget((guiGraphics, _, _, _) -> drawCenteredString(guiGraphics, brewTime)), startX, startY));
-        widgets.add(Widgets.createSlot(new Point(startX + 65, startY + 3))
-                .entries(display.getFluidInput().getFirst())
+        widgets.add(Widgets.createSlot(new Point(startX + 65, startY))
+                .entries(display.getInputEntries().get(0))
                 .markInput());
-        widgets.add(Widgets.createSlot(new Point(startX + 83, startY + 3))
-                .entries(display.getIngredientInput().getFirst())
+        widgets.add(Widgets.createSlot(new Point(startX + 83, startY))
+                .entries(display.getInputEntries().get(1))
                 .markInput());
-        widgets.add(Widgets.createSlot(new Point(startX + 128, startY + 30))
+        widgets.add(Widgets.createSlot(new Point(startX + 122, startY))
+                .entry(EntryStacks.of(ModItems.EMPTY_CUP))
+                .disableBackground());
+        widgets.add(Widgets.createSlot(new Point(startX + 128, startY + 45))
                 .entries(display.getOutputEntries().getFirst())
                 .backgroundEnabled(false)
                 .markOutput());

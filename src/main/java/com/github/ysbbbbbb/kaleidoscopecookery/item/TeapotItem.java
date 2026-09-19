@@ -4,6 +4,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ITeapot;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.TeapotBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModFluids;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.PortHelper;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.FluidUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.TeaFluidHelper;
@@ -50,12 +52,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer.EMPTY_TEA_FLUID;
 
 public class TeapotItem extends BlockItem {
+    private static final String MYSTERY_TEA_ID = TeacupRegistry.MYSTERY_TEA.toString();
+
     public TeapotItem(Block block, Properties properties) {
         super(block, properties);
     }
@@ -253,7 +258,7 @@ public class TeapotItem extends BlockItem {
         if (!stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
             return false;
         }
-        CompoundTag tag = getBlockEntityData(stack);
+        CompoundTag tag = quickFetchBlockEntityData(stack);
 
         int status = getInt(tag, TeapotBlockEntity.STATUS, ITeapot.PUT_INGREDIENT);
 
@@ -271,14 +276,14 @@ public class TeapotItem extends BlockItem {
         if (!stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
             return 0x9df7ff;
         }
-        CompoundTag tag = getBlockEntityData(stack);
+        CompoundTag tag = quickFetchBlockEntityData(stack);
         int status = getInt(tag, TeapotBlockEntity.STATUS, ITeapot.PUT_INGREDIENT);
         if (status == ITeapot.PUT_INGREDIENT) {
             String fluidId = getString(tag, TeapotBlockEntity.TEA_FLUID_ID, EMPTY_TEA_FLUID.toString());
             if (fluidId.equals(EMPTY_TEA_FLUID.toString())) {
                 return 0x9df7ff;
             }
-            if (fluidId.contains("milk")) {
+            if (ModFluids.MILK_ID.equals(Objects.requireNonNull(Identifier.tryParse(fluidId)))) {
                 return 0xf4eee1;
             }
             if (fluidId.contains("honey")) {
@@ -292,7 +297,7 @@ public class TeapotItem extends BlockItem {
             }
         }
         if (status == ITeapot.FINISHED)
-            return 0x89ee24;
+            return isMysteryTea(tag) ? 0xd536d8 : 0x89ee24;
         return 0x9df7ff;
     }
 
@@ -301,7 +306,7 @@ public class TeapotItem extends BlockItem {
         if (!stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
             return 0;
         }
-        CompoundTag tag = getBlockEntityData(stack);
+        CompoundTag tag = quickFetchBlockEntityData(stack);
 
         int status = getInt(tag, TeapotBlockEntity.STATUS, ITeapot.PUT_INGREDIENT);
 
@@ -319,7 +324,8 @@ public class TeapotItem extends BlockItem {
                 return 0;
             }
             // 进度条长度根据剩余产物数量占总量的比例来计算，满了是13格
-            return Math.round(13.0F * count / TeapotRecipe.OUTPUT_COUNT);
+            int capacity = isMysteryTea(tag) ? TeapotRecipe.MYSTERY_OUTPUT_COUNT : TeapotRecipe.OUTPUT_COUNT;
+            return Math.clamp(Math.round(13.0F * count / capacity), 0, 13);
         }
 
         return 0;
@@ -371,20 +377,38 @@ public class TeapotItem extends BlockItem {
                 .copyTagWithoutId();
     }
 
+    @SuppressWarnings("deprecation")
+    private static CompoundTag quickFetchBlockEntityData(ItemStack stack) {
+        if (stack.get(DataComponents.BLOCK_ENTITY_DATA) == null) return new CompoundTag();
+        return Objects.requireNonNull(stack.get(DataComponents.BLOCK_ENTITY_DATA)).getUnsafe();
+    }
+
+    @SuppressWarnings("all")
     private static int getInt(CompoundTag tag, String key, int defaultValue) {
         return tag.getInt(key).orElse(defaultValue);
     }
 
+    @SuppressWarnings("all")
     private static String getString(CompoundTag tag, String key, String defaultValue) {
         return StringUtils.defaultIfBlank(tag.getString(key).orElse(defaultValue), defaultValue);
     }
 
+    @SuppressWarnings("all")
     private static CompoundTag getCompound(CompoundTag tag, String key) {
         return tag.getCompound(key).orElse(new CompoundTag());
     }
 
     private static int getResultCount(CompoundTag tag) {
-        return getCompound(tag, TeapotBlockEntity.RESULT).getInt("count").orElse(0);
+        return tag.getCompound(TeapotBlockEntity.RESULT)
+                .map(result -> result.getInt("count").orElse(1))
+                .orElse(0);
+    }
+
+    private static boolean isMysteryTea(CompoundTag tag) {
+        return tag.getCompound(TeapotBlockEntity.RESULT)
+                .flatMap(result -> result.getString("id"))
+                .filter(MYSTERY_TEA_ID::equals)
+                .isPresent();
     }
 
     private static ItemStack decodeResult(CompoundTag tag, Level level) {

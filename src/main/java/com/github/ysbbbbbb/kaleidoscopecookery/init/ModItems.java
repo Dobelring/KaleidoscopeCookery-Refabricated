@@ -63,6 +63,12 @@ public final class ModItems {
     public static final Item TRASH_CAN = registerItemViaBlock(ModBlocks.TRASH_CAN);
     public static final Item TEAPOT = registerItemViaBlock(ModBlocks.TEAPOT, TeapotItem::new, new Item.Properties().stacksTo(1));
     public static final Item EMPTY_CUP = registerItemViaBlock(ModBlocks.EMPTY_CUP, EmptyCupItem::new);
+    public static final Item BAMBOO_TRAY = registerItemViaBlock(ModBlocks.BAMBOO_TRAY);
+    public static final Item TEA_BANNER = registerItemViaBlock(ModBlocks.TEA_BANNER, TeaBannerItem::new);
+    public static final Item LONG_BENCH = registerItemViaBlock(ModBlocks.LONG_BENCH);
+    public static final Item RED_LANTERN = registerItemViaBlock(ModBlocks.RED_LANTERN);
+    public static final Item EIGHT_IMMORTALS_TABLE = registerItemViaBlock(ModBlocks.EIGHT_IMMORTALS_TABLE);
+    public static final Item CLAY_POT_MILK_TEA = registerItemViaBlock(ModBlocks.CLAY_POT_MILK_TEA, ClayPotMilkTeaItem::new);
 
     // Feast
     public static final Item COLD_CUT_HAM_SLICES = registerItemViaBlock(ModBlocks.COLD_CUT_HAM_SLICES, (block, properties) -> new LiftBlockItem(block, properties, "cold_cut_ham_slices"), new Item.Properties());
@@ -96,6 +102,15 @@ public final class ModItems {
     public static final Item LETTUCE_SEED = registerItem("lettuce_seed", createBlockItemWithCustomItemName(ModBlocks.LETTUCE_CROP));
     public static final Item RICE_SEED = registerItem("rice", p -> new RiceItem(p.useItemDescriptionPrefix().compostable(ContextIntProviders.COMPOSTABLE_LOW)));
     public static final Item WILD_RICE_SEED = registerItem("wild_rice", p -> new RiceItem(p.useItemDescriptionPrefix().compostable(ContextIntProviders.COMPOSTABLE_LOW)));
+    public static final Item TEA_SEED = registerItem("tea_seed", createBlockItemWithCustomItemName(ModBlocks.TEA_TREE));
+    public static final Item FRESH_TEA_LEAVES = registerItem("fresh_tea_leaves", p -> new Item(p.compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)));
+    public static final Item DRIED_TEA_LEAVES = registerItem("dried_tea_leaves", p -> new Item(p.compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)));
+    public static final Item TIEGUANYIN_TEA_BAG = registerItem("tieguanyin_tea_bag");
+    public static final Item BILUOCHUN_TEA_BAG = registerItem("biluochun_tea_bag");
+    public static final Item OOLONG_TEA_BAG = registerItem("oolong_tea_bag");
+    public static final Item SAKURA_FUBUKI_TEA_BAG = registerItem("sakura_fubuki_tea_bag");
+    public static final Item BARLEY_TEA_BAG = registerItem("barley_tea_bag");
+    public static final Item BUTTER_TEA_BAG = registerItem("butter_tea_bag");
 
     // Cook stools
     public static final Item COOK_STOOL_OAK = registerItemViaBlock(ModBlocks.COOK_STOOL_OAK);
@@ -150,6 +165,7 @@ public final class ModItems {
     public static final Item RICE_PANICLE = registerItem("rice_panicle", p -> new Item(p.compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)));
     public static final Item CATERPILLAR = registerItem("caterpillar", p -> new WithTooltipsItem(p.food(ModFoods.CATERPILLAR, ModConsumables.CATERPILLAR).compostable(ContextIntProviders.COMPOSTABLE_MEDIUM_HIGH), "caterpillar"));
     public static final Item FRIED_EGG = registerItem("fried_egg", p -> new Item(p.food(ModFoods.FRIED_EGG, ModConsumables.FRIED_EGG)));
+    public static final Item TEA_EGG = registerItem("tea_egg", p -> new FoodWithEffectsItem(p, ModFoods.TEA_EGG, ModConsumables.TEA_EGG));
     public static final Item DONKEY_BURGER = registerItem("donkey_burger", p -> new FoodWithEffectsItem(p, ModFoods.DONKEY_BURGER, ModConsumables.DONKEY_BURGER));
     public static final Item MANTOU = registerItem("mantou", p -> new FoodWithEffectsItem(p, ModFoods.MANTOU, ModConsumables.MANTOU));
     public static final Item BAOZI = registerItem("baozi", p -> new FoodWithEffectsItem(p, ModFoods.BAOZI, ModConsumables.BAOZI));
