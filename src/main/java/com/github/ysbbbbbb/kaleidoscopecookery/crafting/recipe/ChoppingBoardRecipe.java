@@ -2,7 +2,6 @@ package com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;

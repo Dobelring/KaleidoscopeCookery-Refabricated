@@ -218,7 +218,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
     }
 
     @Override
-    public void animateTick(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, RandomSource random) {
+    public void animateTick(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull RandomSource random) {
         if (this.animateTick != null) {
             this.animateTick.animateTick(state, level, pos, random);
             return;

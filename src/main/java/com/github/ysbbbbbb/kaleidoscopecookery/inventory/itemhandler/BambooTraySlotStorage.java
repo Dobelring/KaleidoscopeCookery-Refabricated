@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.NonNull;
 
 /** Keeps processing metadata intact during simulated or aborted inventory transfers. */
 public final class BambooTraySlotStorage extends SingleStackStorage {
@@ -17,22 +18,22 @@ public final class BambooTraySlotStorage extends SingleStackStorage {
     }
 
     @Override
-    protected ItemStack getStack() {
+    protected @NonNull ItemStack getStack() {
         return tray.getItem(slot);
     }
 
     @Override
-    protected void setStack(ItemStack stack) {
+    protected void setStack(@NonNull ItemStack stack) {
         tray.setTransferStack(slot, stack);
     }
 
     @Override
-    protected boolean canInsert(ItemVariant variant) {
+    protected boolean canInsert(@NonNull ItemVariant variant) {
         return !tray.isRemoved() && tray.canPlaceItemThroughFace(slot, variant.toStack(), Direction.UP);
     }
 
     @Override
-    protected boolean canExtract(ItemVariant variant) {
+    protected boolean canExtract(@NonNull ItemVariant variant) {
         return !tray.isRemoved() && tray.canTakeItemThroughFace(slot, variant.toStack(), Direction.DOWN);
     }
 
