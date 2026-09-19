@@ -27,9 +27,9 @@ import java.util.function.Supplier;
 @SuppressWarnings({"unused" ,"deprecation"})
 public final class ModItems {
     // Block items
-    public static final Item STOVE = registerItemViaBlock(ModBlocks.STOVE);
-    public static final Item POT = registerItemViaBlock(ModBlocks.POT);
-    public static final Item STOCKPOT = registerItemViaBlock(ModBlocks.STOCKPOT);
+    public static final Item STOVE = registerItemViaBlockWithDesc(ModBlocks.STOVE, "stove");
+    public static final Item POT = registerItemViaBlockWithDesc(ModBlocks.POT, "pot");
+    public static final Item STOCKPOT = registerItemViaBlockWithDesc(ModBlocks.STOCKPOT, "stockpot");
     public static final Item STOCKPOT_LID = registerItem("stockpot_lid", p -> new StockpotLidItem(
             p.durability(245)
             .repairable(Items.IRON_INGOT)
@@ -49,14 +49,14 @@ public final class ModItems {
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
     ));
     public static final Item OIL_BLOCK = registerItemViaBlock(ModBlocks.OIL_BLOCK);
-    public static final Item CHOPPING_BOARD = registerItemViaBlock(ModBlocks.CHOPPING_BOARD);
-    public static final Item ENAMEL_BASIN = registerItemViaBlock(ModBlocks.ENAMEL_BASIN);
-    public static final Item KITCHENWARE_RACKS = registerItemViaBlock(ModBlocks.KITCHENWARE_RACKS, (block, properties) -> new WithTooltipsBlockItem(block, properties, "kitchenware_racks"));
+    public static final Item CHOPPING_BOARD = registerItemViaBlockWithDesc(ModBlocks.CHOPPING_BOARD, "chopping_board");
+    public static final Item ENAMEL_BASIN = registerItemViaBlockWithDesc(ModBlocks.ENAMEL_BASIN, "enamel_basin");
+    public static final Item KITCHENWARE_RACKS = registerItemViaBlockWithDesc(ModBlocks.KITCHENWARE_RACKS, "kitchenware_racks");
     public static final Item CHILI_RISTRA = registerItemViaBlock(ModBlocks.CHILI_RISTRA);
     public static final Item STRUNG_MUSHROOMS = registerItemViaBlock(ModBlocks.STRUNG_MUSHROOMS);
     public static final Item STRAW_BLOCK = registerItemViaBlock(ModBlocks.STRAW_BLOCK);
-    public static final Item SHAWARMA_SPIT = registerItemViaBlock(ModBlocks.SHAWARMA_SPIT);
-    public static final Item MILLSTONE = registerItemViaBlock(ModBlocks.MILLSTONE);
+    public static final Item SHAWARMA_SPIT = registerItemViaBlockWithDesc(ModBlocks.SHAWARMA_SPIT, "shawarma_spit");
+    public static final Item MILLSTONE = registerItemViaBlockWithDesc(ModBlocks.MILLSTONE, "millstone");
     public static final Item STEAMER = registerItemViaBlock(ModBlocks.STEAMER, SteamerItem::new);
     public static final Item OIL_POT = registerItemViaBlock(ModBlocks.OIL_POT, OilPotItem::new, new Item.Properties().stacksTo(16));
     public static final Item TRASH_CAN = registerItemViaBlock(ModBlocks.TRASH_CAN);
@@ -96,12 +96,13 @@ public final class ModItems {
     public static Supplier<Item> STRAW_HAT_FLOWER = registerStrawHats("straw_hat_flower", p -> new StrawHatItem(true, p));
 
     // Seeds
-    public static final Item TOMATO_SEED = registerItem("tomato_seed", createBlockItemWithCustomItemName(ModBlocks.TOMATO_CROP));
-    public static final Item CHILI_SEED = registerItem("chili_seed", createBlockItemWithCustomItemName(ModBlocks.CHILI_CROP));
-    public static final Item LETTUCE_SEED = registerItem("lettuce_seed", createBlockItemWithCustomItemName(ModBlocks.LETTUCE_CROP));
+    public static final Item TOMATO_SEED = registerItem("tomato_seed", wrapSeedItem(ModBlocks.TOMATO_CROP));
+    public static final Item CHILI_SEED = registerItem("chili_seed", wrapSeedItem(ModBlocks.CHILI_CROP));
+    public static final Item LETTUCE_SEED = registerItem("lettuce_seed", wrapSeedItem(ModBlocks.LETTUCE_CROP));
     public static final Item RICE_SEED = registerItem("rice", p -> new RiceItem(p.useItemDescriptionPrefix()));
-    public static final Item WILD_RICE_SEED = registerItem("wild_rice", p -> new RiceItem(p.useItemDescriptionPrefix()));
-    public static final Item TEA_SEED = registerItem("tea_seed", createBlockItemWithCustomItemName(ModBlocks.TEA_TREE));
+    public static final Item WILD_RICE_SEED = registerItem("wild_rice", wrapSeedItem(ModBlocks.RICE_CROP));
+    public static final Item TEA_SEED = registerItem("tea_seed", wrapSeedItem(ModBlocks.TEA_TREE));
+
     public static final Item FRESH_TEA_LEAVES = registerItem("fresh_tea_leaves");
     public static final Item DRIED_TEA_LEAVES = registerItem("dried_tea_leaves");
     public static final Item TIEGUANYIN_TEA_BAG = registerItem("tieguanyin_tea_bag");
@@ -293,9 +294,16 @@ public final class ModItems {
         };
     }
 
+    private static Function<Item.Properties, Item> wrapSeedItem(Block block) {
+        return properties -> new WithTooltipsBlockItem(block, properties.useItemDescriptionPrefix(), "crop_seed");
+    }
 
     public static Item registerItemViaBlock(Block block, BiFunction<Block, Item.Properties, Item> biFunction) {
         return registerItemViaBlock(block, biFunction, new Item.Properties());
+    }
+
+    public static Item registerItemViaBlockWithDesc(Block block, String descId) {
+        return registerItemViaBlock(block, (blocks, properties) -> new WithTooltipsBlockItem(blocks, properties, descId));
     }
 
     public static Item registerItemViaBlock(Block block) {
