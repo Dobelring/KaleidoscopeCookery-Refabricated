@@ -6,7 +6,8 @@
   "environment": "*",
   "entrypoints": {
     "fabric-gametest": [
-      "com.github.ysbbbbbb.kaleidoscopecookery.gametest.FoodEffectGameTest"
+      "com.github.ysbbbbbb.kaleidoscopecookery.gametest.FoodEffectGameTest",
+      "com.github.ysbbbbbb.kaleidoscopecookery.gametest.TeaTreeLootGameTest"
     ]
   }
 }
