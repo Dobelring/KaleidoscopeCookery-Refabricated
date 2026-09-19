@@ -4,6 +4,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.TeapotBlockEn
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.NonNull;
 
 public final class TeapotIngredientStorage extends SingleStackStorage {
     private final TeapotBlockEntity teapot;
@@ -13,12 +14,12 @@ public final class TeapotIngredientStorage extends SingleStackStorage {
     }
 
     @Override
-    protected ItemStack getStack() {
+    protected @NonNull ItemStack getStack() {
         return teapot.getInput();
     }
 
     @Override
-    protected void setStack(ItemStack stack) {
+    protected void setStack(@NonNull ItemStack stack) {
         teapot.setTransferInput(stack);
     }
 
@@ -28,7 +29,7 @@ public final class TeapotIngredientStorage extends SingleStackStorage {
     }
 
     @Override
-    protected boolean canExtract(ItemVariant variant) {
+    protected boolean canExtract(@NonNull ItemVariant variant) {
         return false;
     }
 

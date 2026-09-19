@@ -1,6 +1,5 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.block.decoration;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
