@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.init;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.Consumables;
@@ -1024,5 +1025,10 @@ public interface ModConsumables {
 
     // 冷切火腿片，只有方块形态才能进食
     Consumable COLD_CUT_HAM_SLICES_BLOCK = Consumables.defaultFood()
+            .build();
+
+    // 瓦罐奶茶，饮用音效与 1.21.1 保持一致
+    Consumable CLAY_POT_MILK_TEA = Consumables.defaultDrink()
+            .sound(SoundEvents.HONEY_DRINK)
             .build();
 }

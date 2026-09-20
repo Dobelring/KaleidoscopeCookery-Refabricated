@@ -47,6 +47,10 @@ public class BaseCropBlock extends CropBlock {
     @Override
     protected @NonNull InteractionResult useItemOn(@NonNull ItemStack itemStack, @NonNull BlockState blockState, @NonNull Level level, @NonNull BlockPos blockPos, @NonNull Player player, @NonNull InteractionHand interactionHand, @NonNull BlockHitResult blockHitResult) {
         ItemStack itemInHand = player.getItemInHand(interactionHand);
+        // 骨粉催熟未成熟作物由方块接管并消费交互，否则紧接着到达的空手副手包会立刻触发下面的收获分支
+        if (BonemealInteraction.growCrop(itemInHand, blockState, level, blockPos, player, this)) {
+            return InteractionResult.SUCCESS;
+        }
         if (itemInHand.is(ModItems.SICKLE)) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }

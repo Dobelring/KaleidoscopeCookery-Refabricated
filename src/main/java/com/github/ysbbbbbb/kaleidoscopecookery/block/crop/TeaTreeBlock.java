@@ -145,6 +145,10 @@ public class TeaTreeBlock extends BushBlock implements BonemealableBlock, Simple
     @Override
     public @NotNull InteractionResult useItemOn(@NonNull ItemStack stack, @NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos,
                                                 Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
+        // 骨粉催熟未成熟茶树由方块接管并消费交互，否则紧接着到达的空手副手包会立刻触发下面的采摘分支
+        if (BonemealInteraction.growCrop(stack, state, level, pos, player, this)) {
+            return InteractionResult.SUCCESS;
+        }
         if (player.getItemInHand(hand).is(ModItems.SICKLE)) {
             return InteractionResult.PASS;
         }
