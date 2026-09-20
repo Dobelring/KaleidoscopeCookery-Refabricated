@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,12 +30,12 @@ public final class BonemealInteraction {
      */
     public static boolean growCrop(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                    Player player, BonemealableBlock block) {
-        if (!stack.is(Items.BONE_MEAL) || !block.isValidBonemealTarget(level, pos, state)) {
+        if (!stack.is(Items.BONE_MEAL) || !block.isValidBonemealTarget(level, pos, state, BonemealSource.MOB)) {
             return false;
         }
         if (level instanceof ServerLevel serverLevel) {
-            if (block.isBonemealSuccess(level, level.getRandom(), pos, state)) {
-                block.performBonemeal(serverLevel, level.getRandom(), pos, state);
+            if (block.isBonemealSuccess(level, level.getRandom(), pos, state, BonemealSource.MOB)) {
+                block.performBonemeal(serverLevel, level.getRandom(), pos, state, BonemealSource.MOB);
             }
             level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos, 15);
             stack.causeUseVibration(player, GameEvent.ITEM_INTERACT_FINISH);
