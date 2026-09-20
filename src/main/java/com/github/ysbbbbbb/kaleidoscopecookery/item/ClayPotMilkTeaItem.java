@@ -1,8 +1,10 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.item.IHasContainer;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModConsumables;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -25,7 +27,9 @@ import java.util.function.Consumer;
 
 public class ClayPotMilkTeaItem extends BlockItem implements IHasContainer {
     public ClayPotMilkTeaItem(Block block, Item.Properties properties) {
-        super(block, properties.stacksTo(16));
+        super(block, properties
+                .stacksTo(16)
+                .component(DataComponents.CONSUMABLE, ModConsumables.CLAY_POT_MILK_TEA));
     }
 
     @Override

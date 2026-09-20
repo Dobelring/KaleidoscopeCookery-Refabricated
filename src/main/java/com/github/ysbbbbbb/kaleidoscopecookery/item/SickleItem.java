@@ -2,6 +2,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.event.SickleHarvestEvent;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.RiceCropBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.TeaTreeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModEvents;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.tag.TagMod;
 import net.minecraft.ChatFormatting;
@@ -101,6 +102,17 @@ public class SickleItem extends Item {
         ModEvents.SICKLE_HARVEST.invoker().onSickleHarvest(event);
         if (event.isCanceled()) {
             return event.isCostDurability();
+        }
+
+        // 如果是茶树，那么只收割成熟的，未成熟的保持原样（茶树属于植被方块，不特判会被直接破坏）
+        if (block instanceof TeaTreeBlock teaTreeBlock) {
+            if (teaTreeBlock.isMaxAge(blockState)) {
+                teaTreeBlock.playerDestroy(level, player, newPos, blockState, null, ItemStack.EMPTY);
+                level.setBlock(newPos, teaTreeBlock.getStateForAge(0), Block.UPDATE_ALL);
+                level.levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, newPos, Block.getId(blockState));
+                return true;
+            }
+            return false;
         }
 
         // 如果是作物，那么检查是否成熟
