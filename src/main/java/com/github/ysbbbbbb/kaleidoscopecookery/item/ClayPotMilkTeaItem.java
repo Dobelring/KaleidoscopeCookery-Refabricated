@@ -3,12 +3,8 @@ package com.github.ysbbbbbb.kaleidoscopecookery.item;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.item.IHasContainer;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModConsumables;
 import net.minecraft.ChatFormatting;
-<<<<<<< HEAD
 import net.minecraft.advancements.triggers.CriteriaTriggers;
-=======
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
->>>>>>> 84279324 (修复骨粉催熟即收获、镰刀扫倒茶树、瓦罐奶茶音效)
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
