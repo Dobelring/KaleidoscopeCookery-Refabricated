@@ -60,4 +60,14 @@ public interface ActionEventCallback {
     interface EntityChangeTarget {
         void onEntityChangeTarget(LivingChangeTargetEvent event);
     }
+
+    @FunctionalInterface
+    interface CropGrowPre {
+        void beforeGrow(CropGrowEvent.Pre event);
+    }
+
+    @FunctionalInterface
+    interface CropGrowPost {
+        void afterGrow(CropGrowEvent.Post event);
+    }
 }

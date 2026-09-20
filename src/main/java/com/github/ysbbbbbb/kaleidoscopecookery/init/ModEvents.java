@@ -85,6 +85,20 @@ public final class ModEvents {
                 }
             });
 
+    public static final Event<ActionEventCallback.CropGrowPre> CROP_GROW_PRE =
+            EventFactory.createArrayBacked(ActionEventCallback.CropGrowPre.class, call -> (event) -> {
+                for (ActionEventCallback.CropGrowPre listener : call) {
+                    listener.beforeGrow(event);
+                }
+            });
+
+    public static final Event<ActionEventCallback.CropGrowPost> CROP_GROW_POST =
+            EventFactory.createArrayBacked(ActionEventCallback.CropGrowPost.class, call -> (event) -> {
+                for (ActionEventCallback.CropGrowPost listener : call) {
+                    listener.afterGrow(event);
+                }
+            });
+
     public static void init() {
         SpecialRecipeItemEvent.onCheckItemEvent();
         SpecialRecipeItemEvent.onDeductItemEvent();

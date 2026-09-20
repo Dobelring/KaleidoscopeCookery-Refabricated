@@ -8,6 +8,7 @@
     "AbstractArrowMixin",
     "AbstractHurtingProjectileMixin",
     "BlockMixin",
+    "CropBlockMixin",
     "FallingBlockEntityMixin",
     "FarmBlockMixin",
     "FishingHookMixin",
