@@ -106,8 +106,8 @@ public class SickleItem extends Item {
 
         // 如果是茶树，那么只收割成熟的，未成熟的保持原样（茶树属于植被方块，不特判会被直接破坏）
         if (block instanceof TeaTreeBlock teaTreeBlock) {
-            if (teaTreeBlock.isMaxAge(blockState)) {
-                teaTreeBlock.playerDestroy(level, player, newPos, blockState, null, ItemStack.EMPTY);
+            if (teaTreeBlock.isMaxAge(blockState) && player instanceof ServerPlayer serverPlayer) {
+                teaTreeBlock.playerDestroy(level, serverPlayer, newPos, blockState, null, ItemStack.EMPTY);
                 level.setBlock(newPos, teaTreeBlock.getStateForAge(0), Block.UPDATE_ALL);
                 level.levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, newPos, Block.getId(blockState));
                 return true;
