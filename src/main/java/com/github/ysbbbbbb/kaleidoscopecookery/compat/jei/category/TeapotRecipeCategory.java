@@ -4,6 +4,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModRecipes;
+import com.github.ysbbbbbb.kaleidoscopecookery.util.fluids.TeaFluidHelper;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -16,7 +17,6 @@ import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -24,7 +24,6 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -69,8 +68,10 @@ public class TeapotRecipeCategory implements IRecipeCategory<RecipeHolder<Teapot
                 .toList();
         ItemStack output = recipe.result().copyWithCount(TeapotRecipe.OUTPUT_COUNT);
 
-        Fluid fluid = BuiltInRegistries.FLUID.getValue(recipe.teaFluid());
-        Item bucket = fluid.getBucket();
+        // tea_fluid 可以是"虚拟流体"（如 minecraft:milk，没有注册流体，靠虚拟桶机制识别），
+        // 用 BuiltInRegistries.FLUID 查会落到默认的 minecraft:empty，桶变成 AIR、JEI 里那一格空白。
+        // 统一走 TeaFluidHelper，与游戏内 TeapotInput 的判定同源。
+        Item bucket = TeaFluidHelper.getFilledContainer(recipe.teaFluid()).getItem();
 
         builder.addSlot(RecipeIngredientRole.INPUT, 65, 3).setStandardSlotBackground().add(bucket);
         builder.addSlot(RecipeIngredientRole.INPUT, 83, 3).setStandardSlotBackground().addItemStacks(inputs);
