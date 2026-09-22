@@ -123,7 +123,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
                 int count = state.getValue(teaCount);
                 if (count < state.getValue(cupCount)) {
                     level.setBlockAndUpdate(pos, state.setValue(teaCount, count + 1));
-                    level.playSound(player, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0F, 1.0F);
                     TeapotItem.pourOut(itemInHand, level);
                     spawnPourParticles(level, pos);
                     return ItemInteractionResult.SUCCESS;
@@ -137,7 +137,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
             int count = state.getValue(cupCount);
             if (count < this.maxCount) {
                 level.setBlockAndUpdate(pos, state.setValue(cupCount, count + 1));
-                level.playSound(player, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(null, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative())
                     itemInHand.shrink(1);
                 return ItemInteractionResult.SUCCESS;
@@ -153,7 +153,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
                 level.setBlockAndUpdate(pos, state
                         .setValue(cupCount, cupCountNum + 1)
                         .setValue(teaCount, teaCountNum + 1));
-                level.playSound(player, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(null, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative())
                     itemInHand.shrink(1);
                 return ItemInteractionResult.SUCCESS;
