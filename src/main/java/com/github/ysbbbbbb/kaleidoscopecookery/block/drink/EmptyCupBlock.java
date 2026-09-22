@@ -134,7 +134,7 @@ public class EmptyCupBlock extends HorizontalDirectionalBlock implements SimpleW
                 ItemStack cupStack = new ItemStack(ModItems.EMPTY_CUP);
                 ItemUtils.getItemToLivingEntity(player, cupStack);
                 if (cupCountNum == 1) {
-                    level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
                 } else {
                     level.setBlockAndUpdate(pos, state.setValue(CUP_COUNT, cupCountNum - 1));
                 }
