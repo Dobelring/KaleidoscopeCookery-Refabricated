@@ -6,11 +6,8 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -26,6 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -33,6 +31,9 @@ import org.jspecify.annotations.NonNull;
 public class EightImmortalsTableBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
+    private static final VoxelShape SELECTION_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+    private static final VoxelShape COLLISION_SHAPE = Block.box(0, 12, 0, 16, 16, 16);
 
     public EightImmortalsTableBlock(Properties properties) {
         super(properties
@@ -47,6 +48,26 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock impleme
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, false)
                 .setValue(PART, Part.RIGHT_BOTTOM));
+    }
+
+    @Override
+    public @NonNull VoxelShape getShape(
+            @NonNull BlockState state,
+            @NonNull BlockGetter level,
+            @NonNull BlockPos pos,
+            @NonNull CollisionContext context
+    ) {
+        return SELECTION_SHAPE;
+    }
+
+    @Override
+    public @NonNull VoxelShape getCollisionShape(
+            @NonNull BlockState state,
+            @NonNull BlockGetter level,
+            @NonNull BlockPos pos,
+            @NonNull CollisionContext context
+    ) {
+        return COLLISION_SHAPE;
     }
 
     @Override
@@ -99,20 +120,22 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock impleme
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, @NonNull ServerLevel level, @NonNull BlockPos pos, boolean isMoving) {
-        Direction facing = state.getValue(FACING);
-        BlockPos anchor = getAnchorPos(pos, facing, state.getValue(PART));
-        for (Part part : Part.values()) {
-            BlockPos partPos = getPartPos(anchor, facing, part);
-            if (partPos.equals(pos)) {
-                continue;
-            }
-            BlockState partState = level.getBlockState(partPos);
-            if (partState.is(this)
-                && partState.getValue(FACING) == facing
-                && partState.getValue(PART) == part) {
-                level.setBlock(partPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
-                        Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
+    protected void affectNeighborsAfterRemoval(@NonNull BlockState state, @NonNull ServerLevel level, @NonNull BlockPos pos, boolean isMoving) {
+        if (!isMoving) {
+            Direction facing = state.getValue(FACING);
+            BlockPos anchor = getAnchorPos(pos, facing, state.getValue(PART));
+            for (Part part : Part.values()) {
+                BlockPos partPos = getPartPos(anchor, facing, part);
+                if (partPos.equals(pos)) {
+                    continue;
+                }
+                BlockState partState = level.getBlockState(partPos);
+                if (partState.is(this)
+                        && partState.getValue(FACING) == facing
+                        && partState.getValue(PART) == part) {
+                    level.setBlock(partPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),
+                            Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
+                }
             }
         }
         super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
