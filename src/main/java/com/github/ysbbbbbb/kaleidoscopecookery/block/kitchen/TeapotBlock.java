@@ -6,6 +6,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.RecipeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -138,6 +140,7 @@ public class TeapotBlock extends HorizontalDirectionalBlock implements SimpleWat
             // 如果手持物有流体，那么灌入
             if (TeapotBlockEntity.hasSupportedFluid(mainHandItem)) {
                 boolean result = teapot.addTeaFluid(level, player, mainHandItem);
+                level.playSound(player, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 return result ? SUCCESS_SERVER : CONSUME;
             }
 
