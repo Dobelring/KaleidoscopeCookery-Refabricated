@@ -111,6 +111,7 @@ public class EmptyCupBlock extends HorizontalDirectionalBlock implements SimpleW
                 level.setBlockAndUpdate(pos, teacupBlock.defaultBlockState()
                         .setValue(teacupBlock.getCupCountProperty(), currentCount + 1)
                         .setValue(teacupBlock.getTeaCountProperty(), 1)
+                        .setValue(WATERLOGGED, state.getValue(WATERLOGGED))
                         .setValue(FACING, state.getValue(FACING)));
                 level.playSound(player, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 itemInHand.shrink(1);
@@ -141,7 +142,7 @@ public class EmptyCupBlock extends HorizontalDirectionalBlock implements SimpleW
                 ItemStack cupStack = new ItemStack(ModItems.EMPTY_CUP);
                 ItemUtils.getItemToLivingEntity(player, cupStack);
                 if (cupCountNum == 1) {
-                    level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
                 } else {
                     level.setBlockAndUpdate(pos, state.setValue(CUP_COUNT, cupCountNum - 1));
                 }
