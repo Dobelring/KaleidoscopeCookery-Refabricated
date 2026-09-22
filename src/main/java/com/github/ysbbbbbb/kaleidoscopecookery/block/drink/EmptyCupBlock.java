@@ -111,6 +111,7 @@ public class EmptyCupBlock extends HorizontalDirectionalBlock implements SimpleW
                 level.setBlockAndUpdate(pos, teacupBlock.defaultBlockState()
                         .setValue(teacupBlock.getCupCountProperty(), currentCount + 1)
                         .setValue(teacupBlock.getTeaCountProperty(), 1)
+                        .setValue(WATERLOGGED, state.getValue(WATERLOGGED))
                         .setValue(FACING, state.getValue(FACING)));
                 level.playSound(player, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 itemInHand.shrink(1);
