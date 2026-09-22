@@ -42,7 +42,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 import static net.minecraft.world.InteractionResult.CONSUME;
-import static net.minecraft.world.InteractionResult.SUCCESS;
+import static net.minecraft.world.InteractionResult.SUCCESS_SERVER;
 
 public class TeapotBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, EntityBlock {
     public static final MapCodec<TeapotBlock> CODEC = simpleCodec(TeapotBlock::new);
@@ -134,6 +134,10 @@ public class TeapotBlock extends HorizontalDirectionalBlock implements SimpleWat
         if (!(blockEntity instanceof ITeapot teapot)) {
             return InteractionResult.PASS;
         }
+        // 状态可能尚未同步；客户端只消费交互，物品、方块和挥手由服务端决定。
+        if (level.isClientSide()) {
+            return CONSUME;
+        }
         ItemStack mainHandItem = player.getMainHandItem();
 
         // 加入茶水
@@ -141,27 +145,27 @@ public class TeapotBlock extends HorizontalDirectionalBlock implements SimpleWat
             // 如果手持物有流体，那么灌入
             if (TeapotBlockEntity.hasSupportedFluid(mainHandItem)) {
                 boolean result = teapot.addTeaFluid(level, player, mainHandItem);
-                return result ? SUCCESS : CONSUME;
+                return result ? SUCCESS_SERVER  : CONSUME;
             }
 
             // 否则取出
             boolean result = teapot.removeTeaFluid(level, player, mainHandItem);
-            return result ? SUCCESS : CONSUME;
+            return result ? SUCCESS_SERVER : CONSUME;
         }
 
         // 加入原料
         if (!mainHandItem.isEmpty()) {
-            return teapot.addIngredient(level, player, mainHandItem) ? SUCCESS : CONSUME;
+            return teapot.addIngredient(level, player, mainHandItem) ? SUCCESS_SERVER : CONSUME;
         }
 
         // 取出原料
         if (player.isSecondaryUseActive()) {
-            return teapot.removeIngredient(level, player) ? SUCCESS : CONSUME;
+            return teapot.removeIngredient(level, player) ? SUCCESS_SERVER : CONSUME;
         }
 
         // 拿起茶壶
         if (mainHandItem.isEmpty() && !player.isSecondaryUseActive()) {
-            return teapot.takeTeapot(level, player) ? SUCCESS : CONSUME;
+            return teapot.takeTeapot(level, player) ? SUCCESS_SERVER : CONSUME;
         }
         return InteractionResult.PASS;
     }

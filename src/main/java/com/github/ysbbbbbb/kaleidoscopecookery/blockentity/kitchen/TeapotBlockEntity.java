@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ITeapot;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
@@ -84,6 +85,20 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
     }
 
     public void tick(Level level) {
+        // 客户端只根据服务端同步的状态播放动画，不预测倒计时或完成状态。
+        if (level.isClientSide()) {
+            if (status != FINISHED) {
+                this.boilingState.stop();
+            } else if (Math.floorMod(level.getGameTime() + worldPosition.hashCode(), 11) == 0) {
+                if (hasHeatSource(level)) {
+                    this.boilingState.start((int) level.getGameTime());
+                } else {
+                    this.boilingState.stop();
+                }
+            }
+            return;
+        }
+
         // 如果现在处于 PUT_INGREDIENT 阶段
         if (status == ITeapot.PUT_INGREDIENT) {
             // 每 23 tick 检查一次
@@ -371,18 +386,30 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
 
     @Override
     public boolean takeTeapot(Level level, LivingEntity user) {
+        // 同时保护直接调用接口的路径，以及已取下/已替换的旧方块实体引用。
+        if (!(level instanceof ServerLevel) || this.level != level || isRemoved()
+                || level.getBlockEntity(worldPosition) != this) {
+            return false;
+        }
+
         if (status == PROCESSING) {
             this.sendActionBarMessage(user, "tooltip.kaleidoscope_cookery.teapot.take_teapot.state_incorrect");
             return false;
         }
 
-        for (ItemStack drop : getDrops()) {
+        // 先保存数据并确认方块移除成功，再发放物品；不能忽略 setBlock 的失败。
+        List<ItemStack> drops = getDrops();
+        if (!level.setBlock(worldPosition, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL)) {
+            KaleidoscopeCookery.LOGGER.warn("Cannot take teapot at {} in {} (status={}): block removal failed",
+                    worldPosition, level.dimension().identifier(), status);
+            return false;
+        }
+        for (ItemStack drop : drops) {
             ItemUtils.getItemToLivingEntity(user, drop);
         }
 
         level.playSound(null, worldPosition, SoundEvents.LANTERN_BREAK, SoundSource.BLOCKS, 0.6f,
                 0.8f + level.getRandom().nextFloat() * 0.2F);
-        level.setBlock(worldPosition, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 
         return true;
     }
