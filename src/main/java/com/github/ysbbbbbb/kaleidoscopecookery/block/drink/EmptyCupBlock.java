@@ -89,6 +89,7 @@ public class EmptyCupBlock extends HorizontalDirectionalBlock implements SimpleW
             level.setBlockAndUpdate(pos, teacupBlock.defaultBlockState()
                     .setValue(teacupBlock.getCupCountProperty(), Math.min(currentCount, teacupBlock.getMaxCount()))
                     .setValue(teacupBlock.getTeaCountProperty(), 1)
+                    .setValue(WATERLOGGED, state.getValue(WATERLOGGED))
                     .setValue(FACING, state.getValue(FACING)));
             return InteractionResult.SUCCESS;
         }
