@@ -79,7 +79,7 @@ public class FluidUtils {
                 ItemUtils.getItemToLivingEntity(user, result);
             }
         }
-        playTransferSound(user, FluidVariantAttributes.getFillSound(resource));
+        playTransferSound(user, FluidVariantAttributes.getEmptySound(resource));
         return true;
     }
 
@@ -146,7 +146,7 @@ public class FluidUtils {
         return true;
     }
 
-    private static void playTransferSound(LivingEntity user, @Nullable SoundEvent sound) {
+    static void playTransferSound(LivingEntity user, @Nullable SoundEvent sound) {
         if (sound != null && !user.level().isClientSide()) {
             // 服务端运行
             user.level().playSound(null, user.getX(), user.getY(), user.getZ(),
