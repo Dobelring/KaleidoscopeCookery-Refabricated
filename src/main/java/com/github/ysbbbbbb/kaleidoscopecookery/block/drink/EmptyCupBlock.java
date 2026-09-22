@@ -95,8 +95,26 @@ public class EmptyCupBlock extends HorizontalDirectionalBlock implements SimpleW
             level.setBlockAndUpdate(pos, teacupBlock.defaultBlockState()
                     .setValue(teacupBlock.getCupCountProperty(), Math.min(currentCount, teacupBlock.getMaxCount()))
                     .setValue(teacupBlock.getTeaCountProperty(), 1)
+                    .setValue(WATERLOGGED, state.getValue(WATERLOGGED))
                     .setValue(FACING, state.getValue(FACING)));
             return InteractionResult.SUCCESS;
+        }
+
+        // 如果是茶杯，将空杯转换为对应的茶杯
+        if (itemInHand.getItem() instanceof TeacupItem teacupItem
+                && teacupItem.getBlock() instanceof TeacupBlock teacupBlock) {
+            int currentCount = state.getValue(CUP_COUNT);
+            if (currentCount < teacupBlock.getMaxCount()) {
+                level.setBlockAndUpdate(pos, teacupBlock.defaultBlockState()
+                        .setValue(teacupBlock.getCupCountProperty(), currentCount + 1)
+                        .setValue(teacupBlock.getTeaCountProperty(), 1)
+                        .setValue(FACING, state.getValue(FACING)));
+                level.playSound(player, pos, this.soundType.getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                if (!player.isCreative())
+                    itemInHand.shrink(1);
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.CONSUME;
         }
 
         // 如果是空杯

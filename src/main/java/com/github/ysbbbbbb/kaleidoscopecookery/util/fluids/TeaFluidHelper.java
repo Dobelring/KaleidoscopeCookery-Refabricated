@@ -219,13 +219,11 @@ public final class TeaFluidHelper {
     }
 
     public static void playEmptySound(LivingEntity user, Identifier id) {
-        SoundEvent sound = getEmptySound(id);
-        user.playSound(sound);
+        FluidUtils.playTransferSound(user, getEmptySound(id));
     }
 
     public static void playFillSound(LivingEntity user, Identifier id) {
-        SoundEvent sound = getFillSound(id);
-        user.playSound(sound);
+        FluidUtils.playTransferSound(user, getFillSound(id));
     }
 
     private static @NonNull SoundEvent getEmptySound(Identifier id) {
