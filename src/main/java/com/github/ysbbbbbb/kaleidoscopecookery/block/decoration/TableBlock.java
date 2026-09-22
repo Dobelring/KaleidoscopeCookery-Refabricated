@@ -56,6 +56,9 @@ public class TableBlock extends Block implements SimpleWaterloggedBlock, EntityB
     public static final int MIDDLE = 2;
     public static final int RIGHT = 3;
 
+    private static final VoxelShape SELECTION_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+    private static final VoxelShape COLLISION_SHAPE = Block.box(0, 14, 0, 16, 16, 16);
+
     private static final VoxelShape FACE = Block.box(0, 13, 0, 16, 16, 16);
 
     public TableBlock(SoundType soundType) {
@@ -266,7 +269,12 @@ public class TableBlock extends Block implements SimpleWaterloggedBlock, EntityB
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
-        return FACE;
+        return SELECTION_SHAPE;
+    }
+
+    @Override
+    public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
+        return COLLISION_SHAPE;
     }
 
     @Override
