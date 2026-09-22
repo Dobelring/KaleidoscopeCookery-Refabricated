@@ -168,7 +168,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
                 Block.popResourceFromFace(level, pos, Direction.UP, teaStack);
             }
             if (cupCountNum == 1) {
-                level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
             } else if (teaCountNum == 1) {
                 level.setBlockAndUpdate(pos, ModBlocks.EMPTY_CUP.defaultBlockState()
                         .setValue(EmptyCupBlock.CUP_COUNT, cupCountNum - 1)
@@ -187,7 +187,7 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
         if (itemInHand.isEmpty() && cupCountNum > 0) {
             ItemUtils.getItemToLivingEntity(player, new ItemStack(ModItems.EMPTY_CUP));
             if (cupCountNum == 1) {
-                level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
             } else {
                 level.setBlockAndUpdate(pos, state.setValue(cupCount, cupCountNum - 1));
             }
