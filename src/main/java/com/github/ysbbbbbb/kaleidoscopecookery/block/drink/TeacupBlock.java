@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.block.drink;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModParticles;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteAnimateTicks;
@@ -156,11 +157,31 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
             return InteractionResult.CONSUME;
         }
 
-        // 如果是空手，先取下茶杯，空杯
+        // 如果是空手，优先取下茶水，再取下空杯
         if (itemInHand.isEmpty()) {
             int cupCountNum = state.getValue(cupCount);
             int teaCountNum = state.getValue(teaCount);
             int emptyCountNum = cupCountNum - teaCountNum;
+
+            // 取下茶水
+            if (teaCountNum > 0) {
+                ItemStack teaStack = new ItemStack(this);
+                ItemUtils.getItemToLivingEntity(player, teaStack);
+                if (cupCountNum == 1) {
+                    level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
+                } else if (teaCountNum == 1) {
+                    level.setBlockAndUpdate(pos, ModBlocks.EMPTY_CUP.defaultBlockState()
+                            .setValue(EmptyCupBlock.CUP_COUNT, cupCountNum - 1)
+                            .setValue(FACING, state.getValue(FACING))
+                            .setValue(WATERLOGGED, state.getValue(WATERLOGGED)));
+                } else {
+                    level.setBlockAndUpdate(pos, state
+                            .setValue(teaCount, teaCountNum - 1)
+                            .setValue(cupCount, cupCountNum - 1));
+                }
+                level.playSound(player, pos, this.soundType.getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                return InteractionResult.SUCCESS;
+            }
 
             // 取下空杯
             if (emptyCountNum > 0) {
@@ -172,21 +193,6 @@ public class TeacupBlock extends HorizontalDirectionalBlock implements SimpleWat
                     level.setBlockAndUpdate(pos, state.setValue(cupCount, cupCountNum - 1));
                 }
                 level.playSound(player, pos, this.soundType.getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                return InteractionResult.SUCCESS;
-            }
-
-            if (teaCountNum > 0) {
-                // 取下茶水
-                ItemStack teaStack = new ItemStack(this);
-                ItemUtils.getItemToLivingEntity(player, teaStack);
-                if (cupCountNum == 1) {
-                    level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
-                } else {
-                    level.setBlockAndUpdate(pos, state
-                            .setValue(teaCount, teaCountNum - 1)
-                            .setValue(cupCount, cupCountNum - 1));
-                    level.playSound(player, pos, this.soundType.getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
                 return InteractionResult.SUCCESS;
             }
         }
