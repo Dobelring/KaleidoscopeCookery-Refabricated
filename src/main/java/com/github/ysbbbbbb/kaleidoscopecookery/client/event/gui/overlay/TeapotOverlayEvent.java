@@ -34,6 +34,10 @@ import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public final class TeapotOverlayEvent {
+    private static final int BOTTOM_OFFSET = 72;
+    private static final int LINE_SPACING = 2;
+    private static final int ACTION_BAR_GAP = 4;
+
     private TeapotOverlayEvent() {
     }
 
@@ -71,19 +75,27 @@ public final class TeapotOverlayEvent {
         }
 
         Font font = minecraft.font;
-        int x = minecraft.getWindow().getGuiScaledWidth() / 2;
-        int y = minecraft.getWindow().getGuiScaledHeight() - 72;
-        if (minecraft.gui.overlayMessageTime > 0) {
-            y -= 12;
-        }
+        Component detail = getDetailText(teapot);
+        boolean hasDetail = !detail.equals(CommonComponents.EMPTY);
+        int x = guiGraphics.guiWidth() / 2;
+        int y = getOverlayTop(guiGraphics.guiHeight(), font.lineHeight, hasDetail,
+                minecraft.gui.overlayMessageTime > 0);
 
         drawSingleLine(guiGraphics, font, teapot.getStatusText(), x, y);
-        y += font.lineHeight + 2;
+        y += font.lineHeight + LINE_SPACING;
 
-        Component detail = getDetailText(teapot);
-        if (!detail.equals(CommonComponents.EMPTY)) {
+        if (hasDetail) {
             drawSingleLine(guiGraphics, font, detail, x, y);
         }
+    }
+
+    static int getOverlayTop(int screenHeight, int lineHeight, boolean hasDetail, boolean actionBarVisible) {
+        int y = screenHeight - BOTTOM_OFFSET;
+        if (actionBarVisible) {
+            int overlayHeight = hasDetail ? lineHeight * 2 + LINE_SPACING : lineHeight;
+            y -= overlayHeight + ACTION_BAR_GAP;
+        }
+        return y;
     }
 
     private static Component getDetailText(TeapotBlockEntity teapot) {

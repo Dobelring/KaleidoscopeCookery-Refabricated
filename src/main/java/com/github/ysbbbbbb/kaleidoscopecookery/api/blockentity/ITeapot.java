@@ -75,7 +75,8 @@ public interface ITeapot {
     /**
      * 将茶壶直接取下，变成物品形态
      * <p>
-     * 当茶壶处于完成状态时，才能取下，其他状态返回 false
+     * 准备或完成状态可取下，烹煮中返回 false。仅服务端执行，
+     * 确认方块移除成功后才发放物品；客户端或已失效的方块实体返回 false。
      *
      * @param level 使用者所处的 level
      * @param user  使用者
