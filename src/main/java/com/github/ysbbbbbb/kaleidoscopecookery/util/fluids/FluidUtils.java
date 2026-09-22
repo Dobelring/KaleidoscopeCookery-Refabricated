@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -78,10 +79,7 @@ public class FluidUtils {
                 ItemUtils.getItemToLivingEntity(user, result);
             }
         }
-        SoundEvent sound = FluidVariantAttributes.getEmptySound(resource);
-        if (sound != null) {
-            user.playSound(sound);
-        }
+        playTransferSound(user, FluidVariantAttributes.getEmptySound(resource));
         return true;
     }
 
@@ -144,11 +142,16 @@ public class FluidUtils {
                 ItemUtils.getItemToLivingEntity(user, result);
             }
         }
-        SoundEvent sound = FluidVariantAttributes.getFillSound(resource);
-        if (sound != null) {
-            user.playSound(sound);
-        }
+        playTransferSound(user, FluidVariantAttributes.getFillSound(resource));
         return true;
+    }
+
+    static void playTransferSound(LivingEntity user, @Nullable SoundEvent sound) {
+        if (sound != null && !user.level().isClientSide()) {
+            // 服务端运行
+            user.level().playSound(null, user.getX(), user.getY(), user.getZ(),
+                    sound, SoundSource.BLOCKS, 1.0F, 1.0F);
+        }
     }
 
     public static boolean isFluidContainer(ItemStack stack) {
