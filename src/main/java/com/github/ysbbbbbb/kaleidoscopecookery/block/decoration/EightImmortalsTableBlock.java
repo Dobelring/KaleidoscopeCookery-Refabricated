@@ -24,12 +24,16 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EightImmortalsTableBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
+    private static final VoxelShape SELECTION_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+    private static final VoxelShape COLLISION_SHAPE = Block.box(0, 12, 0, 16, 16, 16);
 
     public EightImmortalsTableBlock() {
         super(Properties.of()
@@ -97,7 +101,7 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock impleme
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState state, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
+        if (!state.is(newState.getBlock()) && !isMoving) {
             Direction facing = state.getValue(FACING);
             BlockPos anchor = getAnchorPos(pos, facing, state.getValue(PART));
             for (Part part : Part.values()) {
@@ -115,6 +119,18 @@ public class EightImmortalsTableBlock extends HorizontalDirectionalBlock impleme
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return SELECTION_SHAPE;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return COLLISION_SHAPE;
     }
 
     @SuppressWarnings("deprecation")

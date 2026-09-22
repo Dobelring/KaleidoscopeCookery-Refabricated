@@ -52,6 +52,9 @@ public class TableBlock extends Block implements SimpleWaterloggedBlock, EntityB
     public static final BooleanProperty HAS_CARPET = BooleanProperty.create("has_carpet");
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+    private static final VoxelShape SELECTION_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+    private static final VoxelShape COLLISION_SHAPE = Block.box(0, 14, 0, 16, 16, 16);
+
     public static final int SINGLE = 0;
     public static final int LEFT = 1;
     public static final int MIDDLE = 2;
@@ -295,7 +298,12 @@ public class TableBlock extends Block implements SimpleWaterloggedBlock, EntityB
 
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
-        return FACE;
+        return SELECTION_SHAPE;
+    }
+
+    @Override
+    public @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter blockGetter, @NotNull BlockPos pos, @NotNull CollisionContext collisionContext) {
+        return COLLISION_SHAPE;
     }
 
     @Override
