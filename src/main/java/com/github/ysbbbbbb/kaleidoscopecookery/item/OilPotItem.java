@@ -26,7 +26,7 @@ public class OilPotItem extends WithTooltipsBlockItem {
     private static final int HAS_OIL = 1;
 
     public OilPotItem(Block block, Properties properties) {
-        super(block, properties.stacksTo(16), "oil_pot");
+        super(block, properties.stacksTo(1), "oil_pot");
     }
 
     public static void setOilCount(ItemStack stack, int count) {

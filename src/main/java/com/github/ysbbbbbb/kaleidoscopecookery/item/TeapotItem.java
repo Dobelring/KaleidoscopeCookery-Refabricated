@@ -33,7 +33,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -58,11 +57,11 @@ import java.util.function.Function;
 
 import static com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer.EMPTY_TEA_FLUID;
 
-public class TeapotItem extends BlockItem {
+public class TeapotItem extends WithTooltipsBlockItem {
     private static final String MYSTERY_TEA_ID = TeacupRegistry.MYSTERY_TEA.toString();
 
     public TeapotItem(Block block, Properties properties) {
-        super(block, properties.stacksTo(1));
+        super(block, properties.stacksTo(1), "teapot");
     }
 
     /**
@@ -333,8 +332,8 @@ public class TeapotItem extends BlockItem {
 
     @Override
     @Environment(EnvType.CLIENT)
-    @SuppressWarnings("deprecation")
-    public void appendHoverText(ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag pFlag) {
+    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag pFlag) {
+        super.appendHoverText(stack, context, tooltipDisplay, consumer, pFlag);
         // 如果是成品阶段，那么显示成品信息
         if (!stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
             return;

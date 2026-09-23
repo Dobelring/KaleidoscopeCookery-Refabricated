@@ -61,7 +61,7 @@ public final class ModItems {
     public static final Item STEAMER = registerItemViaBlock(ModBlocks.STEAMER, SteamerItem::new);
     public static final Item OIL_POT = registerItemViaBlock(ModBlocks.OIL_POT, OilPotItem::new);
     public static final Item TRASH_CAN = registerItemViaBlockWithDesc(ModBlocks.TRASH_CAN, "trash_can");
-    public static final Item TEAPOT = registerItemViaBlockWithDesc(ModBlocks.TEAPOT, "teapot");
+    public static final Item TEAPOT = registerItemViaBlock(ModBlocks.TEAPOT, TeapotItem::new);
     public static final Item EMPTY_CUP = registerItemViaBlock(ModBlocks.EMPTY_CUP, EmptyCupItem::new);
     public static final Item BAMBOO_TRAY = registerItemViaBlockWithDesc(ModBlocks.BAMBOO_TRAY, "bamboo_tray");
     public static final Item TEA_BANNER = registerItemViaBlock(ModBlocks.TEA_BANNER, TeaBannerItem::new);
