@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.OilPotBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
@@ -25,13 +26,14 @@ public class OilPotBlockEntity extends BaseBlockEntity {
         super(ModBlocks.OIL_POT_BE, pos, state);
     }
 
-
+    @ServerThreadSafe
     @Override
     protected void saveAdditional(@NonNull ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
         valueOutput.putInt(OIL_COUNT, oilCount);
     }
 
+    @ServerThreadSafe
     @Override
     protected void loadAdditional(@NonNull ValueInput valueInput) {
         super.loadAdditional(valueInput);

@@ -12,12 +12,13 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
 public class TeaBannerItem extends WithTooltipsBlockItem {
-    public TeaBannerItem(net.minecraft.world.level.block.Block block, Item.Properties properties) {
+    public TeaBannerItem(Block block, Item.Properties properties) {
         super(block, properties.stacksTo(1), "tea_banner");
     }
 
