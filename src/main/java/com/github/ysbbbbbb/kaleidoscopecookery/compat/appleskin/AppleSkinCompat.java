@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.compat.appleskin;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.TransmutationLunchBagItem;
 import net.fabricmc.api.EnvType;
@@ -15,6 +16,7 @@ public final class AppleSkinCompat implements AppleSkinApi {
     @Override
     public void registerEvents() {
         FoodValuesEvent.EVENT.register(AppleSkinCompat::onFoodValues);
+        KaleidoscopeCookery.LOGGER.info("Registered AppleSkin lunch bag food preview");
     }
 
     private static void onFoodValues(FoodValuesEvent event) {
