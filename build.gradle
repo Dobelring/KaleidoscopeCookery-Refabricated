@@ -172,7 +172,8 @@ dependencies {
     //FTB
     modImplementation "curse.maven:ftb-library-fabric-438495:7296747"
     modImplementation "curse.maven:ftb-ultimine-fabric-448231:6899416"
-
+    // AppleSkin
+    modImplementation "maven.modrinth:EsAfCjCV:N5XeV21r"
     // Every Compat
     modCompileOnly("net.mehvahdjukaar:everycomp-fabric:1.20-2.9.26")
     modCompileOnly("net.mehvahdjukaar:moonlight-fabric:1.20-2.16.35")
@@ -274,4 +275,14 @@ fabricApi {
 tasks.named('runGameTest', JavaExec) {
     systemProperty 'fabric-api.gametest.report-file', layout.buildDirectory.file('reports/gametest/results.xml').get().asFile.absolutePath
     doFirst { layout.buildDirectory.dir('reports/gametest').get().asFile.mkdirs() }
+}
+
+// Opt-in real-client check of AppleSkin's entrypoint, event and tooltip integration.
+loom.runs {
+    appleSkinSmokeTest {
+        client()
+        source sourceSets.gametest
+        runDir 'build/appleskin-smoke'
+        vmArg '-Dcookery.appleskinSmokeTest=true'
+    }
 }

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class KitchenwareRacksBlockEntityRender implements BlockEntityRenderer<KitchenwareRacksBlockEntity> {
@@ -22,7 +23,7 @@ public class KitchenwareRacksBlockEntityRender implements BlockEntityRenderer<Ki
 
     @Override
     public void render(KitchenwareRacksBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-                       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+                       @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ItemStack itemLeft = blockEntity.getItemLeft();
         ItemStack itemRight = blockEntity.getItemRight();
 

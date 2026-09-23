@@ -24,7 +24,7 @@ public final class ModItems {
     public static final Item STOCKPOT_LID = new StockpotLidItem();
     public static final Item CHOPPING_BOARD = new BlockItem(ModBlocks.CHOPPING_BOARD, new Item.Properties());
     public static final Item KITCHENWARE_RACKS = new BlockItem(ModBlocks.KITCHENWARE_RACKS, new Item.Properties());
-    public static final Item BAMBOO_TRAY = new BlockItem(ModBlocks.BAMBOO_TRAY, new Item.Properties());
+    public static final Item BAMBOO_TRAY = new WithTooltipsBlockItem(ModBlocks.BAMBOO_TRAY, new Item.Properties(), "bamboo_tray");
     public static final Item SHAWARMA_SPIT = new BlockItem(ModBlocks.SHAWARMA_SPIT, new Item.Properties());
     public static final Item MILLSTONE = new BlockItem(ModBlocks.MILLSTONE, new Item.Properties());
     public static final Item STEAMER = new SteamerItem();
@@ -45,9 +45,10 @@ public final class ModItems {
     public static Item EMPTY_CUP = new EmptyCupItem();
 
     // 垃圾桶
-    public static final Item TRASH_CAN = new BlockItem(ModBlocks.TRASH_CAN, new Item.Properties());
-
+    public static final Item TRASH_CAN = new WithTooltipsBlockItem(ModBlocks.TRASH_CAN, new Item.Properties(), "trash_can");
+    // 椅子
     public static final Item LONG_BENCH = new BlockItem(ModBlocks.LONG_BENCH, new Item.Properties());
+    // 红灯笼
     public static final Item RED_LANTERN = new BlockItem(ModBlocks.RED_LANTERN, new Item.Properties());
 
     // 油

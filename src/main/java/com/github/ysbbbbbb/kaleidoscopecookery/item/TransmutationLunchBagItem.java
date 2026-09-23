@@ -57,7 +57,7 @@ public class TransmutationLunchBagItem extends Item {
     private static final String TAG_ITEMS = "Items";
 
     public TransmutationLunchBagItem() {
-        super((new Item.Properties()).stacksTo(1));
+        super((new Item.Properties()).stacksTo(1).food(new FoodProperties.Builder().alwaysEat().build()));
     }
 
     @SuppressWarnings("unused")
@@ -76,11 +76,24 @@ public class TransmutationLunchBagItem extends Item {
 
     public static ItemStackHandler getItems(ItemStack bag) {
         ItemStackHandler handler = new ItemStackHandler(MAX_SIZE);
-        CompoundTag tag = bag.getOrCreateTag();
-        if (tag.contains(TAG_ITEMS, Tag.TAG_COMPOUND)) {
+        CompoundTag tag = bag.getTag();
+        if (tag != null && tag.contains(TAG_ITEMS, Tag.TAG_COMPOUND)) {
             handler.deserializeNBT(tag.getCompound(TAG_ITEMS));
         }
         return handler;
+    }
+
+    @Nullable
+    public static FoodProperties getNextFoodProperties(ItemStack bag) {
+        if (!hasItems(bag)) return null;
+        ItemStackHandler items = getItems(bag);
+        for (int i = 0; i < items.getSlots(); i++) {
+            ItemStack stack = items.getStackInSlot(i);
+            if (stack.isEmpty()) continue;
+            FoodProperties food = stack.getItem().getFoodProperties();
+            if (food != null || stack.is(Items.POTION)) return food;
+        }
+        return null;
     }
 
     public static void setItems(ItemStack bag, ItemStackHandler items) {
@@ -335,7 +348,7 @@ public class TransmutationLunchBagItem extends Item {
     }
 
     public static boolean canAdd(ItemStack food) {
-        if (food.isEmpty()) {
+        if (food.isEmpty() || food.getItem() instanceof TransmutationLunchBagItem) {
             return false;
         }
         if (!food.getItem().canFitInsideContainerItems()) {

@@ -50,9 +50,9 @@ import java.util.function.Function;
 import static com.github.ysbbbbbb.kaleidoscopecookery.crafting.serializer.TeapotRecipeSerializer.EMPTY_TEA_FLUID;
 
 @SuppressWarnings("UnstableApiUsage")
-public class TeapotItem extends BlockItem {
+public class TeapotItem extends WithTooltipsBlockItem {
     public TeapotItem() {
-        super(ModBlocks.TEAPOT, new Properties().stacksTo(1));
+        super(ModBlocks.TEAPOT, new Properties().stacksTo(1), "teapot");
     }
 
     /**
@@ -349,6 +349,7 @@ public class TeapotItem extends BlockItem {
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> list, @NotNull TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, list, pFlag);
         // 如果是成品阶段，那么显示成品信息
         CompoundTag data = BlockItem.getBlockEntityData(pStack);
         if (data == null) {

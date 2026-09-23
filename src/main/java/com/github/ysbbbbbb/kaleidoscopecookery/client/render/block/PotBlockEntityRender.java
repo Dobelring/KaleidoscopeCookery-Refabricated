@@ -18,6 +18,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class PotBlockEntityRender implements BlockEntityRenderer<PotBlockEntity>
     }
 
     @Override
-    public void render(PotBlockEntity pot, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void render(PotBlockEntity pot, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
         RandomSource source = RandomSource.create(pot.getSeed());
         PotBlockEntity.StirFryAnimationData data = pot.animationData;
         long time = System.currentTimeMillis() - data.timestamp;

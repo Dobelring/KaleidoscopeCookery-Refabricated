@@ -30,13 +30,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SteamerItem extends BlockItem {
+public class SteamerItem extends WithTooltipsBlockItem {
     public static final ResourceLocation HAS_ITEMS = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "has_items");
     private static final int NONE = 0;
     private static final int HAS = 1;
 
     public SteamerItem() {
-        super(ModBlocks.STEAMER, new Item.Properties());
+        super(ModBlocks.STEAMER, new Item.Properties(), "steamer");
     }
 
     @Override
