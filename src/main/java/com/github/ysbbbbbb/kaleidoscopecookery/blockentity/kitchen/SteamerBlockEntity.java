@@ -1,7 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ISteamer;
-import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ServerThreadSafe;
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.SteamerBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.SteamerRecipe;

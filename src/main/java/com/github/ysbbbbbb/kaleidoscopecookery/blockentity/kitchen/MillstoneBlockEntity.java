@@ -1,7 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.IMillstone;
-import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ServerThreadSafe;
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.event.MillstoneMatchRecipeEvent;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.SimpleInput;

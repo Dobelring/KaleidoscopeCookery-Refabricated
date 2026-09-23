@@ -24,7 +24,6 @@
     "VillagerMixin"
   ],
   "client": [
-    "client.BlockEntityRendererMixin",
     "client.CameraMixin",
     "client.HumanoidModelMixin",
     "client.LeftClickMixin",

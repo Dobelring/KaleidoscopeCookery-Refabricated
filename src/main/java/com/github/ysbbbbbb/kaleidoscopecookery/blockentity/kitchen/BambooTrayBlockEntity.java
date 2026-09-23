@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.IBambooTray;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.BambooTrayRecipe;
@@ -258,6 +259,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
         this.refresh();
     }
 
+    @ServerThreadSafe
     @Override
     protected void saveAdditional(@NonNull ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
@@ -278,6 +280,7 @@ public class BambooTrayBlockEntity extends BaseBlockEntity implements WorldlyCon
         valueOutput.putIntArray(COMPLETION_STATES_TAG, completionValues);
     }
 
+    @ServerThreadSafe
     @Override
     protected void loadAdditional(@NonNull ValueInput valueInput) {
         super.loadAdditional(valueInput);
