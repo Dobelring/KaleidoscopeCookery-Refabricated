@@ -25,12 +25,13 @@
     "jei_mod_plugin": ["com.github.ysbbbbbb.kaleidoscopecookery.compat.jei.ModJeiPlugin"],
     "rei_client": ["com.github.ysbbbbbb.kaleidoscopecookery.compat.rei.ModREIClientPlugin"],
     "jade": ["com.github.ysbbbbbb.kaleidoscopecookery.compat.jade.ModPlugin"],
-    "emi": ["com.github.ysbbbbbb.kaleidoscopecookery.compat.emi.ModEmiPlugin"]
+    "emi": ["com.github.ysbbbbbb.kaleidoscopecookery.compat.emi.ModEmiPlugin"],
+    "appleskin": ["com.github.ysbbbbbb.kaleidoscopecookery.compat.appleskin.AppleSkinCompat"]
   },
   "mixins": ["kaleidoscope_cookery.mixins.json"],
   "accessWidener": "kaleidoscope_cookery.accessWidener",
   "depends": {
-    "fabricloader": ">=0.18",
+    "fabricloader": ">=0.19",
     "fabric": "*",
     "fabric-api": "*",
     "minecraft": "1.21.1",

@@ -1,4 +1,4 @@
-package com.github.ysbbbbbb.kaleidoscopecookery.item;
+package com.github.ysbbbbbb.kaleidoscopecookery.item.template;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public class WithTooltipsItem extends Item {
-    private final String key;
+    protected final String key;
 
     public WithTooltipsItem(Properties properties, String name) {
         super(properties);

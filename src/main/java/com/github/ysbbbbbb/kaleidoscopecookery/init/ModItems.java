@@ -2,6 +2,8 @@ package com.github.ysbbbbbb.kaleidoscopecookery.init;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.*;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsItem;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,7 +30,7 @@ public final class ModItems {
     public static final Item OIL_POT = new OilPotItem();
     public static final Item TEAPOT = new TeapotItem();
     public static final Item EMPTY_CUP = new EmptyCupItem();
-    public static final Item BAMBOO_TRAY = new BlockItem(ModBlocks.BAMBOO_TRAY, new Item.Properties());
+    public static final Item BAMBOO_TRAY = new WithTooltipsBlockItem(ModBlocks.BAMBOO_TRAY, new Item.Properties(), "bamboo_tray");
     public static final Item TEA_BANNER = new TeaBannerItem();
     public static final Item LONG_BENCH = new BlockItem(ModBlocks.LONG_BENCH, new Item.Properties());
     public static final Item RED_LANTERN = new BlockItem(ModBlocks.RED_LANTERN, new Item.Properties());
@@ -45,7 +47,7 @@ public final class ModItems {
     public static final Item TEA_EGG = new FoodWithEffectsItem(ModFoods.TEA_EGG);
 
 
-    public static final Item TRASH_CAN = new BlockItem(ModBlocks.TRASH_CAN, new Item.Properties());
+    public static final Item TRASH_CAN = new WithTooltipsBlockItem(ModBlocks.TRASH_CAN, new Item.Properties(), "trash_can");
 
     // Feast
     public static final Item COLD_CUT_HAM_SLICES = new LiftBlockItem(ModBlocks.COLD_CUT_HAM_SLICES, "cold_cut_ham_slices");
