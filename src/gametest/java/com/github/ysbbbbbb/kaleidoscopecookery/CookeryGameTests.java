@@ -10,6 +10,8 @@ import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.StockpotBlock
 import com.github.ysbbbbbb.kaleidoscopecookery.init.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.TeapotItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.TransmutationLunchBagItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.util.forge.ItemStackHandler;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotContainer;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.FluidSoupBase;
@@ -52,6 +54,26 @@ import net.minecraft.world.phys.Vec3;
 
 public class CookeryGameTests implements FabricGameTest {
     private static final BlockPos POT = new BlockPos(1, 1, 1);
+
+    @GameTest(template = EMPTY_STRUCTURE)
+    public void lunchBagSupportsFullHungerAndCannotContainItself(GameTestHelper helper) {
+        Player player = helper.makeMockSurvivalPlayer();
+        player.getFoodData().setFoodLevel(20);
+        ItemStack bag = new ItemStack(ModItems.TRANSMUTATION_LUNCH_BAG);
+        ItemStackHandler items = new ItemStackHandler(16);
+        items.setStackInSlot(0, new ItemStack(Items.APPLE, 2));
+        TransmutationLunchBagItem.setItems(bag, items);
+        player.setItemInHand(InteractionHand.MAIN_HAND, bag);
+        helper.assertTrue(bag.isEdible() && player.canEat(bag.getItem().getFoodProperties().canAlwaysEat()),
+                "AppleSkin's food gate must allow the lunch bag at full hunger");
+        helper.assertTrue(bag.getItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND).getResult().consumesAction(),
+                "Lunch bag must remain usable at full hunger");
+        bag.finishUsingItem(helper.getLevel(), player);
+        helper.assertTrue(TransmutationLunchBagItem.getItems(bag).getStackInSlot(0).getCount() == 1,
+                "Using the bag must consume one contained apple");
+        helper.assertTrue(!TransmutationLunchBagItem.canAdd(bag), "Food metadata must not enable nesting lunch bags");
+        helper.succeed();
+    }
 
     @GameTest(template = EMPTY_STRUCTURE)
     public void creativeWaterBucketFillsTeapotWithoutConsumption(GameTestHelper helper) {

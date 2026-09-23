@@ -3,6 +3,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.item;
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.OilPotBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -12,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OilPotItem extends BlockItem {
+public class OilPotItem extends WithTooltipsBlockItem {
     public static final ResourceLocation HAS_OIL_PROPERTY = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "has_oil");
 
     private static final String OIL_COUNT = "oil_count";
@@ -30,7 +30,7 @@ public class OilPotItem extends BlockItem {
     private static final int HAS_OIL = 1;
 
     public OilPotItem() {
-        super(ModBlocks.OIL_POT, new Item.Properties().stacksTo(1));
+        super(ModBlocks.OIL_POT, new Item.Properties().stacksTo(1), "oil_pot");
     }
 
     public static void setOilCount(ItemStack stack, int count) {
@@ -74,6 +74,7 @@ public class OilPotItem extends BlockItem {
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         int oilCount = getOilCount(pStack);
         if (oilCount > 0) {
             pTooltipComponents.add(Component.translatable("tooltip.kaleidoscope_cookery.oil_pot.count", oilCount)

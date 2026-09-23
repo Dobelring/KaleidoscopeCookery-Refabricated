@@ -18,6 +18,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.inventory.tooltip.RecipeItemToolt
 import com.github.ysbbbbbb.kaleidoscopecookery.item.quality.Quality;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.quality.QualityEvaluator;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.quality.QualityUtils;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.forge.IItemHandler;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.forge.PlayerMainInvWrapper;
 import com.google.common.collect.Lists;
@@ -25,7 +26,6 @@ import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -58,7 +58,7 @@ import java.util.Optional;
 
 import static com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils.getItemToLivingEntity;
 
-public class RecipeItem extends BlockItem {
+public class RecipeItem extends WithTooltipsBlockItem {
     public static final ResourceLocation HAS_RECIPE_PROPERTY = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "has_recipe");
 
     public static final ResourceLocation POT = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "pot");
@@ -77,7 +77,7 @@ public class RecipeItem extends BlockItem {
     private static final int HAS_RECIPE = 1;
 
     public RecipeItem() {
-        super(ModBlocks.RECIPE_BLOCK, new Item.Properties());
+        super(ModBlocks.RECIPE_BLOCK, new Item.Properties(), "recipe_item");
     }
 
     public static void setRecipe(ItemStack stack, RecipeRecord record) {
@@ -428,11 +428,6 @@ public class RecipeItem extends BlockItem {
             return Optional.of(new RecipeItemTooltip(recipe, quality));
         }
         return Optional.empty();
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.kaleidoscope_cookery.recipe_item").withStyle(ChatFormatting.GRAY));
     }
 
     private record RecipeResult(ItemStack output, boolean flexRecipe) {

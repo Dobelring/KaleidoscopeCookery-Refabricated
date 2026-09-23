@@ -55,7 +55,7 @@ public class FoodBiteThreeByThreeBlockEntityRender implements BlockEntityRendere
     }
 
     @Override
-    public boolean shouldRenderOffScreen(FoodBiteThreeByThreeBlockEntity pBlockEntity) {
+    public boolean shouldRenderOffScreen(@NotNull FoodBiteThreeByThreeBlockEntity pBlockEntity) {
         return true;
     }
 }
