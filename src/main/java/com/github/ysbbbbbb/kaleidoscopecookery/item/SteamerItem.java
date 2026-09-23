@@ -32,12 +32,12 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
-public class SteamerItem extends BlockItem {
+public class SteamerItem extends WithTooltipsBlockItem {
     private static final int NONE = 0;
     private static final int HAS = 1;
 
     public SteamerItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties, "steamer");
     }
 
     @Override
@@ -88,7 +88,6 @@ public class SteamerItem extends BlockItem {
         return NONE;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext tooltip, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag) {
         consumer.accept(Component.translatable("tooltip.kaleidoscope_cookery.steamer").withStyle(ChatFormatting.GRAY));

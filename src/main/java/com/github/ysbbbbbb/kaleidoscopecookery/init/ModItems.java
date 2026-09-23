@@ -59,7 +59,7 @@ public final class ModItems {
     public static final Item SHAWARMA_SPIT = registerItemViaBlockWithDesc(ModBlocks.SHAWARMA_SPIT, "shawarma_spit");
     public static final Item MILLSTONE = registerItemViaBlockWithDesc(ModBlocks.MILLSTONE, "millstone");
     public static final Item STEAMER = registerItemViaBlock(ModBlocks.STEAMER, SteamerItem::new);
-    public static final Item OIL_POT = registerItemViaBlockWithDesc(ModBlocks.OIL_POT, "oil_pot");
+    public static final Item OIL_POT = registerItemViaBlock(ModBlocks.OIL_POT, OilPotItem::new);
     public static final Item TRASH_CAN = registerItemViaBlockWithDesc(ModBlocks.TRASH_CAN, "trash_can");
     public static final Item TEAPOT = registerItemViaBlockWithDesc(ModBlocks.TEAPOT, "teapot");
     public static final Item EMPTY_CUP = registerItemViaBlock(ModBlocks.EMPTY_CUP, EmptyCupItem::new);
