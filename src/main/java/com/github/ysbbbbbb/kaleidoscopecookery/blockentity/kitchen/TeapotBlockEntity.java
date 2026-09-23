@@ -2,7 +2,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ITeapot;
-import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ServerThreadSafe;
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotInput;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
@@ -384,6 +384,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         return true;
     }
 
+    @ServerThreadSafe
     @Override
     public boolean takeTeapot(Level level, LivingEntity user) {
         // 同时保护直接调用接口的路径，以及已取下/已替换的旧方块实体引用。
@@ -531,6 +532,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         }
     }
 
+    @ServerThreadSafe
     @Override
     protected void saveAdditional(@NonNull ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);

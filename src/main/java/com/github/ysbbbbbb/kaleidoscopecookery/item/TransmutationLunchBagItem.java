@@ -5,38 +5,38 @@ import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.FruitBaske
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModDataComponents;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModTrigger;
 import com.github.ysbbbbbb.kaleidoscopecookery.inventory.tooltip.ItemContainerTooltip;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.ItemStackHandler;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.Consumable;
-import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import net.minecraft.world.item.context.UseOnContext;
@@ -48,20 +48,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
-import java.util.function.Consumer;
 
-public class TransmutationLunchBagItem extends Item {
+public class TransmutationLunchBagItem extends WithTooltipsItem {
     public static final int NO_ITEMS = 0;
     public static final int HAS_ITEMS = 1;
 
     private static final int MAX_SIZE = 16;
 
     public TransmutationLunchBagItem(Properties p) {
-        super(p.stacksTo(1));
+        super(p.stacksTo(1)
+                .food(
+                        new FoodProperties(0, 0, true),
+                        Consumables.DEFAULT_FOOD
+                ),
+                "transmutation_lunch_bag");
     }
 
     @SuppressWarnings("unused")
@@ -183,7 +187,8 @@ public class TransmutationLunchBagItem extends Item {
             return bag;
         }
         ItemStack food = ItemStack.EMPTY;
-        List<List<ConsumeEffect>> effects = Lists.newArrayList();
+        int primaryFoodSlot = -1;
+        List<EffectFood> effectFoods = Lists.newArrayList();
 
         ItemStackHandler items = getItems(bag);
         for (int i = 0; i < items.getSlots(); i++) {
@@ -194,13 +199,15 @@ public class TransmutationLunchBagItem extends Item {
 
             // 先检查是不是食物
             Consumable consumable = stackInSlot.get(DataComponents.CONSUMABLE);
-            if (consumable != null) {
-                // 第一个食物的效果不加入其中，避免重复
-                if (!food.isEmpty()) {
-                    List<ConsumeEffect> foodEffects = consumable.onConsumeEffects();
-                    effects.add(foodEffects);
-                } else {
+            if (stackInSlot.has(DataComponents.FOOD) && consumable != null) {
+                if (food.isEmpty()) {
+                    if (hasStatusEffect(consumable.onConsumeEffects())) {
+                        primaryFoodSlot = i;
+                        effectFoods.add(new EffectFood(i, consumable));
+                    }
                     food = items.extractItem(i, 1, false);
+                } else if (hasStatusEffect(consumable.onConsumeEffects())) {
+                    effectFoods.add(new EffectFood(i, consumable));
                 }
                 continue;
             }
@@ -209,11 +216,7 @@ public class TransmutationLunchBagItem extends Item {
             PotionContents potionContents = stackInSlot.get(DataComponents.POTION_CONTENTS);
             if (potionContents != null) {
                 // 第一个药水的效果不加入其中，避免重复
-                if (!food.isEmpty()) {
-                    List<ConsumeEffect> potionEffects = Lists.newArrayList();
-                    potionContents.forEachEffect(e -> potionEffects.add(new ApplyStatusEffectsConsumeEffect(e, 1F)), 1F);
-                    effects.add(potionEffects);
-                } else {
+                if (food.isEmpty()) {
                     food = items.extractItem(i, 1, false);
                 }
             }
@@ -230,43 +233,30 @@ public class TransmutationLunchBagItem extends Item {
                 if (!(entity instanceof Player player) || !player.getAbilities().instabuild) {
                     ItemUtils.getItemToLivingEntity(entity, returnStack);
                 }
-            } else if (containerItem != Items.AIR) {
+            } else if (containerItem != Items.AIR && (!(entity instanceof Player player) || !player.getAbilities().instabuild)) {
                 ItemUtils.getItemToLivingEntity(entity, containerItem.getDefaultInstance());
             }
 
             // 处理效果
             // 随机选择三个食物的效果
-            boolean hasExtraEffects = false;
-            Collections.shuffle(effects, new Random());
-            int effectsToApply = Math.min(3, effects.size());
-            for (int i = 0; i < effectsToApply; i++) {
-                List<ConsumeEffect> selected = effects.get(i);
-                for (ConsumeEffect effect : selected) {
-                    if (effect instanceof ApplyStatusEffectsConsumeEffect(
-                            List<MobEffectInstance> effects1, float probability
-                    )) {
-                        if (level.isClientSide() || probability <= 0.0F || level.getRandom().nextFloat() >= probability) {
-                            continue;
-                        }
-                        entity.addEffect(new MobEffectInstance(effects1.getFirst()));
-                        hasExtraEffects = true;
-                    }
+            boolean hasExtraEffects;
+            if (!level.isClientSide() && !effectFoods.isEmpty()) {
+                for (int i = effectFoods.size() - 1; i > 0; i--) {
+                    int j = level.getRandom().nextInt(i + 1);
+                    EffectFood value = effectFoods.get(i);
+                    effectFoods.set(i, effectFoods.get(j));
+                    effectFoods.set(j, value);
                 }
-            }
-
-            // 如果有额外效果，那么随机扣除一个物品
-            if (hasExtraEffects) {
-                IntList foodSlots = new IntArrayList();
-                for (int i = 0; i < items.getSlots(); i++) {
-                    ItemStack stackInSlot = items.getStackInSlot(i);
-                    if (!stackInSlot.isEmpty()) {
-                        foodSlots.add(i);
-                    }
+                Map<Holder<MobEffect>, MobEffectInstance> strongest = new LinkedHashMap<>();
+                int selectedFoods = Math.min(3, effectFoods.size());
+                for (int i = 0; i < selectedFoods; i++) {
+                    collectBestEffects(effectFoods.get(i).consumable().onConsumeEffects(), strongest, level);
                 }
-                if (!foodSlots.isEmpty()) {
-                    int randomIndex = level.getRandom().nextInt(foodSlots.size());
-                    int slotToExtract = foodSlots.getInt(randomIndex);
-                    items.extractItem(slotToExtract, 1, false);
+                strongest.values().forEach(instance -> entity.addEffect(new MobEffectInstance(instance)));
+                hasExtraEffects = !strongest.isEmpty();
+                if (hasExtraEffects) {
+                    int selectedSlot = effectFoods.get(level.getRandom().nextInt(selectedFoods)).slot();
+                    if (selectedSlot != primaryFoodSlot) items.extractItem(selectedSlot, 1, false);
                 }
             }
 
@@ -349,7 +339,7 @@ public class TransmutationLunchBagItem extends Item {
         if (!food.getItem().canFitInsideContainerItems()) {
             return false;
         }
-        return food.has(DataComponents.FOOD) || food.has(DataComponents.POTION_CONTENTS);
+        return (food.has(DataComponents.FOOD) && food.has(DataComponents.CONSUMABLE)) || food.has(DataComponents.POTION_CONTENTS);
     }
 
     private static Optional<ItemStack> removeOne(ItemStack bag) {
@@ -378,13 +368,65 @@ public class TransmutationLunchBagItem extends Item {
         int totalCount = food.getCount();
 
         ItemStackHandler items = getItems(bag);
-        ItemStack remaining = ItemUtils.insertItemStacked(items, food, simulate);
+        ItemStack remaining = insertInOrder(items, food, simulate);
 
         int addCount = totalCount - (remaining.isEmpty() ? 0 : remaining.getCount());
         if (!simulate && addCount > 0) {
             setItems(bag, items);
         }
         return addCount;
+    }
+
+    private static ItemStack insertInOrder(ItemStackHandler items, ItemStack input, boolean simulate) {
+        ItemStack remainder = input.copy();
+        int lastOccupied = -1;
+        for (int i = 0; i < items.getSlots(); i++) {
+            if (!items.getStackInSlot(i).isEmpty()) lastOccupied = i;
+        }
+        if (lastOccupied >= 0) {
+            ItemStack last = items.getStackInSlot(lastOccupied);
+            if (ItemStack.isSameItemSameComponents(last, remainder)) {
+                int moved = Math.min(remainder.getCount(), last.getMaxStackSize() - last.getCount());
+                if (moved > 0) {
+                    if (!simulate) last.grow(moved);
+                    remainder.shrink(moved);
+                }
+            }
+        }
+        for (int i = 0; i < items.getSlots() && !remainder.isEmpty(); i++) {
+            if (items.getStackInSlot(i).isEmpty()) {
+                int moved = Math.min(remainder.getCount(), remainder.getMaxStackSize());
+                if (!simulate) items.setStackInSlot(i, remainder.copyWithCount(moved));
+                remainder.shrink(moved);
+            }
+        }
+        return remainder.isEmpty() ? ItemStack.EMPTY : remainder;
+    }
+
+    private static boolean hasStatusEffect(List<ConsumeEffect> effects) {
+        return effects.stream().anyMatch(effect -> effect instanceof ApplyStatusEffectsConsumeEffect);
+    }
+
+    private static void collectBestEffects(List<ConsumeEffect> consumeEffects,
+                                           Map<net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, MobEffectInstance> best,
+                                           Level level) {
+        for (ConsumeEffect consumeEffect : consumeEffects) {
+            if (!(consumeEffect instanceof ApplyStatusEffectsConsumeEffect(
+                    List<MobEffectInstance> effects, float probability
+            ))) continue;
+            if (probability <= 0.0F || level.getRandom().nextFloat() >= probability) continue;
+            for (MobEffectInstance candidate : effects) {
+                var key = candidate.getEffect();
+                MobEffectInstance current = best.get(key);
+                if (current == null || candidate.getAmplifier() > current.getAmplifier()
+                        || candidate.getAmplifier() == current.getAmplifier() && candidate.getDuration() > current.getDuration()) {
+                    best.put(key, candidate);
+                }
+            }
+        }
+    }
+
+    private record EffectFood(int slot, Consumable consumable) {
     }
 
     public static boolean dropContents(ItemStack bag, Player player) {
@@ -427,12 +469,6 @@ public class TransmutationLunchBagItem extends Item {
         }
         ItemStackHandler items = getItems(stack);
         return Optional.of(new ItemContainerTooltip(items));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(@NonNull ItemStack itemStack, @NonNull TooltipContext tooltipContext, @NonNull TooltipDisplay tooltipDisplay, Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag) {
-        consumer.accept(Component.translatable("tooltip.kaleidoscope_cookery.transmutation_lunch_bag").withStyle(ChatFormatting.GRAY));
     }
 
     public record ItemContainer(ItemStackHandler items) {

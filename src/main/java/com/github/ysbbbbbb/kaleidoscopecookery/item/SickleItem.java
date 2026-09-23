@@ -5,10 +5,9 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.RiceCropBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.crop.TeaTreeBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModEvents;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.tag.TagMod;
-import net.minecraft.ChatFormatting;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -18,11 +17,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -30,16 +26,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
-import java.util.function.Consumer;
-
-public class SickleItem extends Item {
+public class SickleItem extends WithTooltipsItem {
 
     public static final ToolMaterial SICKLE = new ToolMaterial(BlockTags.INCORRECT_FOR_STONE_TOOL, 535, 3.5F, 1.0F, 15, ItemTags.WOODEN_TOOL_MATERIALS);
 
     public SickleItem(Properties p) {
-        super(p.stacksTo(1).sword(SICKLE, 3.0F, -2.4F));
+        super(p.stacksTo(1).sword(SICKLE, 3.0F, -2.4F), "sickle");
     }
 
     @Override
@@ -106,8 +99,8 @@ public class SickleItem extends Item {
 
         // 如果是茶树，那么只收割成熟的，未成熟的保持原样（茶树属于植被方块，不特判会被直接破坏）
         if (block instanceof TeaTreeBlock teaTreeBlock) {
-            if (teaTreeBlock.isMaxAge(blockState)) {
-                teaTreeBlock.playerDestroy(level, player, newPos, blockState, null, ItemStack.EMPTY);
+            if (teaTreeBlock.isMaxAge(blockState) && player instanceof ServerPlayer serverPlayer) {
+                teaTreeBlock.playerDestroy(level, serverPlayer, newPos, blockState, null, ItemStack.EMPTY);
                 level.setBlock(newPos, teaTreeBlock.getStateForAge(0), Block.UPDATE_ALL);
                 level.levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, newPos, Block.getId(blockState));
                 return true;
@@ -125,7 +118,8 @@ public class SickleItem extends Item {
             }
             if (cropBlock.isMaxAge(blockState)) {
                 // 成熟则收割
-                cropBlock.playerDestroy(level, player, newPos, blockState, null, ItemStack.EMPTY);
+                if (player instanceof ServerPlayer serverPlayer)
+                    cropBlock.playerDestroy(level, serverPlayer, newPos, blockState, null, ItemStack.EMPTY);
                 BlockState stateForAge = cropBlock.getStateForAge(0);
                 // 同步水属性状态
                 BooleanProperty waterlogged = BlockStateProperties.WATERLOGGED;
@@ -149,11 +143,5 @@ public class SickleItem extends Item {
             }
         }
         return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext tooltip, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag) {
-        consumer.accept(Component.translatable("tooltip.kaleidoscope_cookery.sickle").withStyle(ChatFormatting.GRAY));
     }
 }
