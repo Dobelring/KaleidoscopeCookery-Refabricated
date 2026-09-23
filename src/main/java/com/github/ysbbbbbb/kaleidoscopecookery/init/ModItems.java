@@ -3,6 +3,8 @@ package com.github.ysbbbbbb.kaleidoscopecookery.init;
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.*;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.armor.FarmerArmorMaterial;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsItem;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

@@ -1,4 +1,4 @@
-package com.github.ysbbbbbb.kaleidoscopecookery.item;
+package com.github.ysbbbbbb.kaleidoscopecookery.item.template;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class WithTooltipsBlockItem extends BlockItem {
-    private final String key;
+    protected final String key;
 
     public WithTooltipsBlockItem(Block block, Properties properties, String name) {
         super(block, properties);

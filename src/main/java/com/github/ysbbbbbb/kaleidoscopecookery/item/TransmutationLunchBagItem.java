@@ -5,6 +5,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.advancements.critereon.ModEventTr
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.FruitBasketBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModTrigger;
 import com.github.ysbbbbbb.kaleidoscopecookery.inventory.tooltip.ItemContainerTooltip;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.forge.ItemHandlerHelper;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.forge.ItemStackHandler;
@@ -14,11 +15,9 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -48,7 +47,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class TransmutationLunchBagItem extends Item {
+public class TransmutationLunchBagItem extends WithTooltipsItem {
     public static final ResourceLocation HAS_ITEMS_PROPERTY = new ResourceLocation(KaleidoscopeCookery.MOD_ID, "has_items");
     public static final int NO_ITEMS = 0;
     public static final int HAS_ITEMS = 1;
@@ -57,7 +56,7 @@ public class TransmutationLunchBagItem extends Item {
     private static final String TAG_ITEMS = "Items";
 
     public TransmutationLunchBagItem() {
-        super((new Item.Properties()).stacksTo(1).food(new FoodProperties.Builder().alwaysEat().build()));
+        super((new Item.Properties()).stacksTo(1).food(new FoodProperties.Builder().alwaysEat().build()), "transmutation_lunch_bag");
     }
 
     @SuppressWarnings("unused")
@@ -432,10 +431,5 @@ public class TransmutationLunchBagItem extends Item {
         }
         ItemStackHandler items = getItems(stack);
         return Optional.of(new ItemContainerTooltip(items));
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.kaleidoscope_cookery.transmutation_lunch_bag").withStyle(ChatFormatting.GRAY));
     }
 }
