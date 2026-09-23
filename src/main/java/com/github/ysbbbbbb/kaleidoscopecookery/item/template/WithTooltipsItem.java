@@ -1,30 +1,21 @@
-package com.github.ysbbbbbb.kaleidoscopecookery.item;
+package com.github.ysbbbbbb.kaleidoscopecookery.item.template;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
-public class WithTooltipsBlockItem extends BlockItem {
-    private final String key;
+public class WithTooltipsItem extends Item {
+    protected final String key;
 
-    public WithTooltipsBlockItem(Block block, Properties properties, String name) {
-        super(block, properties);
+    public WithTooltipsItem(Properties properties, String name) {
+        super(properties);
         this.key = "tooltip.kaleidoscope_cookery." + name;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public WithTooltipsBlockItem(Block block, String name) {
-        this(block, new Properties(), name);
     }
 
     @SuppressWarnings("deprecation")

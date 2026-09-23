@@ -1,25 +1,19 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
-import net.minecraft.ChatFormatting;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsItem;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.NonNull;
 
-import java.util.function.Consumer;
-
-public class KitchenKnifeItem extends Item {
+public class KitchenKnifeItem extends WithTooltipsItem {
 
     public KitchenKnifeItem(Properties p, ToolMaterial material, float attackDamageBonus, float attackSpeedBonus) {
-        super(p.stacksTo(1).sword(material, attackDamageBonus, attackSpeedBonus));
+        super(p.stacksTo(1).sword(material, attackDamageBonus, attackSpeedBonus), "kitchen_knife");
     }
 
 
@@ -38,11 +32,5 @@ public class KitchenKnifeItem extends Item {
     @Override
     public void postHurtEnemy(ItemStack stack, @NonNull LivingEntity target, @NonNull LivingEntity attacker) {
         stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext tooltip, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag) {
-        consumer.accept(Component.translatable("tooltip.kaleidoscope_cookery.kitchen_knife").withStyle(ChatFormatting.GRAY));
     }
 }

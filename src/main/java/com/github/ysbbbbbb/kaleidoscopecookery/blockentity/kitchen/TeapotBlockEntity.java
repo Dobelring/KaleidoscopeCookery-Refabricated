@@ -2,7 +2,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ITeapot;
-import com.github.ysbbbbbb.kaleidoscopecookery.api.blockentity.ServerThreadSafe;
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ServerThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.BaseBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.container.TeapotInput;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.recipe.TeapotRecipe;
@@ -34,7 +34,6 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -532,6 +531,7 @@ public class TeapotBlockEntity extends BaseBlockEntity implements ITeapot {
         }
     }
 
+    @ServerThreadSafe
     @Override
     protected void saveAdditional(@NonNull ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
