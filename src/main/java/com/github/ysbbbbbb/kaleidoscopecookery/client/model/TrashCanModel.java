@@ -1,6 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.client.model;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ClientThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.animation.TrashCanAnimation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -66,6 +67,7 @@ public class TrashCanModel extends Model<TrashCanModel.State> {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
+    @ClientThreadSafe
     @Override
     public void setupAnim(@NonNull State object) {
         super.setupAnim(object);

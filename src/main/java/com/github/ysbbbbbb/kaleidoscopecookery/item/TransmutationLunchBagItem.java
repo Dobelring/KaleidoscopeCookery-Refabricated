@@ -9,12 +9,11 @@ import com.github.ysbbbbbb.kaleidoscopecookery.util.ItemUtils;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.ItemStackHandler;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -25,6 +24,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -237,7 +237,7 @@ public class TransmutationLunchBagItem extends Item {
 
             // 处理效果
             // 随机选择三个食物的效果
-            boolean hasExtraEffects = false;
+            boolean hasExtraEffects;
             if (!level.isClientSide() && !effectFoods.isEmpty()) {
                 for (int i = effectFoods.size() - 1; i > 0; i--) {
                     int j = level.getRandom().nextInt(i + 1);
@@ -245,14 +245,12 @@ public class TransmutationLunchBagItem extends Item {
                     effectFoods.set(i, effectFoods.get(j));
                     effectFoods.set(j, value);
                 }
-                Map<net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, MobEffectInstance> strongest = new LinkedHashMap<>();
+                Map<Holder<MobEffect>, MobEffectInstance> strongest = new LinkedHashMap<>();
                 int selectedFoods = Math.min(3, effectFoods.size());
                 for (int i = 0; i < selectedFoods; i++) {
                     collectBestEffects(effectFoods.get(i).consumable().onConsumeEffects(), strongest, level);
                 }
-                strongest.values().forEach(instance -> {
-                    entity.addEffect(new MobEffectInstance(instance));
-                });
+                strongest.values().forEach(instance -> entity.addEffect(new MobEffectInstance(instance)));
                 hasExtraEffects = !strongest.isEmpty();
                 if (hasExtraEffects) {
                     int selectedSlot = effectFoods.get(level.getRandom().nextInt(selectedFoods)).slot();
@@ -411,9 +409,11 @@ public class TransmutationLunchBagItem extends Item {
                                            Map<net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect>, MobEffectInstance> best,
                                            Level level) {
         for (ConsumeEffect consumeEffect : consumeEffects) {
-            if (!(consumeEffect instanceof ApplyStatusEffectsConsumeEffect effect)) continue;
-            if (effect.probability() <= 0.0F || level.getRandom().nextFloat() >= effect.probability()) continue;
-            for (MobEffectInstance candidate : effect.effects()) {
+            if (!(consumeEffect instanceof ApplyStatusEffectsConsumeEffect(
+                    List<MobEffectInstance> effects, float probability
+            ))) continue;
+            if (probability <= 0.0F || level.getRandom().nextFloat() >= probability) continue;
+            for (MobEffectInstance candidate : effects) {
                 var key = candidate.getEffect();
                 MobEffectInstance current = best.get(key);
                 if (current == null || candidate.getAmplifier() > current.getAmplifier()
