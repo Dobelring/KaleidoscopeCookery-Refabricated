@@ -5,7 +5,6 @@ import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteThreeByThreeBl
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.food.FoodBiteThreeByThreeBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.model.ColdCutHamSlicesModel;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.render.renderstate.FoodBiteThreeByThreeBlockEntityRenderState;
-import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.IBlockEntityRendererExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
@@ -29,7 +28,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class FoodBiteThreeByThreeBlockEntityRender implements BlockEntityRenderer<FoodBiteThreeByThreeBlockEntity, FoodBiteThreeByThreeBlockEntityRenderState>, IBlockEntityRendererExtension<FoodBiteThreeByThreeBlockEntity> {
+public class FoodBiteThreeByThreeBlockEntityRender implements BlockEntityRenderer<FoodBiteThreeByThreeBlockEntity, FoodBiteThreeByThreeBlockEntityRenderState> {
     private static final Identifier COLD_CUT_HAM_SLICES_TEXTURE = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "textures/block/cold_cut_ham_slices.png");
 
     private final ColdCutHamSlicesModel coldCutHamSlicesModel;
@@ -84,7 +83,6 @@ public class FoodBiteThreeByThreeBlockEntityRender implements BlockEntityRendere
         return true;
     }
 
-    @Override
     public AABB getRenderBoundingBox(FoodBiteThreeByThreeBlockEntity blockEntity) {
         BlockPos pos = blockEntity.getBlockPos();
         return getAABB(pos.offset(-3, 0, -3), pos.offset(3, 1, 3));

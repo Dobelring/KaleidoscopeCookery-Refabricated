@@ -1,6 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.client.model;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
+import com.github.ysbbbbbb.kaleidoscopecookery.api.annotations.ClientThreadSafe;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.TeapotBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.client.animation.TeapotAnimation;
 import net.fabricmc.api.EnvType;
@@ -76,6 +77,7 @@ public class TeapotModel extends Model<TeapotModel.State> {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
+    @ClientThreadSafe
     @Override
     public void setupAnim(@NonNull State object) {
         super.setupAnim(object);

@@ -62,6 +62,7 @@ dependencies {
 	implementation ("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${providers.gradleProperty("forge_config_api_version").get()}")
 	implementation("mezz.jei:jei-${providers.gradleProperty("jei_version").get()}")
 	implementation("eu.pb4:trinkets:${providers.gradleProperty("trinkets_version").get()}")
+	implementation("maven.modrinth:EsAfCjCV:zLlqqiTA")
 }
 
 tasks.processResources {

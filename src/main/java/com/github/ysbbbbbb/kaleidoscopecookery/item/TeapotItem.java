@@ -62,7 +62,7 @@ public class TeapotItem extends BlockItem {
     private static final String MYSTERY_TEA_ID = TeacupRegistry.MYSTERY_TEA.toString();
 
     public TeapotItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties.stacksTo(1));
     }
 
     /**
