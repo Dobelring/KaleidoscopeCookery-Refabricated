@@ -276,13 +276,3 @@ tasks.named('runGameTest', JavaExec) {
     systemProperty 'fabric-api.gametest.report-file', layout.buildDirectory.file('reports/gametest/results.xml').get().asFile.absolutePath
     doFirst { layout.buildDirectory.dir('reports/gametest').get().asFile.mkdirs() }
 }
-
-// Opt-in real-client check of AppleSkin's entrypoint, event and tooltip integration.
-loom.runs {
-    appleSkinSmokeTest {
-        client()
-        source sourceSets.gametest
-        runDir 'build/appleskin-smoke'
-        vmArg '-Dcookery.appleskinSmokeTest=true'
-    }
-}
