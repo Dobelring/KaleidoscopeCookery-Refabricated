@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jspecify.annotations.NonNull;
 
-import java.util.Map;
 import java.util.Optional;
 
 public final class StrawHatTrinketItem extends StrawHatItem implements Trinket {
@@ -37,6 +36,7 @@ public final class StrawHatTrinketItem extends StrawHatItem implements Trinket {
         return equipItem((LivingEntity) user, stack);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     public static boolean equipItem(LivingEntity user, ItemStack stack) {
         Optional<TrinketAttachment> optional = Optional.ofNullable(TrinketsApi.getAttachment(user));
         if (optional.isPresent()) {

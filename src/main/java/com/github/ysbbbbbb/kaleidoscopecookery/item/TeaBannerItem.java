@@ -1,6 +1,7 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.TeaBannerBlockEntity;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -11,18 +12,20 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
-public class TeaBannerItem extends BlockItem {
-    public TeaBannerItem(net.minecraft.world.level.block.Block block, Item.Properties properties) {
-        super(block, properties.stacksTo(1));
+public class TeaBannerItem extends WithTooltipsBlockItem {
+    public TeaBannerItem(Block block, Item.Properties properties) {
+        super(block, properties.stacksTo(1), "tea_banner");
     }
 
-    @SuppressWarnings("deprecation")
+
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, @NonNull TooltipDisplay display, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag flag) {
+    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay display, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag flag) {
+        super.appendHoverText(stack, context, display, consumer, flag);
         TypedEntityData<?> data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
         CompoundTag tag = data == null ? null : data.copyTagWithoutId();
         DyeColor color = tag == null ? DyeColor.RED : TeaBannerBlockEntity.getColor(tag);

@@ -19,6 +19,7 @@ import com.github.ysbbbbbb.kaleidoscopecookery.inventory.tooltip.RecipeItemToolt
 import com.github.ysbbbbbb.kaleidoscopecookery.item.quality.Quality;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.quality.QualityEvaluator;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.quality.QualityUtils;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.IItemHandler;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.neo.PlayerMainInvWrapper;
 import com.google.common.collect.Lists;
@@ -28,7 +29,6 @@ import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -46,7 +46,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -63,9 +62,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
-public class RecipeItem extends BlockItem {
+public class RecipeItem extends WithTooltipsBlockItem {
 
     public static final Identifier POT = Identifier.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "pot");
 
@@ -77,7 +75,7 @@ public class RecipeItem extends BlockItem {
     private static final int HAS_RECIPE = 1;
 
     public RecipeItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties, "recipe_item");
     }
 
     public static void setRecipe(ItemStack stack, RecipeRecord record) {
@@ -487,12 +485,6 @@ public class RecipeItem extends BlockItem {
             return Optional.of(new RecipeItemTooltip(recipe, quality));
         }
         return Optional.empty();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext tooltip, @NonNull TooltipDisplay tooltipDisplay, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag tooltipFlag) {
-        consumer.accept(Component.translatable("tooltip.kaleidoscope_cookery.recipe_item").withStyle(ChatFormatting.GRAY));
     }
 
     private record RecipeResult(ItemStack output, boolean flexRecipe) {
