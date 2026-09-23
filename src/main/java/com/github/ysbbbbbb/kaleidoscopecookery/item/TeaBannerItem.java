@@ -15,14 +15,15 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
-public class TeaBannerItem extends BlockItem {
+public class TeaBannerItem extends WithTooltipsBlockItem {
     public TeaBannerItem(net.minecraft.world.level.block.Block block, Item.Properties properties) {
-        super(block, properties.stacksTo(1));
+        super(block, properties.stacksTo(1), "tea_banner");
     }
 
-    @SuppressWarnings("deprecation")
+
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, @NonNull TooltipDisplay display, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag flag) {
+    public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay display, @NonNull Consumer<Component> consumer, @NonNull TooltipFlag flag) {
+        super.appendHoverText(stack, context, display, consumer, flag);
         TypedEntityData<?> data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
         CompoundTag tag = data == null ? null : data.copyTagWithoutId();
         DyeColor color = tag == null ? DyeColor.RED : TeaBannerBlockEntity.getColor(tag);

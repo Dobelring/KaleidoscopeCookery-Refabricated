@@ -15,6 +15,7 @@ public class ModelDisplayItem extends Item {
         super(properties);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void appendHoverText(@NonNull ItemStack itemStack, @NonNull TooltipContext context, @NonNull TooltipDisplay display, @NonNull Consumer<Component> builder, @NonNull TooltipFlag tooltipFlag) {
         builder.accept(Component.translatable("tooltip.kaleidoscope_cookery.model_display").withStyle(ChatFormatting.RED));

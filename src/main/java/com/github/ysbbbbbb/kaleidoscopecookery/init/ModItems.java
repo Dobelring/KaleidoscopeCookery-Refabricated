@@ -59,11 +59,11 @@ public final class ModItems {
     public static final Item SHAWARMA_SPIT = registerItemViaBlockWithDesc(ModBlocks.SHAWARMA_SPIT, "shawarma_spit");
     public static final Item MILLSTONE = registerItemViaBlockWithDesc(ModBlocks.MILLSTONE, "millstone");
     public static final Item STEAMER = registerItemViaBlock(ModBlocks.STEAMER, SteamerItem::new);
-    public static final Item OIL_POT = registerItemViaBlock(ModBlocks.OIL_POT, OilPotItem::new, new Item.Properties().stacksTo(16));
-    public static final Item TRASH_CAN = registerItemViaBlock(ModBlocks.TRASH_CAN);
-    public static final Item TEAPOT = registerItemViaBlock(ModBlocks.TEAPOT, TeapotItem::new, new Item.Properties().stacksTo(1));
+    public static final Item OIL_POT = registerItemViaBlockWithDesc(ModBlocks.OIL_POT, "oil_pot");
+    public static final Item TRASH_CAN = registerItemViaBlockWithDesc(ModBlocks.TRASH_CAN, "trash_can");
+    public static final Item TEAPOT = registerItemViaBlockWithDesc(ModBlocks.TEAPOT, "teapot");
     public static final Item EMPTY_CUP = registerItemViaBlock(ModBlocks.EMPTY_CUP, EmptyCupItem::new);
-    public static final Item BAMBOO_TRAY = registerItemViaBlock(ModBlocks.BAMBOO_TRAY);
+    public static final Item BAMBOO_TRAY = registerItemViaBlockWithDesc(ModBlocks.BAMBOO_TRAY, "bamboo_tray");
     public static final Item TEA_BANNER = registerItemViaBlock(ModBlocks.TEA_BANNER, TeaBannerItem::new);
     public static final Item LONG_BENCH = registerItemViaBlock(ModBlocks.LONG_BENCH);
     public static final Item RED_LANTERN = registerItemViaBlock(ModBlocks.RED_LANTERN);

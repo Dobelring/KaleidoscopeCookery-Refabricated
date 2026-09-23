@@ -26,7 +26,7 @@ public class OilPotItem extends BlockItem {
     private static final int HAS_OIL = 1;
 
     public OilPotItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties.stacksTo(16));
     }
 
     public static void setOilCount(ItemStack stack, int count) {
