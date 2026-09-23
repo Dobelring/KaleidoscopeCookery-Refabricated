@@ -1,5 +1,6 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -10,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.List;
 
 public class PlateBlockItem extends WithTooltipsBlockItem {
+    @SuppressWarnings("unused")
     public PlateBlockItem(Block block, Properties properties, String name) {
         super(block, properties, name);
     }

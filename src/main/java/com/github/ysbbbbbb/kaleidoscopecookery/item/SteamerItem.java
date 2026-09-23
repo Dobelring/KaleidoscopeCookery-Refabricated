@@ -4,22 +4,19 @@ import com.github.ysbbbbbb.kaleidoscopecookery.KaleidoscopeCookery;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.kitchen.SteamerBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.kitchen.SteamerBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -27,15 +24,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class SteamerItem extends BlockItem {
+public class SteamerItem extends WithTooltipsBlockItem {
     public static final ResourceLocation HAS_ITEMS = ResourceLocation.fromNamespaceAndPath(KaleidoscopeCookery.MOD_ID, "has_items");
     private static final int NONE = 0;
     private static final int HAS = 1;
 
     public SteamerItem() {
-        super(ModBlocks.STEAMER, new Properties());
+        super(ModBlocks.STEAMER, new Properties(), "steamer");
     }
 
     @Override
@@ -83,10 +78,5 @@ public class SteamerItem extends BlockItem {
             }
         }
         return NONE;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.kaleidoscope_cookery.steamer").withStyle(ChatFormatting.GRAY));
     }
 }

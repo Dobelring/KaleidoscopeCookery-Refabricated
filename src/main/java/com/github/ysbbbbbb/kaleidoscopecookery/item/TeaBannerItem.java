@@ -2,6 +2,7 @@ package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.blockentity.decoration.TeaBannerBlockEntity;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.ModBlocks;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -13,13 +14,14 @@ import net.minecraft.world.item.component.CustomData;
 
 import java.util.List;
 
-public class TeaBannerItem extends BlockItem {
+public class TeaBannerItem extends WithTooltipsBlockItem {
     public TeaBannerItem() {
-        super(ModBlocks.TEA_BANNER, new Item.Properties().stacksTo(1));
+        super(ModBlocks.TEA_BANNER, new Item.Properties().stacksTo(1), "tea_banner");
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
         CustomData data = stack.get(DataComponents.BLOCK_ENTITY_DATA);
         CompoundTag tag = data == null ? null : data.copyTag();
         DyeColor color = tag == null ? DyeColor.RED : TeaBannerBlockEntity.getColor(tag);

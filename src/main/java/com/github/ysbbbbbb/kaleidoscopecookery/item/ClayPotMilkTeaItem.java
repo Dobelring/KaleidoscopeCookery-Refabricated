@@ -1,9 +1,8 @@
 package com.github.ysbbbbbb.kaleidoscopecookery.item;
 
 import com.github.ysbbbbbb.kaleidoscopecookery.api.item.IHasContainer;
-import net.minecraft.ChatFormatting;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -20,11 +19,10 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ClayPotMilkTeaItem extends BlockItem implements IHasContainer {
+public class ClayPotMilkTeaItem extends WithTooltipsBlockItem implements IHasContainer {
     public ClayPotMilkTeaItem(Block block) {
-        super(block, new Item.Properties().stacksTo(16));
+        super(block, new Item.Properties().stacksTo(16), "clay_pot_milk_tea.effect");
     }
 
     @Override
@@ -70,11 +68,5 @@ public class ClayPotMilkTeaItem extends BlockItem implements IHasContainer {
     @Override
     public Item getContainerItem() {
         return Items.FLOWER_POT;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.kaleidoscope_cookery.clay_pot_milk_tea.effect")
-                .withStyle(ChatFormatting.GRAY));
     }
 }
